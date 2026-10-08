@@ -1,0 +1,32 @@
+% Standalone preprint entry point.
+\documentclass{preprint}
+\input{common-preamble}
+\input{metadata}
+\title{\PaperTitle}
+\author[a,b,c]{\PaperAuthor\thanks{Correspondence: \PaperEmail}}
+\affil[a]{\PaperAffiliationA}
+\affil[b]{\PaperAffiliationB}
+\affil[c]{\PaperAffiliationC}
+\date{}
+\hypersetup{pdfauthor={\PaperAuthor},pdftitle={\PaperTitle}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+\keywords{\PaperKeywords}
+\preprinttables
+
+\input{main}
+\section*{Materials and Methods}
+\input{methods}
+\section*{Data Availability}
+\PaperDataAvailability
+\section*{Acknowledgments}
+\PaperAcknowledgments
+\par\medskip\PaperDeclaration
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+\input{arxiv-supplement}
+\end{document}

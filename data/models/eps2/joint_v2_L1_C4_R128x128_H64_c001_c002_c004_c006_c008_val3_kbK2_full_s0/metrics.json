@@ -1,0 +1,1707 @@
+{
+  "name": "joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kbK2_full_s0",
+  "variant": "v2",
+  "depth": 1,
+  "C": 4,
+  "receptive_field": 6.0,
+  "train_runs": [
+    "c0.01/p40",
+    "c0.01/p41",
+    "c0.01/p00",
+    "c0.01/p01",
+    "c0.01/p02",
+    "c0.01/p03",
+    "c0.01/p05",
+    "c0.01/p07",
+    "c0.01/p08",
+    "c0.01/p09",
+    "c0.01/p12",
+    "c0.01/p13",
+    "c0.01/p16",
+    "c0.01/p17",
+    "c0.01/p19",
+    "c0.01/p20",
+    "c0.01/p21",
+    "c0.02/p00",
+    "c0.02/p01",
+    "c0.02/p03",
+    "c0.02/p04",
+    "c0.02/p07",
+    "c0.02/p08",
+    "c0.02/p10",
+    "c0.02/p11",
+    "c0.02/p12",
+    "c0.02/p15",
+    "c0.02/p16",
+    "c0.02/p18",
+    "c0.02/p19",
+    "c0.02/p20",
+    "c0.02/p21",
+    "c0.04/p00",
+    "c0.04/p01",
+    "c0.04/p02",
+    "c0.04/p03",
+    "c0.04/p04",
+    "c0.04/p07",
+    "c0.04/p08",
+    "c0.04/p09",
+    "c0.04/p10",
+    "c0.04/p11",
+    "c0.04/p12",
+    "c0.04/p13",
+    "c0.04/p14",
+    "c0.04/p15",
+    "c0.04/p17",
+    "c0.04/p18",
+    "c0.04/p19",
+    "c0.04/p20",
+    "c0.04/p21",
+    "c0.04/p22",
+    "c0.04/p23",
+    "c0.04/p26",
+    "c0.04/p28",
+    "c0.06/p02",
+    "c0.06/p04",
+    "c0.06/p05",
+    "c0.06/p07",
+    "c0.06/p09",
+    "c0.06/p10",
+    "c0.06/p11",
+    "c0.06/p12",
+    "c0.06/p13",
+    "c0.06/p15",
+    "c0.06/p16",
+    "c0.06/p17",
+    "c0.06/p18",
+    "c0.06/p19",
+    "c0.08/p00",
+    "c0.08/p03",
+    "c0.08/p04",
+    "c0.08/p09",
+    "c0.08/p11",
+    "c0.08/p13",
+    "c0.08/p15",
+    "c0.08/p16",
+    "c0.08/p17",
+    "c0.08/p18",
+    "c0.08/p19",
+    "c0.08/p20",
+    "c0.08/p21"
+  ],
+  "heldout_runs": [
+    "c0.01/p04",
+    "c0.01/p06",
+    "c0.01/p10",
+    "c0.01/p14",
+    "c0.02/p02",
+    "c0.02/p06",
+    "c0.02/p09",
+    "c0.02/p14",
+    "c0.04/p05",
+    "c0.04/p16",
+    "c0.04/p25",
+    "c0.04/p27",
+    "c0.06/p00",
+    "c0.06/p06",
+    "c0.06/p08",
+    "c0.06/p14",
+    "c0.08/p02",
+    "c0.08/p06",
+    "c0.08/p10",
+    "c0.08/p14"
+  ],
+  "train_chi2": 0.8882892301513416,
+  "train_rows": [
+    {
+      "conc": 0.01,
+      "tag": "p40",
+      "family": "linear",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.49496460997228514,
+      "chi2_anion": 0.5388522603716401,
+      "chi2": 0.5169084351719626
+    },
+    {
+      "conc": 0.01,
+      "tag": "p41",
+      "family": "linear",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.5788346887497975,
+      "chi2_anion": 0.4632457422118714,
+      "chi2": 0.5210402154808345
+    },
+    {
+      "conc": 0.01,
+      "tag": "p00",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5971634912978175,
+      "chi2_anion": 0.5357620568327506,
+      "chi2": 0.5664627740652841
+    },
+    {
+      "conc": 0.01,
+      "tag": "p01",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6056262739083086,
+      "chi2_anion": 0.6543979337654126,
+      "chi2": 0.6300121038368606
+    },
+    {
+      "conc": 0.01,
+      "tag": "p02",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.4792018295106484,
+      "chi2_anion": 0.5776140072310125,
+      "chi2": 0.5284079183708305
+    },
+    {
+      "conc": 0.01,
+      "tag": "p03",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5495016101258623,
+      "chi2_anion": 0.5417789293578308,
+      "chi2": 0.5456402697418465
+    },
+    {
+      "conc": 0.01,
+      "tag": "p05",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6345750856243896,
+      "chi2_anion": 0.7346919653813389,
+      "chi2": 0.6846335255028642
+    },
+    {
+      "conc": 0.01,
+      "tag": "p07",
+      "family": "fourier",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.48181025283457174,
+      "chi2_anion": 0.6737651810778721,
+      "chi2": 0.5777877169562219
+    },
+    {
+      "conc": 0.01,
+      "tag": "p08",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5114438306391372,
+      "chi2_anion": 0.6491480470953596,
+      "chi2": 0.5802959388672484
+    },
+    {
+      "conc": 0.01,
+      "tag": "p09",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.7013353532097666,
+      "chi2_anion": 0.6663558907367672,
+      "chi2": 0.6838456219732669
+    },
+    {
+      "conc": 0.01,
+      "tag": "p12",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.43539920084350414,
+      "chi2_anion": 0.7667845501758558,
+      "chi2": 0.6010918755096799
+    },
+    {
+      "conc": 0.01,
+      "tag": "p13",
+      "family": "gauss",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.812356623952623,
+      "chi2_anion": 0.5091076427456659,
+      "chi2": 0.6607321333491445
+    },
+    {
+      "conc": 0.01,
+      "tag": "p16",
+      "family": "long",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.6205969719540377,
+      "chi2_anion": 0.6000995871628628,
+      "chi2": 0.6103482795584503
+    },
+    {
+      "conc": 0.01,
+      "tag": "p17",
+      "family": "long",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.6447434289024937,
+      "chi2_anion": 0.6377656059806859,
+      "chi2": 0.6412545174415898
+    },
+    {
+      "conc": 0.01,
+      "tag": "p19",
+      "family": "long",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5672566232709823,
+      "chi2_anion": 0.5613378268106439,
+      "chi2": 0.5642972250408131
+    },
+    {
+      "conc": 0.01,
+      "tag": "p20",
+      "family": "long3",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5687743940187483,
+      "chi2_anion": 0.5409859335782458,
+      "chi2": 0.554880163798497
+    },
+    {
+      "conc": 0.01,
+      "tag": "p21",
+      "family": "long",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.5450243784940797,
+      "chi2_anion": 0.6308317691031711,
+      "chi2": 0.5879280737986254
+    },
+    {
+      "conc": 0.02,
+      "tag": "p00",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5511012766095217,
+      "chi2_anion": 0.5999854205718227,
+      "chi2": 0.5755433485906722
+    },
+    {
+      "conc": 0.02,
+      "tag": "p01",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6124925358252329,
+      "chi2_anion": 0.6026403602641649,
+      "chi2": 0.607566448044699
+    },
+    {
+      "conc": 0.02,
+      "tag": "p03",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6343477126645045,
+      "chi2_anion": 0.5762785061602773,
+      "chi2": 0.6053131094123909
+    },
+    {
+      "conc": 0.02,
+      "tag": "p04",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5153419191790904,
+      "chi2_anion": 0.6028986929028256,
+      "chi2": 0.559120306040958
+    },
+    {
+      "conc": 0.02,
+      "tag": "p07",
+      "family": "fourier",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.556066963929621,
+      "chi2_anion": 0.7154336546035721,
+      "chi2": 0.6357503092665966
+    },
+    {
+      "conc": 0.02,
+      "tag": "p08",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5503166024249702,
+      "chi2_anion": 0.801231739192506,
+      "chi2": 0.6757741708087381
+    },
+    {
+      "conc": 0.02,
+      "tag": "p10",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5433712462239277,
+      "chi2_anion": 0.5625273315242431,
+      "chi2": 0.5529492888740855
+    },
+    {
+      "conc": 0.02,
+      "tag": "p11",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.7140862514351018,
+      "chi2_anion": 0.8148149738551338,
+      "chi2": 0.7644506126451178
+    },
+    {
+      "conc": 0.02,
+      "tag": "p12",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6073240008915094,
+      "chi2_anion": 1.3895478142158495,
+      "chi2": 0.9984359075536795
+    },
+    {
+      "conc": 0.02,
+      "tag": "p15",
+      "family": "gauss",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.6312770190079291,
+      "chi2_anion": 0.5536365807539051,
+      "chi2": 0.5924567998809172
+    },
+    {
+      "conc": 0.02,
+      "tag": "p16",
+      "family": "long",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.5977128961102909,
+      "chi2_anion": 0.6161578003069688,
+      "chi2": 0.6069353482086298
+    },
+    {
+      "conc": 0.02,
+      "tag": "p18",
+      "family": "long",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5523508841461365,
+      "chi2_anion": 0.48170058252881515,
+      "chi2": 0.5170257333374758
+    },
+    {
+      "conc": 0.02,
+      "tag": "p19",
+      "family": "long",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6431671195118247,
+      "chi2_anion": 0.5283931590967799,
+      "chi2": 0.5857801393043023
+    },
+    {
+      "conc": 0.02,
+      "tag": "p20",
+      "family": "long3",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5867791478559307,
+      "chi2_anion": 0.6622659872516192,
+      "chi2": 0.6245225675537749
+    },
+    {
+      "conc": 0.02,
+      "tag": "p21",
+      "family": "long",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.5654793277952875,
+      "chi2_anion": 0.5111895457928055,
+      "chi2": 0.5383344367940466
+    },
+    {
+      "conc": 0.04,
+      "tag": "p00",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6610070230906883,
+      "chi2_anion": 0.5793115497623049,
+      "chi2": 0.6201592864264966
+    },
+    {
+      "conc": 0.04,
+      "tag": "p01",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.694495080769391,
+      "chi2_anion": 0.7978443373974721,
+      "chi2": 0.7461697090834316
+    },
+    {
+      "conc": 0.04,
+      "tag": "p02",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5623641401941617,
+      "chi2_anion": 0.7052746929801348,
+      "chi2": 0.6338194165871482
+    },
+    {
+      "conc": 0.04,
+      "tag": "p03",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5265090423400641,
+      "chi2_anion": 0.7476907424281067,
+      "chi2": 0.6370998923840854
+    },
+    {
+      "conc": 0.04,
+      "tag": "p04",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5260739533073354,
+      "chi2_anion": 0.691169938270358,
+      "chi2": 0.6086219457888467
+    },
+    {
+      "conc": 0.04,
+      "tag": "p07",
+      "family": "fourier",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.5626276803491164,
+      "chi2_anion": 0.779208801305757,
+      "chi2": 0.6709182408274367
+    },
+    {
+      "conc": 0.04,
+      "tag": "p08",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6578531044639377,
+      "chi2_anion": 1.1040596046544322,
+      "chi2": 0.880956354559185
+    },
+    {
+      "conc": 0.04,
+      "tag": "p09",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.812449224394889,
+      "chi2_anion": 1.051669259593494,
+      "chi2": 0.9320592419941915
+    },
+    {
+      "conc": 0.04,
+      "tag": "p10",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6007225139739231,
+      "chi2_anion": 0.6713307187283759,
+      "chi2": 0.6360266163511494
+    },
+    {
+      "conc": 0.04,
+      "tag": "p11",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 1.013144564775366,
+      "chi2_anion": 2.1378601642525257,
+      "chi2": 1.5755023645139459
+    },
+    {
+      "conc": 0.04,
+      "tag": "p12",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.8992418436866019,
+      "chi2_anion": 1.5833198764721024,
+      "chi2": 1.2412808600793521
+    },
+    {
+      "conc": 0.04,
+      "tag": "p13",
+      "family": "gauss",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.6812877017456928,
+      "chi2_anion": 1.39895543959242,
+      "chi2": 1.0401215706690563
+    },
+    {
+      "conc": 0.04,
+      "tag": "p14",
+      "family": "gauss",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.7043420625212071,
+      "chi2_anion": 1.2655852364027511,
+      "chi2": 0.9849636494619791
+    },
+    {
+      "conc": 0.04,
+      "tag": "p15",
+      "family": "gauss",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.6513085253350032,
+      "chi2_anion": 0.7520516864680699,
+      "chi2": 0.7016801059015365
+    },
+    {
+      "conc": 0.04,
+      "tag": "p17",
+      "family": "long",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.5391642537056,
+      "chi2_anion": 0.612883857025533,
+      "chi2": 0.5760240553655664
+    },
+    {
+      "conc": 0.04,
+      "tag": "p18",
+      "family": "long",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.601758028347567,
+      "chi2_anion": 0.6399286970494439,
+      "chi2": 0.6208433626985055
+    },
+    {
+      "conc": 0.04,
+      "tag": "p19",
+      "family": "long",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5740728910473457,
+      "chi2_anion": 0.6359578625927699,
+      "chi2": 0.6050153768200578
+    },
+    {
+      "conc": 0.04,
+      "tag": "p20",
+      "family": "long3",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6502118366889128,
+      "chi2_anion": 0.5375495158988072,
+      "chi2": 0.59388067629386
+    },
+    {
+      "conc": 0.04,
+      "tag": "p21",
+      "family": "long",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.5846373883631197,
+      "chi2_anion": 0.6075829201402553,
+      "chi2": 0.5961101542516876
+    },
+    {
+      "conc": 0.04,
+      "tag": "p22",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.9004338399343453,
+      "chi2_anion": 2.0975539877488996,
+      "chi2": 1.4989939138416224
+    },
+    {
+      "conc": 0.04,
+      "tag": "p23",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 2.7649466328101253,
+      "chi2_anion": 7.029139643320771,
+      "chi2": 4.897043138065448
+    },
+    {
+      "conc": 0.04,
+      "tag": "p26",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.8522013017172757,
+      "chi2_anion": 1.0670737443116822,
+      "chi2": 0.9596375230144789
+    },
+    {
+      "conc": 0.04,
+      "tag": "p28",
+      "family": "gauss",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.7124886609969067,
+      "chi2_anion": 0.5927092366685331,
+      "chi2": 0.65259894883272
+    },
+    {
+      "conc": 0.06,
+      "tag": "p02",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6911303609486139,
+      "chi2_anion": 0.864485504331978,
+      "chi2": 0.777807932640296
+    },
+    {
+      "conc": 0.06,
+      "tag": "p04",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5025010630645247,
+      "chi2_anion": 0.7207982823103656,
+      "chi2": 0.6116496726874452
+    },
+    {
+      "conc": 0.06,
+      "tag": "p05",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5887560805462592,
+      "chi2_anion": 0.6118441734458999,
+      "chi2": 0.6003001269960795
+    },
+    {
+      "conc": 0.06,
+      "tag": "p07",
+      "family": "fourier",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.5818862806878641,
+      "chi2_anion": 1.0816998298377971,
+      "chi2": 0.8317930552628305
+    },
+    {
+      "conc": 0.06,
+      "tag": "p09",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.8705909362401795,
+      "chi2_anion": 1.8448204883954944,
+      "chi2": 1.3577057123178369
+    },
+    {
+      "conc": 0.06,
+      "tag": "p10",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.666143417997863,
+      "chi2_anion": 0.7525160909892301,
+      "chi2": 0.7093297544935466
+    },
+    {
+      "conc": 0.06,
+      "tag": "p11",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 1.7189429681717454,
+      "chi2_anion": 4.082738316130546,
+      "chi2": 2.9008406421511457
+    },
+    {
+      "conc": 0.06,
+      "tag": "p12",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 1.5121141795956345,
+      "chi2_anion": 3.5295050353674546,
+      "chi2": 2.5208096074815445
+    },
+    {
+      "conc": 0.06,
+      "tag": "p13",
+      "family": "gauss",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.5903099381391341,
+      "chi2_anion": 1.465257928260404,
+      "chi2": 1.027783933199769
+    },
+    {
+      "conc": 0.06,
+      "tag": "p15",
+      "family": "gauss",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.48441194563148143,
+      "chi2_anion": 0.7462987809030381,
+      "chi2": 0.6153553632672598
+    },
+    {
+      "conc": 0.06,
+      "tag": "p16",
+      "family": "long",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.5945712233610053,
+      "chi2_anion": 0.664993254539532,
+      "chi2": 0.6297822389502686
+    },
+    {
+      "conc": 0.06,
+      "tag": "p17",
+      "family": "long",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.6669024105212572,
+      "chi2_anion": 0.697134881398242,
+      "chi2": 0.6820186459597496
+    },
+    {
+      "conc": 0.06,
+      "tag": "p18",
+      "family": "long",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.601820522525517,
+      "chi2_anion": 0.5556099175278814,
+      "chi2": 0.5787152200266992
+    },
+    {
+      "conc": 0.06,
+      "tag": "p19",
+      "family": "long",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5269820710858255,
+      "chi2_anion": 0.6472451034635446,
+      "chi2": 0.5871135872746851
+    },
+    {
+      "conc": 0.08,
+      "tag": "p00",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.7035012995371906,
+      "chi2_anion": 0.7614601055828156,
+      "chi2": 0.7324807025600031
+    },
+    {
+      "conc": 0.08,
+      "tag": "p03",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5103860305388631,
+      "chi2_anion": 0.7007582678127561,
+      "chi2": 0.6055721491758096
+    },
+    {
+      "conc": 0.08,
+      "tag": "p04",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6487266492562661,
+      "chi2_anion": 0.9768935951111863,
+      "chi2": 0.8128101221837263
+    },
+    {
+      "conc": 0.08,
+      "tag": "p09",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 1.506077756359353,
+      "chi2_anion": 4.224242104229642,
+      "chi2": 2.8651599302944977
+    },
+    {
+      "conc": 0.08,
+      "tag": "p11",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 2.727965021707271,
+      "chi2_anion": 7.0789770448663765,
+      "chi2": 4.903471033286824
+    },
+    {
+      "conc": 0.08,
+      "tag": "p13",
+      "family": "gauss",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.8212687791658269,
+      "chi2_anion": 2.3464875816639053,
+      "chi2": 1.583878180414866
+    },
+    {
+      "conc": 0.08,
+      "tag": "p15",
+      "family": "gauss",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.5800259893843652,
+      "chi2_anion": 0.5158916063125795,
+      "chi2": 0.5479587978484723
+    },
+    {
+      "conc": 0.08,
+      "tag": "p16",
+      "family": "long",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.6478325869342347,
+      "chi2_anion": 0.5865686794380568,
+      "chi2": 0.6172006331861457
+    },
+    {
+      "conc": 0.08,
+      "tag": "p17",
+      "family": "long",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.6263237104922886,
+      "chi2_anion": 0.5797155123992286,
+      "chi2": 0.6030196114457587
+    },
+    {
+      "conc": 0.08,
+      "tag": "p18",
+      "family": "long",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5825898306757477,
+      "chi2_anion": 0.8107169564760144,
+      "chi2": 0.696653393575881
+    },
+    {
+      "conc": 0.08,
+      "tag": "p19",
+      "family": "long",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5667822084793162,
+      "chi2_anion": 0.6823927686542938,
+      "chi2": 0.624587488566805
+    },
+    {
+      "conc": 0.08,
+      "tag": "p20",
+      "family": "long3",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.63506019401259,
+      "chi2_anion": 0.6594529765038657,
+      "chi2": 0.6472565852582278
+    },
+    {
+      "conc": 0.08,
+      "tag": "p21",
+      "family": "long",
+      "kind": "charged",
+      "status": "PASS",
+      "chi2_cation": 0.6352439507064275,
+      "chi2_anion": 0.644048750854531,
+      "chi2": 0.6396463507804793
+    }
+  ],
+  "heldout": {
+    "n_runs": 20,
+    "chi2": 2.060365924102673,
+    "chi2_cation": 0.9621792089500089,
+    "chi2_anion": 3.1585526392553365,
+    "cation_rel_l2": 0.033345465737556715,
+    "cation_err_at_max": 0.025221697590263898,
+    "cation_err_at_min": 0.05506945555813506,
+    "anion_rel_l2": 0.034065926613050704,
+    "anion_err_at_max": 0.0307145337730542,
+    "anion_err_at_min": 0.038145791310437514,
+    "el_converged": 20
+  },
+  "heldout_chi2": 2.060365924102673,
+  "heldout_rel_l2": 0.03370569617530371,
+  "heldout_rows": [
+    {
+      "conc": 0.01,
+      "tag": "p04",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.4946098374853788,
+      "chi2_anion": 0.7216216547022384,
+      "chi2": 0.6081157460938086,
+      "el": {
+        "converged": true,
+        "iters": 38,
+        "err": 5.524525721978941e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.07913971213564353,
+          "err_at_max": 0.06262412893421809,
+          "err_at_min": -0.01604373633405184,
+          "contrast_md": 3.1281684749020426,
+          "contrast_pred": 3.593797736881207
+        },
+        "anion": {
+          "rel_l2": 0.07313103635550744,
+          "err_at_max": 0.005442123522303756,
+          "err_at_min": 0.09259474727956364,
+          "contrast_md": 2.733249887311712,
+          "contrast_pred": 3.1525571863861304
+        }
+      }
+    },
+    {
+      "conc": 0.01,
+      "tag": "p06",
+      "family": "fourier",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.6062109404264925,
+      "chi2_anion": 0.6758159378091657,
+      "chi2": 0.641013439117829,
+      "el": {
+        "converged": true,
+        "iters": 24,
+        "err": 6.316108079315119e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.16220131125889342,
+          "err_at_max": -0.027278458300484854,
+          "err_at_min": 0.05419496919785526,
+          "contrast_md": 3.563461255760367,
+          "contrast_pred": 3.444264514794922
+        },
+        "anion": {
+          "rel_l2": 0.15841382746539678,
+          "err_at_max": -0.05942926685332864,
+          "err_at_min": 0.08368031486807861,
+          "contrast_md": 3.379586314672654,
+          "contrast_pred": 3.1803631130815346
+        }
+      }
+    },
+    {
+      "conc": 0.01,
+      "tag": "p10",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5963566993815077,
+      "chi2_anion": 0.7763728540885617,
+      "chi2": 0.6863647767350347,
+      "el": {
+        "converged": true,
+        "iters": 32,
+        "err": 7.012214009764888e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.09926680374833426,
+          "err_at_max": 0.004333541654232482,
+          "err_at_min": 0.2186563039936486,
+          "contrast_md": 5.246855596360622,
+          "contrast_pred": 4.775700501465572
+        },
+        "anion": {
+          "rel_l2": 0.09080497820623713,
+          "err_at_max": -0.07309081246445054,
+          "err_at_min": 0.08483634871730399,
+          "contrast_md": 3.6164398913157605,
+          "contrast_pred": 3.0899696211268495
+        }
+      }
+    },
+    {
+      "conc": 0.01,
+      "tag": "p14",
+      "family": "gauss",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.9278431334456758,
+      "chi2_anion": 0.7934581191003417,
+      "chi2": 0.8606506262730087,
+      "el": {
+        "converged": true,
+        "iters": 18,
+        "err": 3.0740778444396076e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.04577743201385536,
+          "err_at_max": 0.03274864229115217,
+          "err_at_min": -0.29243301539105376,
+          "contrast_md": 10.090588999350029,
+          "contrast_pred": 14.835432460301035
+        },
+        "anion": {
+          "rel_l2": 0.044878137227961704,
+          "err_at_max": 0.05127458848652235,
+          "err_at_min": -0.1697586386463089,
+          "contrast_md": 9.090857998103461,
+          "contrast_pred": 11.583309395064001
+        }
+      }
+    },
+    {
+      "conc": 0.02,
+      "tag": "p02",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.649392390604622,
+      "chi2_anion": 0.6129192218033749,
+      "chi2": 0.6311558062039984,
+      "el": {
+        "converged": true,
+        "iters": 63,
+        "err": 7.616420571116118e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.03018929958268322,
+          "err_at_max": -0.036639864433900673,
+          "err_at_min": -0.09547810627723585,
+          "contrast_md": 20.68547939385185,
+          "contrast_pred": 22.44573280904251
+        },
+        "anion": {
+          "rel_l2": 0.02265333664126566,
+          "err_at_max": -0.013396465246798016,
+          "err_at_min": -0.06718099179918233,
+          "contrast_md": 9.046912027309869,
+          "contrast_pred": 9.568539348228677
+        }
+      }
+    },
+    {
+      "conc": 0.02,
+      "tag": "p06",
+      "family": "fourier",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.5249432560968749,
+      "chi2_anion": 0.5627829545919777,
+      "chi2": 0.5438631053444263,
+      "el": {
+        "converged": true,
+        "iters": 28,
+        "err": 8.792165878712908e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.02471993081034697,
+          "err_at_max": -0.039450282691132814,
+          "err_at_min": -0.028000943549269866,
+          "contrast_md": 2.4019972792707525,
+          "contrast_pred": 2.3827092361301685
+        },
+        "anion": {
+          "rel_l2": 0.020817109151675738,
+          "err_at_max": -0.032793569178153806,
+          "err_at_min": -0.008391972615496509,
+          "contrast_md": 2.2704616575701064,
+          "contrast_pred": 2.2246504902722486
+        }
+      }
+    },
+    {
+      "conc": 0.02,
+      "tag": "p09",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.6039442189428088,
+      "chi2_anion": 0.6257387717804846,
+      "chi2": 0.6148414953616468,
+      "el": {
+        "converged": true,
+        "iters": 48,
+        "err": 5.009689266165715e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.039333886699186395,
+          "err_at_max": 0.04234058086375525,
+          "err_at_min": -0.020385190624364138,
+          "contrast_md": 5.485977878628647,
+          "contrast_pred": 5.86050628184177
+        },
+        "anion": {
+          "rel_l2": 0.041655824312395784,
+          "err_at_max": 0.07478491721048479,
+          "err_at_min": 0.03350755780042227,
+          "contrast_md": 5.922300651842964,
+          "contrast_pred": 6.158831996674964
+        }
+      }
+    },
+    {
+      "conc": 0.02,
+      "tag": "p14",
+      "family": "gauss",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.6477280844739683,
+      "chi2_anion": 0.975195808473377,
+      "chi2": 0.8114619464736726,
+      "el": {
+        "converged": true,
+        "iters": 15,
+        "err": 1.679576825762621e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.021654736679384147,
+          "err_at_max": -0.007858379176573027,
+          "err_at_min": -0.12986666773044425,
+          "contrast_md": 6.566089990996492,
+          "contrast_pred": 7.4959740764758775
+        },
+        "anion": {
+          "rel_l2": 0.010574345633726953,
+          "err_at_max": 0.0056715439439317065,
+          "err_at_min": -0.04093865603850733,
+          "contrast_md": 5.521074819276318,
+          "contrast_pred": 5.7970725074187515
+        }
+      }
+    },
+    {
+      "conc": 0.04,
+      "tag": "p05",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.5449113614148562,
+      "chi2_anion": 0.7428185315364924,
+      "chi2": 0.6438649464756743,
+      "el": {
+        "converged": true,
+        "iters": 67,
+        "err": 7.908635175418513e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.009858499833215151,
+          "err_at_max": -0.010725356655035313,
+          "err_at_min": -0.007606331725740051,
+          "contrast_md": 2.1382772800956573,
+          "contrast_pred": 2.152932272576951
+        },
+        "anion": {
+          "rel_l2": 0.00905324880109367,
+          "err_at_max": 0.006093542039429694,
+          "err_at_min": 0.019525171115349897,
+          "contrast_md": 1.9992322717580102,
+          "contrast_pred": 1.9828687764121127
+        }
+      }
+    },
+    {
+      "conc": 0.04,
+      "tag": "p16",
+      "family": "long",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.6079984493155998,
+      "chi2_anion": 0.5837118720169017,
+      "chi2": 0.5958551606662508,
+      "el": {
+        "converged": true,
+        "iters": 44,
+        "err": 7.372563343552358e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.010440871306082221,
+          "err_at_max": -0.02438829273474814,
+          "err_at_min": 0.016970703780875007,
+          "contrast_md": 1.3957134616756957,
+          "contrast_pred": 1.3610724279113353
+        },
+        "anion": {
+          "rel_l2": 0.010073657560645776,
+          "err_at_max": -0.007689299731242797,
+          "err_at_min": 0.023564896983547398,
+          "contrast_md": 1.3769239895150311,
+          "contrast_pred": 1.3381036256945098
+        }
+      }
+    },
+    {
+      "conc": 0.04,
+      "tag": "p25",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 2.170133328093282,
+      "chi2_anion": 4.407553865581645,
+      "chi2": 3.2888435968374634,
+      "el": {
+        "converged": true,
+        "iters": 81,
+        "err": 9.176870871177728e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.023222952205260234,
+          "err_at_max": -0.034683393232380066,
+          "err_at_min": 0.02164567644347113,
+          "contrast_md": 5.517936976887359,
+          "contrast_pred": 5.213702090365778
+        },
+        "anion": {
+          "rel_l2": 0.024938177056582054,
+          "err_at_max": -0.03208367100110587,
+          "err_at_min": 0.03578151059713426,
+          "contrast_md": 2.797376840083868,
+          "contrast_pred": 2.6261324684833913
+        }
+      }
+    },
+    {
+      "conc": 0.04,
+      "tag": "p27",
+      "family": "gauss",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 3.860962016371818,
+      "chi2_anion": 42.623738461085296,
+      "chi2": 23.242350238728555,
+      "el": {
+        "converged": true,
+        "iters": 62,
+        "err": 7.3793419039039e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.02183146218950566,
+          "err_at_max": 0.03227702744693918,
+          "err_at_min": -0.08018272666803095,
+          "contrast_md": 14.24000754178456,
+          "contrast_pred": 16.00212721048446
+        },
+        "anion": {
+          "rel_l2": 0.11585671197245016,
+          "err_at_max": 0.18505411887844003,
+          "err_at_min": -0.039178599386061046,
+          "contrast_md": 10.14328556552025,
+          "contrast_pred": 12.51048564353305
+        }
+      }
+    },
+    {
+      "conc": 0.06,
+      "tag": "p00",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.48657388621451253,
+      "chi2_anion": 0.7238394612759346,
+      "chi2": 0.6052066737452235,
+      "el": {
+        "converged": true,
+        "iters": 81,
+        "err": 4.6668182025384125e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.004937240514391844,
+          "err_at_max": -0.0012677392253088193,
+          "err_at_min": 0.004987416707355415,
+          "contrast_md": 1.2205911903421867,
+          "contrast_pred": 1.2198922662308953
+        },
+        "anion": {
+          "rel_l2": 0.005092742472384561,
+          "err_at_max": 0.0023655824817943186,
+          "err_at_min": 0.0015490445529716805,
+          "contrast_md": 1.15505315125378,
+          "contrast_pred": 1.156525233386341
+        }
+      }
+    },
+    {
+      "conc": 0.06,
+      "tag": "p06",
+      "family": "fourier",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.6122631272483058,
+      "chi2_anion": 0.5032240679686797,
+      "chi2": 0.5577435976084928,
+      "el": {
+        "converged": true,
+        "iters": 63,
+        "err": 7.678270327190811e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.00564023781217315,
+          "err_at_max": 0.002943034809224344,
+          "err_at_min": 0.00621117917681301,
+          "contrast_md": 1.3484345565654157,
+          "contrast_pred": 1.3470836330643565
+        },
+        "anion": {
+          "rel_l2": 0.005822400636812371,
+          "err_at_max": -0.0020009825147763896,
+          "err_at_min": -0.005922651189773288,
+          "contrast_md": 1.2625982106317006,
+          "contrast_pred": 1.2677197994174232
+        }
+      }
+    },
+    {
+      "conc": 0.06,
+      "tag": "p08",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 1.1213628031417842,
+      "chi2_anion": 1.3735326425087642,
+      "chi2": 1.247447722825274,
+      "el": {
+        "converged": true,
+        "iters": 90,
+        "err": 7.738317183055971e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.02369771809425754,
+          "err_at_max": 0.03958605511637259,
+          "err_at_min": -0.035953883502958896,
+          "contrast_md": 2.3620410334616513,
+          "contrast_pred": 2.5471239165631085
+        },
+        "anion": {
+          "rel_l2": 0.013452094924334518,
+          "err_at_max": 0.01752171930061204,
+          "err_at_min": -0.01292654582234794,
+          "contrast_md": 2.1278441837044153,
+          "contrast_pred": 2.1966107812385953
+        }
+      }
+    },
+    {
+      "conc": 0.06,
+      "tag": "p14",
+      "family": "gauss",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.8140634156796229,
+      "chi2_anion": 1.285389323356555,
+      "chi2": 1.049726369518089,
+      "el": {
+        "converged": true,
+        "iters": 24,
+        "err": 8.582999900275369e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.012542661778091454,
+          "err_at_max": 0.02158833177856792,
+          "err_at_min": -0.01584589022204414,
+          "contrast_md": 1.8957226840275094,
+          "contrast_pred": 1.9708048980276063
+        },
+        "anion": {
+          "rel_l2": 0.007738123918325351,
+          "err_at_max": 0.01440148519111675,
+          "err_at_min": -0.0002969723456347215,
+          "contrast_md": 1.7330576337740153,
+          "contrast_pred": 1.7585384749220694
+        }
+      }
+    },
+    {
+      "conc": 0.08,
+      "tag": "p02",
+      "family": "fourier",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 0.7730560069400613,
+      "chi2_anion": 1.0173391156474598,
+      "chi2": 0.8951975612937606,
+      "el": {
+        "converged": true,
+        "iters": 122,
+        "err": 7.907370292727634e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.01062415064939574,
+          "err_at_max": 0.023650108817209217,
+          "err_at_min": 0.0161891702858396,
+          "contrast_md": 1.871984627112536,
+          "contrast_pred": 1.8886157548011608
+        },
+        "anion": {
+          "rel_l2": 0.004592855601346143,
+          "err_at_max": 0.005369818913316226,
+          "err_at_min": 0.00942049015425962,
+          "contrast_md": 1.498573122518964,
+          "contrast_pred": 1.4943960485581163
+        }
+      }
+    },
+    {
+      "conc": 0.08,
+      "tag": "p06",
+      "family": "fourier",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 0.5529120690934521,
+      "chi2_anion": 0.672726171226159,
+      "chi2": 0.6128191201598056,
+      "el": {
+        "converged": true,
+        "iters": 68,
+        "err": 6.096757648733886e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.0036900755371330482,
+          "err_at_max": 0.0042737276367047035,
+          "err_at_min": 0.005130042399095339,
+          "contrast_md": 1.2004358566624147,
+          "contrast_pred": 1.2028454505778754
+        },
+        "anion": {
+          "rel_l2": 0.0039825399411760045,
+          "err_at_max": -0.0017503872843236616,
+          "err_at_min": 0.00685646002359354,
+          "contrast_md": 1.1621276724080425,
+          "contrast_pred": 1.154023114735032
+        }
+      }
+    },
+    {
+      "conc": 0.08,
+      "tag": "p10",
+      "family": "mixed",
+      "kind": "both",
+      "status": "PASS",
+      "chi2_cation": 1.3133832734121207,
+      "chi2_anion": 0.9992706685294015,
+      "chi2": 1.156326970970761,
+      "el": {
+        "converged": true,
+        "iters": 105,
+        "err": 9.63915852622501e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.02566139739390448,
+          "err_at_max": 0.03805313973467395,
+          "err_at_min": -0.02131049473161038,
+          "contrast_md": 2.1351546743107805,
+          "contrast_pred": 2.2646651481969844
+        },
+        "anion": {
+          "rel_l2": 0.01520215674263767,
+          "err_at_max": 0.018784977957565285,
+          "err_at_min": -0.02375687280951576,
+          "contrast_md": 1.9304788361530951,
+          "contrast_pred": 2.0146035180783683
+        }
+      }
+    },
+    {
+      "conc": 0.08,
+      "tag": "p14",
+      "family": "gauss",
+      "kind": "neutral",
+      "status": "PASS",
+      "chi2_cation": 1.334935881217433,
+      "chi2_anion": 2.4940032820239244,
+      "chi2": 1.9144695816206787,
+      "el": {
+        "converged": true,
+        "iters": 40,
+        "err": 7.492965751641115e-07,
+        "mixing": 0.1
+      },
+      "profile": {
+        "cation": {
+          "rel_l2": 0.012478934509396451,
+          "err_at_max": 0.017723866272664406,
+          "err_at_min": -0.014296662420943646,
+          "contrast_md": 1.568786688326741,
+          "contrast_pred": 1.6197486541699988
+        },
+        "anion": {
+          "rel_l2": 0.0025852276390585355,
+          "err_at_max": 0.005291803261387224,
+          "err_at_min": 0.003247383463697513,
+          "contrast_md": 1.4933262195800923,
+          "contrast_pred": 1.4963693233897202
+        }
+      }
+    }
+  ],
+  "structure": {
+    "0.01": {
+      "Gamma": 0.20639419142099014,
+      "SL_A": 1.0000000000570317,
+      "lambda_min_rel": 0.20641692003790202,
+      "k_lambda_min": 0.0,
+      "n_unstable": 0,
+      "k_unstable": null,
+      "rel_rms_ZZ": 0.12164179817478714,
+      "rel_rms_NN": 0.303188033062057,
+      "rel_rms_pp": 0.21686565422749599,
+      "rel_rms_mm": 0.18456507626421834,
+      "rel_rms_pm": 0.4290310971482363
+    },
+    "0.02": {
+      "Gamma": 0.9235679126035788,
+      "SL_A": 1.0000000000073048,
+      "lambda_min_rel": 0.6614521534491095,
+      "k_lambda_min": 2.2266035497575083,
+      "n_unstable": 0,
+      "k_unstable": null,
+      "rel_rms_ZZ": 0.0840817887352399,
+      "rel_rms_NN": 0.08508577216838588,
+      "rel_rms_pp": 0.07134291334326848,
+      "rel_rms_mm": 0.10981317969183176,
+      "rel_rms_pm": 0.04786573438751219
+    },
+    "0.04": {
+      "Gamma": 3.550875690905509,
+      "SL_A": 1.0000000000045857,
+      "lambda_min_rel": 0.6451285050473637,
+      "k_lambda_min": 2.3803293572105875,
+      "n_unstable": 0,
+      "k_unstable": null,
+      "rel_rms_ZZ": 0.026554251070211,
+      "rel_rms_NN": 0.026103804037702974,
+      "rel_rms_pp": 0.028381760055823067,
+      "rel_rms_mm": 0.015551776150772688,
+      "rel_rms_pm": 0.06667545025718985
+    },
+    "0.05": {
+      "Gamma": 5.218115260119743,
+      "SL_A": 0.9999999999958352,
+      "lambda_min_rel": 0.6584404574815097,
+      "k_lambda_min": 2.469025492134133,
+      "n_unstable": 0,
+      "k_unstable": null,
+      "rel_rms_ZZ": 0.05518548531110009,
+      "rel_rms_NN": 0.02743057610993434,
+      "rel_rms_pp": 0.02449034333683436,
+      "rel_rms_mm": 0.049199707980641,
+      "rel_rms_pm": 0.11046412839123673
+    },
+    "0.06": {
+      "Gamma": 6.998259396619717,
+      "SL_A": 0.9999999999991249,
+      "lambda_min_rel": 0.6303872509799732,
+      "k_lambda_min": 2.523152001059191,
+      "n_unstable": 0,
+      "k_unstable": null,
+      "rel_rms_ZZ": 0.040913345263181994,
+      "rel_rms_NN": 0.020604649058212403,
+      "rel_rms_pp": 0.024363578947753727,
+      "rel_rms_mm": 0.025209279129919115,
+      "rel_rms_pm": 0.09663320035316521
+    },
+    "0.08": {
+      "Gamma": 10.748327160762653,
+      "SL_A": 1.0000000000009197,
+      "lambda_min_rel": 0.46723451463142107,
+      "k_lambda_min": 2.6893337825080503,
+      "n_unstable": 0,
+      "k_unstable": null,
+      "rel_rms_ZZ": 0.042901777910771696,
+      "rel_rms_NN": 0.02409487652514113,
+      "rel_rms_pp": 0.031885516709119203,
+      "rel_rms_mm": 0.018491663717446365,
+      "rel_rms_pm": 0.12837052160320098
+    }
+  },
+  "eval_seconds": 68.50182366371155,
+  "fit_seconds": 395.0199763774872,
+  "opts": {
+    "steps": 4000,
+    "lr": 0.001,
+    "weight_decay": 1e-05,
+    "stab_weight": 300.0,
+    "eval_every": 20,
+    "patience": 50,
+    "kboost": 2.0,
+    "kboost_mode": "k",
+    "loss": "force",
+    "select": "best"
+  },
+  "val_runs": [
+    "c0.01/p11",
+    "c0.01/p15",
+    "c0.01/p18",
+    "c0.02/p05",
+    "c0.02/p13",
+    "c0.02/p17",
+    "c0.04/p06",
+    "c0.04/p24",
+    "c0.04/p29",
+    "c0.06/p01",
+    "c0.06/p03",
+    "c0.06/p20",
+    "c0.08/p01",
+    "c0.08/p07",
+    "c0.08/p08"
+  ],
+  "val_chi2": 1.0212866211561626,
+  "best_monitor": 1.0212866211561604,
+  "steps_run": 4000
+}

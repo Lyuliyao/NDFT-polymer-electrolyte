@@ -1,0 +1,537 @@
+% SI section S1: structural properties and proofs
+\section*{S1. Properties that hold by construction}
+
+The ions are described by their number densities $n_\alpha(\vr)$, $\alpha\in\{+,-\}$, collected in $\vn=(n_+,n_-)$, with valences $z_\pm=\pm1$. Energies are in units of $k_BT$ and charges in units of $e$. The free energy of the main text is
+\begin{equation}
+F[\vn]=\Fid[\vn]+\FC[\vn]+F^\theta_{\rm ex}[\vn],\qquad \Fid=\sum_\alpha\int \rmd^3r\,n_\alpha\big[\ln(n_\alpha\Lambda^3)-1\big],\qquad \FC=\frac{l_B}{2}\iint \rmd^3r\,\rmd^3r'\,\frac{\rho_Z(\vr)\rho_Z(\vr')}{|\vr-\vr'|},
+\end{equation}
+with $\rho_Z=\sum_\alpha z_\alpha n_\alpha$ the charge density in units of $e$, and the neural functional is
+\begin{equation}
+F^\theta_{\rm ex}[\vn]=\frac12\sum_{\alpha\beta}\iint \rmd^3r\,\rmd^3r'\,n_\alpha(\vr)\,u_{\alpha\beta}(|\vr-\vr'|)\,n_\beta(\vr')+\int \rmd^3r\,\Phi_\theta\big(\mathbf h(\vr)\big),\qquad h_{m\alpha}=K_m\star n_\alpha,
+\end{equation}
+with symmetric pair kernels $u_{\alpha\beta}=u_{\beta\alpha}=\sum_m a_{\alpha\beta m}K_m$. The radial kernels have the form $K_m(r)=B_m(r)[1+g_m(r)]$, where $B_m(r)=(2\pi s_m^2)^{-3/2}\exp[-r^2/(2s_m^2)]$ are normalized Gaussians with six widths from $0.25\sigma$ to $1\sigma$, and $g$ is a smooth learned function of $r/\sigma$. For bounded $g_m$, the Gaussian envelope ensures that $K_m(r)\to0$ as $r\to\infty$. The same decay holds for the at-most-linear growth of the softplus networks used here. The kernels $K_m$ and $u_{\alpha\beta}$ are therefore integrable with finite radial moments. Their Fourier transforms are real, even, smooth functions of $k$, with $\tilde K_m(k)=\tilde K_m(0)+O(k^2)$ and $\tilde u_{\alpha\beta}(k)=\tilde u_{\alpha\beta}(0)+O(k^2)$.
+
+For numerical evaluation, the radial Fourier integral is truncated at $5\sigma$ and computed by midpoint quadrature with spacing $0.01\sigma$:
+\[
+\tilde K_m(k)=4\pi\int_0^\infty r^2K_m(r)\frac{\sin(kr)}{kr}\,\rmd r
+\simeq4\pi\int_0^{5\sigma}r^2K_m(r)\frac{\sin(kr)}{kr}\,\rmd r,
+\]
+where $\sin(kr)/(kr)$ is evaluated by its limiting value 1 at $k=0$. In planar geometry, the weighted densities are evaluated as products in Fourier space, $\tilde h_{m\alpha}(k)=\tilde K_m(k)\tilde n_\alpha(k)$.
+
+The pointwise map $\Phi_\theta$ is a multilayer perceptron with smooth softplus activations and a linear output, so it is twice continuously differentiable and has no explicit dependence on position or direction. As in the main text, $\theta$ denotes all learned parameters: the coefficients $a_{\alpha\beta m}$ and the weights of $\Phi_\theta$ and $g$. We write $\mu^{\rm int}_\alpha=\delta(\FC+F^\theta_{\rm ex})/\delta n_\alpha$ for the interaction chemical potential and $\vf^{\rm int}_\alpha=-n_\alpha\nabla\mu^{\rm int}_\alpha$ for the internal force density. 
+
+With $\Phi_{m\alpha}=\partial\Phi_\theta/\partial h_{m\alpha}$ and $\Phi_{m\alpha,m'\beta}=\partial^2\Phi_\theta/\partial h_{m\alpha}\partial h_{m'\beta}$ evaluated at $\mathbf h(\vr)$, and since a radial kernel is its own adjoint under convolution, the first and second derivatives of the many-body term are
+\begin{equation}
+\frac{\delta}{\delta n_\alpha(\vr)}\int\Phi_\theta(\mathbf h)=\sum_m\big(K_m\star\Phi_{m\alpha}\big)(\vr),\qquad \frac{\delta^2}{\delta n_\alpha(\vr)\,\delta n_\beta(\vr')}\int\Phi_\theta(\mathbf h)=\sum_{mm'}\int \rmd^3r''\,K_m(|\vr-\vr''|)\,\Phi_{m\alpha,m'\beta}(\vr'')\,K_{m'}(|\vr''-\vr'|).
+\label{eq:S:derivs}
+\end{equation}
+At uniform density the Hessian $H_{m\alpha,m'\beta}=\Phi_{m\alpha,m'\beta}$ is a constant symmetric matrix, and the bulk kernel of the excess functional is
+\begin{equation}
+W_{\alpha\beta}(k)=\tilde u_{\alpha\beta}(k)+\sum_{mm'}\tilde K_m(k)\,H_{m\alpha,m'\beta}\,\tilde K_{m'}(k).
+\label{eq:S:W}
+\end{equation}
+
+\textbf{Proposition 1 (translation and rotation covariance).} Let $g=(R,\mathbf a)$ with $R\in O(3)$ act on points by $g\vr=R\vr+\mathbf a$ and on densities by $(T_g\vn)_\alpha(\vr)=n_\alpha(g^{-1}\vr)$. For every such transformation compatible with the domain and every density field specified above:
+\begin{enumerate}
+    \item[i] $\FC[T_g\vn]+F^\theta_{\rm ex}[T_g\vn]=\FC[\vn]+F^\theta_{\rm ex}[\vn]$,
+    \item[ii] $\mu^{\rm int}_\alpha[T_g\vn](g\vr)=\mu^{\rm int}_\alpha[\vn](\vr)$,
+    \item[iii]  $\vf^{\rm int}_\alpha[T_g\vn](g\vr)=R\,\vf^{\rm int}_\alpha[\vn](\vr)$.
+\end{enumerate}
+
+\begin{proof}
+The weighted densities are scalar fields: substituting $\vr = g{\mathbf x}, \vr'=g\mathbf s$ in 
+\[
+\begin{aligned}
+    h_{m\alpha}[T_g\vn](\vr)= &
+\int K_m(|\vr-\vr' |) T_g\vn_\alpha(\vr' )\,\rmd^3 \vr  = 
+\int K_m(|\vr-\vr'|)\,n_\alpha(g^{-1}\vr')\,\rmd^3r' \\
+= & \int K_m(|g\mathbf x-g\mathbf s|)\,n_\alpha(\mathbf s)\,\rmd^3\mathbf s  =  \int K_m(|\mathbf x-\mathbf s|)\,n_\alpha(\mathbf s)\,\rmd^3\mathbf s = h_{m\alpha}[\vn](\mathbf x) = h_{m\alpha}[\vn](g^{-1}\vr),
+\end{aligned}
+\]  
+where $\rmd^3r=|\det R|\,\rmd^3s=\rmd^3s$.
+Since $\Phi_\theta$ has no explicit dependence on position,
+the covariance of the weighted densities and the substitution
+$\vr=g\mathbf s$ give
+\[
+\begin{aligned}
+\int \rmd^3r\,
+\Phi_\theta\big(\mathbf h[T_g\vn](\vr)\big)
+&=
+\int \rmd^3r\,
+\Phi_\theta\big(\mathbf h[\vn](g^{-1}\vr)\big)\\
+&=
+\int \rmd^3s\,
+\Phi_\theta\big(\mathbf h[\vn](\mathbf s)\big).
+\end{aligned}
+\]
+Thus the many-body term is invariant.
+The pair term and $\FC$ are double integrals of radial kernels and are invariant by the same two substitutions. This is (i).
+
+Applying (i) to $\vn+\epsilon\boldsymbol\eta$ and using the
+linearity of $T_g$ gives
+\[
+\begin{aligned}
+&\FC[T_g\vn+\epsilon T_g\boldsymbol\eta]
++F^\theta_{\rm ex}[T_g\vn+\epsilon T_g\boldsymbol\eta]\\
+&\qquad=
+\FC[\vn+\epsilon\boldsymbol\eta]
++F^\theta_{\rm ex}[\vn+\epsilon\boldsymbol\eta].
+\end{aligned}
+\]
+Differentiating with respect to $\epsilon$ at $\epsilon=0$ yields
+\[
+\sum_\alpha\int \rmd^3r\,
+\mu^{\rm int}_\alpha[T_g\vn](\vr)\,
+\eta_\alpha(g^{-1}\vr)
+=
+\sum_\alpha\int \rmd^3s\,
+\mu^{\rm int}_\alpha[\vn](\mathbf s)\,
+\eta_\alpha(\mathbf s).
+\]
+Substituting $\vr=g\mathbf s$ on the left-hand side and
+rearranging, we obtain
+\[
+\sum_\alpha\int \rmd^3s\,
+\Big[
+\mu^{\rm int}_\alpha[T_g\vn](g\mathbf s)
+-\mu^{\rm int}_\alpha[\vn](\mathbf s)
+\Big]\eta_\alpha(\mathbf s)=0.
+\]
+Since this holds for every perturbation $\boldsymbol\eta$,
+\[
+\mu^{\rm int}_\alpha[T_g\vn](g\vr)
+=
+\mu^{\rm int}_\alpha[\vn](\vr),
+\]
+which proves (ii).
+
+By (ii) and the chain rule, $\nabla\mu^{\rm int}_\alpha[T_g\vn](\vr)=R\,(\nabla\mu^{\rm int}_\alpha[\vn])(g^{-1}\vr)$. Multiplying by $-(T_g\vn)_\alpha(\vr)$ gives (iii).
+\end{proof}
+The proof includes reflections. No equivariant architecture is needed, because the covariance of the force follows from the invariance of one scalar.
+
+\textbf{Proposition 2 (integrability).} For every density field specified above,
+\begin{equation}
+\frac{\delta\mu^{\rm int}_\alpha(\vr)}{\delta n_\beta(\vr')}=\frac{\delta\mu^{\rm int}_\beta(\vr')}{\delta n_\alpha(\vr)},
+\end{equation}
+so the direct correlation functions satisfy $c_{\alpha\beta}(\vr,\vr')=c_{\beta\alpha}(\vr',\vr)$, and in the bulk $W_{\alpha\beta}(k)=W_{\beta\alpha}(k)$ is real and depends on $|\mathbf k|$ only.
+
+\begin{proof}
+    Since $\Phi_\theta$ is twice continuously differentiable,
+\[
+\Phi_{m\alpha,m'\beta}(\vr'')
+=
+\Phi_{m'\beta,m\alpha}(\vr'').
+\]
+Using Eq.~\ref{eq:S:derivs}, the symmetry of the many-body
+Hessian follows explicitly:
+\[
+\begin{aligned}
+&\frac{\delta^2}{\delta n_\alpha(\vr)\,\delta n_\beta(\vr')}
+\int \rmd^3s\,\Phi_\theta\big(\mathbf h(\mathbf s)\big)\\
+&\quad=
+\sum_{mm'}\int \rmd^3r''\,
+K_m(|\vr-\vr''|)\,
+\Phi_{m\alpha,m'\beta}(\vr'')\,
+K_{m'}(|\vr''-\vr'|)\\
+&\quad=
+\sum_{mm'}\int \rmd^3r''\,
+K_{m'}(|\vr'-\vr''|)\,
+\Phi_{m'\beta,m\alpha}(\vr'')\,
+K_m(|\vr''-\vr|)\\
+&\quad=
+\frac{\delta^2}{\delta n_\beta(\vr')\,\delta n_\alpha(\vr)}
+\int \rmd^3s\,\Phi_\theta\big(\mathbf h(\mathbf s)\big),
+\end{aligned}
+\]
+where the last equality follows by relabelling $m\leftrightarrow m'$.
+
+The pair and Coulomb contributions to the interaction Hessian
+are also symmetric:
+\[
+u_{\alpha\beta}(|\vr-\vr'|)
+=
+u_{\beta\alpha}(|\vr'-\vr|),
+\qquad
+\frac{l_Bz_\alpha z_\beta}{|\vr-\vr'|}
+=
+\frac{l_Bz_\beta z_\alpha}{|\vr'-\vr|}.
+\]
+Combining these contributions gives
+\[
+\frac{\delta\mu^{\rm int}_\alpha(\vr)}
+     {\delta n_\beta(\vr')}
+=
+\frac{\delta\mu^{\rm int}_\beta(\vr')}
+     {\delta n_\alpha(\vr)}.
+\]
+
+In a uniform state, $H_{m\alpha,m'\beta}=H_{m'\beta,m\alpha}$,
+so Eq.~\ref{eq:S:W} gives
+\[
+\begin{aligned}
+W_{\beta\alpha}(k)
+&=
+\tilde u_{\beta\alpha}(k)
++\sum_{mm'}\tilde K_m(k)\,
+H_{m\beta,m'\alpha}\,\tilde K_{m'}(k)\\
+&=
+\tilde u_{\alpha\beta}(k)
++\sum_{mm'}\tilde K_{m'}(k)\,
+H_{m'\beta,m\alpha}\,\tilde K_m(k)\\
+&=
+\tilde u_{\alpha\beta}(k)
++\sum_{mm'}\tilde K_m(k)\,
+H_{m\alpha,m'\beta}\,\tilde K_{m'}(k)\\
+&=W_{\alpha\beta}(k).
+\end{aligned}
+\]
+The Fourier transforms of the real radial kernels are real
+and depend only on $k=|\mathbf k|$; hence the same holds for
+$W_{\alpha\beta}(k)$. 
+\end{proof}
+
+
+
+\textbf{Lemma (Helmholtz condition).} A family $\psi_\alpha[\vn](\vr)$ on a convex set of densities is a functional gradient, $\psi_\alpha=\delta F/\delta n_\alpha$, if and only if $\delta\psi_\alpha(\vr)/\delta n_\beta(\vr')=\delta\psi_\beta(\vr')/\delta n_\alpha(\vr)$. In that case, with $\vn_\lambda=\vn_0+\lambda(\vn-\vn_0)$,
+\begin{equation}
+F[\vn]=F[\vn_0]+\int_0^1\rmd\lambda\sum_\alpha\int\rmd^3r\,\psi_\alpha[\vn_\lambda](\vr)\,\big(n_\alpha-n_{0,\alpha}\big)(\vr),
+\label{eq:S:lineint}
+\end{equation}
+independent of the path.
+\begin{proof}
+Necessity follows from the symmetry of second derivatives:
+if $\psi_\alpha=\delta F/\delta n_\alpha$, then
+\[
+\frac{\delta\psi_\alpha(\vr)}{\delta n_\beta(\vr')}
+=
+\frac{\delta^2F}{\delta n_\beta(\vr')\,\delta n_\alpha(\vr)}
+=
+\frac{\delta^2F}{\delta n_\alpha(\vr)\,\delta n_\beta(\vr')}
+=
+\frac{\delta\psi_\beta(\vr')}{\delta n_\alpha(\vr)}.
+\]
+
+For sufficiency, keep $\vn_0$ fixed and define $F$ by
+Eq.~\ref{eq:S:lineint}, with
+$\vn_\lambda=\vn_0+\lambda(\vn-\vn_0)$.
+Since
+\[
+\frac{\delta n_{\lambda,\alpha}(\vr)}
+     {\delta n_\beta(\vr')}
+=
+\lambda\,\delta_{\alpha\beta}\delta(\vr-\vr'),
+\]
+functional differentiation gives
+\[
+\begin{aligned}
+\frac{\delta F}{\delta n_\beta(\vr')}
+=
+\int_0^1\rmd\lambda\,\Bigg[
+&\psi_\beta[\vn_\lambda](\vr')\\
+&+\lambda\sum_\alpha\int\rmd^3r\,
+\left.
+\frac{\delta\psi_\alpha[\vn](\vr)}
+     {\delta n_\beta(\vr')}
+\right|_{\vn=\vn_\lambda}
+\big(n_\alpha-n_{0,\alpha}\big)(\vr)
+\Bigg].
+\end{aligned}
+\]
+By the assumed symmetry,
+\[
+\left.
+\frac{\delta\psi_\alpha[\vn](\vr)}
+     {\delta n_\beta(\vr')}
+\right|_{\vn=\vn_\lambda}
+=
+\left.
+\frac{\delta\psi_\beta[\vn](\vr')}
+     {\delta n_\alpha(\vr)}
+\right|_{\vn=\vn_\lambda}.
+\]
+Moreover, the chain rule along $\vn_\lambda$ gives
+\[
+\frac{\partial}{\partial\lambda}
+\psi_\beta[\vn_\lambda](\vr')
+=
+\sum_\alpha\int\rmd^3r\,
+\left.
+\frac{\delta\psi_\beta[\vn](\vr')}
+     {\delta n_\alpha(\vr)}
+\right|_{\vn=\vn_\lambda}
+\big(n_\alpha-n_{0,\alpha}\big)(\vr).
+\]
+Combining these identities, we obtain
+\[
+\begin{aligned}
+\frac{\delta F}{\delta n_\beta(\vr')}
+&=
+\int_0^1\rmd\lambda\,
+\left[
+\psi_\beta[\vn_\lambda](\vr')
++\lambda\frac{\partial}{\partial\lambda}
+\psi_\beta[\vn_\lambda](\vr')
+\right]\\
+&=
+\int_0^1\rmd\lambda\,
+\frac{\partial}{\partial\lambda}
+\left[\lambda\,\psi_\beta[\vn_\lambda](\vr')\right]\\
+&=
+\left[\lambda\,\psi_\beta[\vn_\lambda](\vr')\right]_0^1
+=
+\psi_\beta[\vn](\vr').
+\end{aligned}
+\]
+Thus $\psi_\alpha=\delta F/\delta n_\alpha$, and its line
+integral along any smooth path between two densities equals
+the difference in $F$ at the endpoints, establishing path
+independence. 
+\end{proof}
+
+
+Eq.~\ref{eq:S:lineint} is the functional line integration used by neural functionals that learn the one-body direct correlation function $c^{(1)}=-\delta\Fex/\delta n$ directly. Such a network has no reason to satisfy the Helmholtz condition exactly, and the value of Eq.~\ref{eq:S:lineint} then depends on the path. The scalar form of Eq.~4 satisfies it identically.
+
+\textbf{Proposition 3 (Noether sum rules and stress tensor).} For every density field specified above, in or out of equilibrium: 
+\begin{enumerate}
+    \item [i]$\sum_\alpha\int\vf^{\rm int}_\alpha\,\rmd^3r=0$,
+    \item [ii]on $\mathbb R^3$, $\sum_\alpha\int\vr\times\vf^{\rm int}_\alpha\,\rmd^3r=0$,
+\end{enumerate}
+
+\begin{proof}
+We use the Einstein summation convention for Cartesian indices.
+
+(i) For a translation by $\mathbf a$,
+\[
+(T_{\mathbf a}\vn)_\alpha(\vr)=n_\alpha(\vr-\mathbf a),
+\qquad
+\left.
+\frac{\partial(T_{\mathbf a}\vn)_\alpha(\vr)}
+     {\partial a_p}
+\right|_{\mathbf a=0}
+=-\partial_p n_\alpha(\vr).
+\]
+Differentiating Proposition 1(i) with respect to $a_p$ gives
+\[
+\begin{aligned}
+0
+&=
+\left.
+\frac{\partial}{\partial a_p}
+\big(\FC[T_{\mathbf a}\vn]
++F^\theta_{\rm ex}[T_{\mathbf a}\vn]\big)
+\right|_{\mathbf a=0}\\
+&=
+-\sum_\alpha\int\rmd^3r\,
+\mu^{\rm int}_\alpha(\vr)\,\partial_p n_\alpha(\vr)\\
+&=
+\sum_\alpha\int\rmd^3r\,
+n_\alpha(\vr)\,\partial_p\mu^{\rm int}_\alpha(\vr)\\
+&=
+-\sum_\alpha\int\rmd^3r\,f^{\rm int}_{\alpha,p}(\vr).
+\end{aligned}
+\]
+Since this holds for each Cartesian component,
+\[
+\sum_\alpha\int\rmd^3r\,\vf^{\rm int}_\alpha(\vr)=0.
+\]
+
+(ii) On $\mathbb R^3$, let $g_\vartheta$ be a rotation by
+angle $\vartheta$ about the unit vector
+$\hat{\boldsymbol\omega}$. Then
+\[
+\left.
+\frac{\partial(T_{g_\vartheta}\vn)_\alpha(\vr)}
+     {\partial\vartheta}
+\right|_{\vartheta=0}
+=
+-(\hat{\boldsymbol\omega}\times\vr)\cdot
+\nabla n_\alpha(\vr).
+\]
+Using rotational invariance and
+$\nabla\cdot(\hat{\boldsymbol\omega}\times\vr)=0$,
+integration by parts gives
+\[
+\begin{aligned}
+0
+&=
+\left.
+\frac{\partial}{\partial\vartheta}
+\big(\FC[T_{g_\vartheta}\vn]
++F^\theta_{\rm ex}[T_{g_\vartheta}\vn]\big)
+\right|_{\vartheta=0}\\
+&=
+-\sum_\alpha\int\rmd^3r\,
+\mu^{\rm int}_\alpha
+(\hat{\boldsymbol\omega}\times\vr)\cdot\nabla n_\alpha\\
+&=
+\sum_\alpha\int\rmd^3r\,
+n_\alpha(\hat{\boldsymbol\omega}\times\vr)
+\cdot\nabla\mu^{\rm int}_\alpha\\
+&=
+-\hat{\boldsymbol\omega}\cdot
+\sum_\alpha\int\rmd^3r\,
+\vr\times\vf^{\rm int}_\alpha.
+\end{aligned}
+\]
+Since $\hat{\boldsymbol\omega}$ is arbitrary,
+\[
+\sum_\alpha\int\rmd^3r\,
+\vr\times\vf^{\rm int}_\alpha=0.
+\]
+\end{proof}
+
+The screening sum rules follow from the bulk linear response of the same functional. For a uniform stationary state with densities $\nb_\alpha$, write $\bar N={\rm diag}(\nb_+,\nb_-)$ and $\vz=(1,-1)^{\T}$. Linearizing the Euler--Lagrange equation $\ln n_\alpha+\mu^{\rm int}_\alpha+V_\alpha={\rm const}_\alpha$ and Fourier transforming gives $[\bar N^{-1}+(4\pi l_B/k^2)\vz\vz^{\T}+W(k)]\delta\tilde{\vn}(\mathbf k)=-\delta\tilde{\mathbf V}(\mathbf k)$ for $k\neq0$. Thus the response matrix defined by $\delta\tilde{\vn}=-S(k)\delta\tilde{\mathbf V}$ satisfies
+\begin{equation}
+S(k)^{-1}=\bar N^{-1}+\frac{4\pi l_B}{k^2}\,\vz\vz^{\T}+W(k).
+\label{eq:S:OZ}
+\end{equation}
+This is the Ornstein--Zernike relation $S^{-1}=\bar N^{-1}-c$, with $c=-(4\pi l_B/k^2)\vz\vz^{\T}-W$. For a stable uniform state, the fluctuation-response relation identifies $S(k)$ as the structure factor, $S_{\alpha\beta}(k)=V^{-1}\langle\delta\tilde n_\alpha(\mathbf k)\,\delta\tilde n_\beta(-\mathbf k)\rangle$. The explicit Coulomb term and the regular small-$k$ behavior of $W(k)$ yield the following screening identities.
+
+\textbf{Proposition 4 (perfect-screening sum rules).} Let $A(k)=\bar N^{-1}+W(k)$ be the short-range part of $S(k)^{-1}$ in Eq.~\ref{eq:S:OZ}. If $A(0)$ is invertible and $s_0=\vz^{\T}A(0)^{-1}\vz\neq0$, then for every learned $W$
+\begin{equation}
+\frac{S_{ZZ}(k)}{2\nb}=\frac{k^2}{\kappa_D^2}+O(k^4),\qquad \mathbf a^{\T}S(k)\,\vz=O(k^2)\ \text{for every fixed }\mathbf a,
+\end{equation}
+where $S_{ZZ}=\vz^{\T}S\,\vz$ is the charge structure factor, $\nb_+=\nb_-=\nb$ and $\kappa_D^2=4\pi l_B\sum_\alpha\nb_\alpha z_\alpha^2=8\pi l_B\nb$.
+
+\begin{proof}
+By the small-$k$ expansions of the radial kernels and
+Eq.~\ref{eq:S:W},
+\[
+W(k)=W(0)+O(k^2),
+\qquad
+A(k)=A(0)+O(k^2).
+\]
+Since $A(0)$ is invertible, $A(k)$ remains invertible for
+sufficiently small $k$, with
+\[
+A(k)^{-1}=A(0)^{-1}+O(k^2).
+\]
+Consequently,
+\[
+s(k)\equiv\vz^{\T}A(k)^{-1}\vz
+=s_0+O(k^2),
+\qquad
+s_0=\vz^{\T}A(0)^{-1}\vz\neq0.
+\]
+
+Equation~\ref{eq:S:OZ} can be written as
+\[
+S(k)^{-1}
+=
+A(k)+\frac{4\pi l_B}{k^2}\vz\vz^{\T}.
+\]
+Applying the Sherman--Morrison formula gives
+\[
+\begin{aligned}
+S(k)
+&=
+A(k)^{-1}
+-
+\frac{
+(4\pi l_B/k^2)\,
+A(k)^{-1}\vz\vz^{\T}A(k)^{-1}
+}{
+1+(4\pi l_B/k^2)\,s(k)
+}\\
+&=
+A(k)^{-1}
+-
+\frac{
+A(k)^{-1}\vz\vz^{\T}A(k)^{-1}
+}{
+s(k)+k^2/(4\pi l_B)
+}.
+\end{aligned}
+\]
+The denominator is nonzero for sufficiently small $k$
+because it tends to $s_0\neq0$.
+
+Contracting with $\vz$ on both sides yields
+\[
+\begin{aligned}
+S_{ZZ}(k)
+&=\vz^{\T}S(k)\vz\\
+&=
+s(k)-\frac{s(k)^2}{s(k)+k^2/(4\pi l_B)}\\
+&=
+\frac{k^2}{4\pi l_B}\,
+\frac{s(k)}{s(k)+k^2/(4\pi l_B)}\\
+&=
+\frac{k^2}{4\pi l_B}
+\left[1+\frac{k^2}{4\pi l_Bs(k)}\right]^{-1}.
+\end{aligned}
+\]
+Since $s(k)=s_0+O(k^2)$ and $s_0\neq0$,
+\[
+\frac{k^2}{4\pi l_Bs(k)}
+=
+\frac{k^2}{4\pi l_Bs_0}+O(k^4).
+\]
+Expanding the reciprocal therefore gives
+\[
+\begin{aligned}
+S_{ZZ}(k)
+&=
+\frac{k^2}{4\pi l_B}
+\left[
+1-\frac{k^2}{4\pi l_Bs_0}+O(k^4)
+\right]\\
+&=
+\frac{k^2}{4\pi l_B}
+-\frac{k^4}{(4\pi l_B)^2s_0}
++O(k^6).
+\end{aligned}
+\]
+Using $\kappa_D^2=8\pi l_B\nb$, we obtain
+\[
+\frac{S_{ZZ}(k)}{2\nb}
+=
+\frac{k^2}{\kappa_D^2}+O(k^4).
+\]
+
+For any fixed vector $\mathbf a$, the same inverse formula
+gives
+\[
+\begin{aligned}
+\mathbf a^{\T}S(k)\vz
+&=
+\mathbf a^{\T}A(k)^{-1}\vz
+-
+\frac{
+\big[\mathbf a^{\T}A(k)^{-1}\vz\big]s(k)
+}{
+s(k)+k^2/(4\pi l_B)
+}\\
+&=
+\frac{k^2}{4\pi l_B}\,
+\frac{
+\mathbf a^{\T}A(k)^{-1}\vz
+}{
+s(k)+k^2/(4\pi l_B)
+}.
+\end{aligned}
+\]
+Finally,
+\[
+\mathbf a^{\T}A(k)^{-1}\vz
+=
+\mathbf a^{\T}A(0)^{-1}\vz+O(k^2),
+\qquad
+\frac{1}{s(k)+k^2/(4\pi l_B)}
+=
+\frac{1}{s_0}+O(k^2),
+\]
+so
+\[
+\mathbf a^{\T}S(k)\vz
+=
+\frac{k^2}{4\pi l_Bs_0}\,
+\mathbf a^{\T}A(0)^{-1}\vz
++O(k^4)
+=
+O(k^2).
+\]
+This proves both screening identities. 
+\end{proof}
+
+The leading $k^2$ coefficient is the Stillinger--Lovett second-moment condition \cite{stillinger1968general}. It is fixed by the explicit Coulomb term, while short-range correlations enter at order $k^4$. 

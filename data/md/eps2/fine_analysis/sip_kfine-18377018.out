@@ -1,0 +1,80 @@
+### Sun Oct  4 06:37:20 AM EDT 2026: 134 fine profiles in /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005; seed 1 -> joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kn1softplus_dz005_long_s1
+
+##### 2026-10-04 06:37:22  joint --nval 3 --variants v2 --depth 1 --C 4 --readout-hidden 128 128 --kernel-net 32 32 --s-max 1 --M 6 --activation softplus --joint-conc 0.01 0.02 0.04 0.06 0.08 --seed 1 --name-suffix _kn1softplus_dz005_long_s1 --log /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005/runs/learn/protocol_kn1softplus_dz005_s1.log
+/mnt/ufs18/rs/MultiscaleML_group/Liyao/salt_in_polymer_eps2/code/learn/data.py:182: RuntimeWarning: Profile blocks unavailable: retaining legacy diagonal errors; regenerate profiles for covariance-aware uncertainties.
+  sn, sf, uncertainty_method = profile_uncertainties(d, q, uncertainty)
+=== joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kn1softplus_dz005_long_s1: v2 L=1 C=4 rf~3.0  train 71 runs [0.01, 0.02, 0.04, 0.06, 0.08], held-out 20, validation 15
+  parameters: 19641
+    step     0  train chi2/bin  415.8030  monitor  656.9805  stab 0.00e+00  [12s]
+    step   200  train chi2/bin    1.3569  monitor    6.7004  stab 0.00e+00  [59s]
+    step   400  train chi2/bin    0.7596  monitor    2.2385  stab 0.00e+00  [106s]
+    step   600  train chi2/bin    0.6571  monitor    1.4150  stab 0.00e+00  [153s]
+    step   800  train chi2/bin    0.6174  monitor    1.0538  stab 0.00e+00  [200s]
+    step  1000  train chi2/bin    0.6031  monitor    0.9054  stab 0.00e+00  [247s]
+    step  1200  train chi2/bin    0.5974  monitor    0.8263  stab 0.00e+00  [294s]
+    step  1400  train chi2/bin    0.5943  monitor    0.7819  stab 0.00e+00  [341s]
+    step  1600  train chi2/bin    0.5920  monitor    0.7557  stab 0.00e+00  [388s]
+    step  1800  train chi2/bin    0.5902  monitor    0.7399  stab 0.00e+00  [435s]
+    step  2000  train chi2/bin    0.5887  monitor    0.7300  stab 0.00e+00  [482s]
+    step  2200  train chi2/bin    0.5874  monitor    0.7243  stab 0.00e+00  [529s]
+    step  2400  train chi2/bin    0.5864  monitor    0.7211  stab 0.00e+00  [577s]
+    step  2600  train chi2/bin    0.5856  monitor    0.7195  stab 0.00e+00  [624s]
+    step  2800  train chi2/bin    0.5850  monitor    0.7186  stab 0.00e+00  [671s]
+    step  3000  train chi2/bin    0.5845  monitor    0.7182  stab 0.00e+00  [718s]
+    step  3200  train chi2/bin    0.5842  monitor    0.7180  stab 0.00e+00  [765s]
+    step  3400  train chi2/bin    0.5840  monitor    0.7179  stab 0.00e+00  [812s]
+    step  3600  train chi2/bin    0.5838  monitor    0.7179  stab 0.00e+00  [860s]
+    step  3800  train chi2/bin    0.5837  monitor    0.7179  stab 0.00e+00  [907s]
+  held-out runs (joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kn1softplus_dz005_long_s1):
+    c0.01/p04    fourier both    chi2   0.56/  0.57  L2 0.035/0.029  max -0.032/-0.047  min +0.107/+0.066  EL ok 37it
+    c0.01/p06    fourier neutral chi2   0.47/  0.67  L2 0.037/0.026  max -0.032/-0.032  min +0.089/+0.046  EL ok 17it
+    c0.01/p10    mixed   both    chi2   0.50/  0.55  L2 0.053/0.048  max -0.067/-0.060  min -0.041/+0.062  EL ok 19it
+    c0.01/p14    gauss   neutral chi2   0.58/  0.62  L2 0.008/0.012  max -0.003/-0.018  min +0.054/+0.027  EL ok 12it
+    c0.02/p02    fourier both    chi2   0.61/  0.62  L2 0.013/0.015  max -0.000/-0.012  min +0.005/+0.008  EL ok 43it
+    c0.02/p06    fourier neutral chi2   0.61/  0.57  L2 0.024/0.018  max -0.038/-0.005  min +0.058/+0.044  EL ok 30it
+    c0.02/p09    mixed   both    chi2   0.55/  0.60  L2 0.023/0.017  max -0.004/-0.006  min -0.071/-0.017  EL ok 43it
+    c0.02/p14    gauss   neutral chi2   0.61/  0.64  L2 0.010/0.005  max -0.019/+0.002  min +0.034/+0.008  EL ok 14it
+    c0.04/p03    fourier neutral chi2   0.59/  0.51  L2 0.014/0.009  max +0.003/+0.003  min +0.037/+0.017  EL ok 71it
+    c0.04/p07    fourier both    chi2   0.60/  0.58  L2 0.011/0.009  max +0.011/-0.017  min +0.017/+0.039  EL ok 60it
+    c0.04/p16    mixed   both    chi2   0.53/  0.66  L2 0.019/0.014  max +0.028/+0.015  min -0.004/-0.004  EL ok 58it
+    c0.04/p21    gauss   neutral chi2   0.70/  0.53  L2 0.005/0.003  max -0.002/-0.004  min +0.014/-0.002  EL ok 19it
+    c0.06/p00    fourier both    chi2   0.59/  0.62  L2 0.008/0.006  max +0.002/-0.009  min -0.009/+0.000  EL ok 71it
+    c0.06/p06    fourier neutral chi2   0.57/  0.60  L2 0.011/0.007  max -0.008/-0.017  min -0.002/+0.007  EL ok 64it
+    c0.06/p08    mixed   both    chi2   0.62/  0.65  L2 0.010/0.007  max -0.001/+0.006  min +0.007/-0.006  EL ok 68it
+    c0.06/p14    gauss   neutral chi2   0.56/  0.52  L2 0.005/0.005  max +0.008/-0.001  min +0.005/-0.013  EL ok 23it
+    c0.08/p02    fourier both    chi2   0.73/  0.83  L2 0.023/0.012  max +0.033/+0.011  min -0.013/+0.003  EL ok 91it
+    c0.08/p06    fourier neutral chi2   0.44/  0.55  L2 0.008/0.005  max +0.019/-0.012  min -0.005/+0.007  EL ok 63it
+    c0.08/p10    mixed   both    chi2   0.56/  0.73  L2 0.011/0.008  max +0.019/-0.001  min -0.050/+0.001  EL ok 81it
+    c0.08/p14    gauss   neutral chi2   0.52/  0.67  L2 0.004/0.003  max +0.004/-0.002  min -0.004/-0.004  EL ok 25it
+  bulk structure: c=0.01: Gamma 1.45 SL -6.1e-13 dS_ZZ 0.023 dS_NN 0.058 lmin 0.85@k=1.68  c=0.02: Gamma 2.37 SL +3.9e-13 dS_ZZ 0.019 dS_NN 0.034 lmin 0.77@k=1.74  c=0.04: Gamma 4.96 SL -1.3e-12 dS_ZZ 0.032 dS_NN 0.026 lmin 0.65@k=1.86  c=0.05: Gamma 6.18 SL -4.0e-13 dS_ZZ 0.036 dS_NN 0.021 lmin 0.60@k=1.85  c=0.06: Gamma 7.50 SL -7.6e-13 dS_ZZ 0.039 dS_NN 0.024 lmin 0.56@k=1.88  c=0.08: Gamma 10.05 SL -1.6e-13 dS_ZZ 0.040 dS_NN 0.026 lmin 0.48@k=1.89
+  -> /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005/runs/learn/joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kn1softplus_dz005_long_s1  train chi2 0.584  held-out chi2 0.594  rel L2 0.015  (957s fit, 276s eval)
+
+##### 2026-10-04 06:59:13  predict --model /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005/runs/learn/joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kn1softplus_dz005_long_s1 --conc 0.05 --log /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005/runs/learn/protocol_kn1softplus_dz005_s1.log
+/mnt/ufs18/rs/MultiscaleML_group/Liyao/salt_in_polymer_eps2/code/learn/data.py:182: RuntimeWarning: Profile blocks unavailable: retaining legacy diagonal errors; regenerate profiles for covariance-aware uncertainties.
+  sn, sf, uncertainty_method = profile_uncertainties(d, q, uncertainty)
+  transfer runs (joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kn1softplus_dz005_long_s1_predict_c005):
+    c0.05/p00    fourier both    chi2   0.58/  0.59  L2 0.011/0.008  max -0.001/-0.010  min +0.007/+0.004  EL ok 69it
+    c0.05/p01    fourier both    chi2   0.58/  0.71  L2 0.012/0.012  max -0.017/-0.022  min +0.048/+0.034  EL ok 75it
+    c0.05/p02    fourier both    chi2   0.56/  0.56  L2 0.009/0.007  max +0.005/-0.008  min +0.039/+0.011  EL ok 77it
+    c0.05/p03    fourier both    chi2   0.59/  0.65  L2 0.009/0.006  max +0.001/-0.002  min -0.004/+0.002  EL ok 68it
+    c0.05/p04    fourier both    chi2   0.61/  0.61  L2 0.009/0.008  max +0.004/-0.009  min +0.017/-0.008  EL ok 74it
+    c0.05/p05    fourier both    chi2   0.57/  0.56  L2 0.011/0.007  max -0.016/-0.002  min +0.011/+0.003  EL ok 66it
+    c0.05/p06    fourier neutral chi2   0.57/  0.58  L2 0.010/0.007  max +0.001/-0.009  min -0.004/+0.011  EL ok 65it
+    c0.05/p07    fourier charged chi2   0.62/  0.52  L2 0.010/0.006  max +0.008/+0.001  min +0.003/+0.007  EL ok 65it
+    c0.05/p08    mixed   both    chi2   0.59/  0.56  L2 0.011/0.007  max +0.003/+0.008  min +0.003/-0.002  EL ok 71it
+    c0.05/p09    mixed   both    chi2   0.63/  0.68  L2 0.015/0.012  max +0.016/+0.008  min -0.038/-0.015  EL ok 68it
+    c0.05/p10    mixed   both    chi2   0.65/  0.65  L2 0.010/0.009  max +0.002/-0.000  min -0.011/-0.005  EL ok 69it
+    c0.05/p11    mixed   both    chi2   0.54/  0.61  L2 0.010/0.008  max -0.002/+0.005  min +0.010/+0.012  EL ok 72it
+    c0.05/p12    mixed   both    chi2   0.64/  0.74  L2 0.015/0.012  max +0.014/+0.007  min -0.037/-0.014  EL ok 76it
+    c0.05/p13    gauss   neutral chi2   0.58/  0.63  L2 0.003/0.003  max -0.005/-0.004  min +0.037/-0.002  EL ok 23it
+    c0.05/p14    gauss   neutral chi2   0.59/  0.70  L2 0.004/0.005  max +0.004/-0.001  min +0.005/-0.007  EL ok 18it
+    c0.05/p15    gauss   charged chi2   0.40/  0.63  L2 0.006/0.006  max +0.003/+0.008  min -0.019/+0.005  EL ok 27it
+    c0.05/p16    long    neutral chi2   0.54/  0.55  L2 0.008/0.006  max -0.012/-0.012  min +0.027/+0.011  EL ok 36it
+    c0.05/p17    long    neutral chi2   0.56/  0.57  L2 0.010/0.008  max -0.012/-0.005  min +0.021/+0.015  EL ok 32it
+    c0.05/p18    long    both    chi2   0.61/  0.60  L2 0.013/0.010  max -0.017/-0.022  min +0.034/+0.029  EL ok 52it
+    c0.05/p19    long    both    chi2   0.53/  0.64  L2 0.010/0.008  max -0.019/-0.016  min +0.025/+0.017  EL ok 74it
+    c0.05/p20    long3   both    chi2   0.58/  0.55  L2 0.012/0.009  max -0.032/-0.014  min +0.040/+0.024  EL ok 63it
+    c0.05/p21    long    charged chi2   0.62/  0.52  L2 0.011/0.008  max -0.029/-0.016  min +0.019/+0.016  EL ok 74it
+  bulk structure: c=0.01: Gamma 1.45 SL -6.1e-13 dS_ZZ 0.023 dS_NN 0.058 lmin 0.85@k=1.68  c=0.02: Gamma 2.37 SL +3.9e-13 dS_ZZ 0.019 dS_NN 0.034 lmin 0.77@k=1.74  c=0.04: Gamma 4.96 SL -1.3e-12 dS_ZZ 0.032 dS_NN 0.026 lmin 0.65@k=1.86  c=0.05: Gamma 6.18 SL -4.0e-13 dS_ZZ 0.036 dS_NN 0.021 lmin 0.60@k=1.85  c=0.06: Gamma 7.50 SL -7.6e-13 dS_ZZ 0.039 dS_NN 0.024 lmin 0.56@k=1.88  c=0.08: Gamma 10.05 SL -1.6e-13 dS_ZZ 0.040 dS_NN 0.026 lmin 0.48@k=1.89
+  -> /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005/runs/learn/joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kn1softplus_dz005_long_s1/predict_c005: 22 runs, chi2 0.594, rel L2 0.010/0.008, EL converged 22/22
+### done Sun Oct  4 07:02:18 AM EDT 2026

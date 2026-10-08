@@ -1,0 +1,51 @@
+### acceptance for /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.08/field_p09  Mon Sep 28 10:03:20 PM EDT 2026
+### lz = 24.823562, mmax = 18
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.08/field_p09  potential=p09 kind=both pp(V_N)=1.11 pp(psi)=2.14 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 7.31e-05 of range  OK
+        bin-by-bin: 97.6% of 248 bins within 2 sigma, chi^2/bin = 0.87
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     1.38963e-05   1.29875e-04      0.56
+         2   -     1.95967e-05   2.22700e-04      1.57
+         3  yes    5.21391e-04   6.52149e-04      1.12
+         4  yes    6.41799e-04   7.34440e-04      0.48
+         5  yes    2.66769e-03   2.76954e-03      1.00
+         6  yes    1.69454e-03   1.53785e-03      0.92
+         7   -     3.09655e-04   5.39425e-04      1.41
+         8   -     1.37577e-04   2.82148e-04      1.11
+        driven modes only: max |diff|/err = 1.62
+        n_mean = 0.06276, contrast n_max/n_min = 4.03
+
+  anion: applied external force vs. stored spec, per particle: max dev 7.06e-05 of range  OK
+        bin-by-bin: 94.8% of 248 bins within 2 sigma, chi^2/bin = 1.08
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     1.33555e-05   3.88324e-05      0.32
+         2   -     1.93340e-05   2.68184e-05      0.10
+         3  yes    4.47454e-04   5.87726e-04      1.31
+         4  yes    2.11994e-04   2.96883e-04      1.28
+         5  yes    1.64694e-03   1.71972e-03      0.60
+         6  yes    1.19652e-03   1.24419e-03      0.38
+         7   -     1.22323e-04   3.21206e-04      1.60
+         8   -     2.53675e-04   2.72383e-04      0.66
+        driven modes only: max |diff|/err = 1.71
+        n_mean = 0.06276, contrast n_max/n_min = 4.72
+
+wrote /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.08/field_p09/profiles.npz
+==========================================================================
+==========================================================================
+field acceptance  /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.08/field_p09
+  L = 24.8236, driven modes [3, 4, 5, 6, 12, 16]
+Traceback (most recent call last):
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_acceptance.py", line 202, in <module>
+    main()
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_acceptance.py", line 152, in main
+    (n1, e1), (n2, e2), zc, nframe = halves(a.run, which)
+                                     ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_acceptance.py", line 59, in halves
+    st, zc, nn = read_ave_chunk(f)
+                 ^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_trend.py", line 46, in read_ave_chunk
+    step, nch = int(head[0]), int(head[1])
+                ^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: '0.675747'

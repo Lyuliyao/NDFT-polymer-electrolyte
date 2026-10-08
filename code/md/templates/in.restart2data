@@ -1,0 +1,7 @@
+# Write a portable data-file snapshot of a restart (for g(r) and archiving).
+units           lj
+atom_style      full
+boundary        p p p
+read_restart    ${restart}
+include         ${ff}
+write_data      ${out} nocoeff

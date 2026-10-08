@@ -1,0 +1,18 @@
+# Does `dielectric` scale the PPPM k-space term as well as the real-space term?
+# Compare (q, eps_r=7.5) against (q/sqrt(7.5), eps_r=1): they must agree exactly.
+units           lj
+atom_style      full
+boundary        p p p
+region          box block 0 20 0 20 0 20
+create_box      2 box
+create_atoms    1 random 100 9911 box
+create_atoms    2 random 100 2299 box
+mass            * 1.0
+pair_style      lj/cut/coul/long 1.122462 5.0
+pair_coeff      * * 1.0 1.0 1.122462
+set             type 1 charge ${qp}
+set             type 2 charge ${qm}
+dielectric      ${eps}
+kspace_style    pppm 1.0e-6
+run             0 post no
+print           "RESULT ecoul $(c_thermo_pe) elong $(elong) evdwl $(evdwl) ecoul $(ecoul)"

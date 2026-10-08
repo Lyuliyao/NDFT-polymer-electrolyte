@@ -1,0 +1,29 @@
+  V1 (pair closure): 1 models
+  ours (V2): 3 models
+  Sammuller c1, +-3 sigma: 3 models
+  Sammuller c1, +-6 sigma: 3 models
+  Cheng CACE, R 1.5 sigma: 3 models
+  Cheng CACE, R 3 sigma: 3 models
+== salt_in_polymer_lj
+                                   params        ho chi2         ho L2%      Gauss L2%     rho.5 chi2      rho.5 L2%       S(k).5 %          steps        fit min   EL conv
+V1 (pair closure) (1)                  24        2518.34          12.40          21.28        1683.48           7.24          250.1              0              0    33/41
+ours (V2) (3)                     18841±0    25.44±24.32      0.54±0.12      0.54±0.19    19.17±19.63      0.50±0.18      91.4±55.9      3154±1466            8±5   123/123
+Sammuller c1, +-3 sigma (3)        32514±0    46.22±21.34      0.71±0.25      0.95±0.34    58.63±39.19      0.74±0.63       10.6±2.2      3254±1293            5±2   123/123
+Sammuller c1, +-6 sigma (3)        47874±0   269.78±48.97      1.98±0.40      3.53±0.80   319.69±63.08      1.64±0.65       19.8±3.9       1708±350            2±1   120/123
+Cheng CACE, R 1.5 sigma (3)        23828±0     88.82±7.65      0.75±0.05      1.20±0.13     35.43±2.83      0.53±0.09      81.7±63.8       2314±110           16±3   123/123
+Cheng CACE, R 3 sigma (3)         23828±0   488.06±35.56      2.43±0.22      4.22±0.47   432.91±45.21      2.06±0.35    115.8±158.9        1301±87            6±0   122/123
+Gamma(k_1): full linear response (deviation in MD sigma); [Hermitian part] where they differ by > 1%
+MD                             0.73±0.01           0.63±0.01           1.13±0.01           2.17±0.02           4.52±0.04           8.83±0.08      
+V1 (pair closure)             1.02(+46.0)           1.04(+68.8)           1.08( -4.2)           1.10(-54.8)           1.12(-88.7)           1.14(-102.5)       
+ours (V2)                     0.74( +1.3)           0.64( +0.3)           1.11( -1.3)           2.18( +0.4)           4.45( -1.7)           8.75( -1.1)       
+Sammuller c1, +-3 sigma       0.72( -2.2)           0.67( +6.1)           1.13( -0.0)[ 1.10]    2.30( +6.8)[ 2.26]    4.75( +6.1)[ 4.66]    8.74( -1.1)[ 8.47]
+Sammuller c1, +-6 sigma       0.77( +5.6)           0.72(+14.8)[ 0.71]    1.29(+14.0)[ 1.25]    2.32( +7.8)[ 2.26]    3.96(-14.4)[ 3.86]    6.01(-37.5)[ 5.86]
+Cheng CACE, R 1.5 sigma       0.75( +2.8)           0.63( -1.3)           1.13( -0.1)           2.13( -2.2)           4.37( -3.7)           8.63( -2.7)       
+Cheng CACE, R 3 sigma         0.87(+21.8)           0.67( +5.4)           0.99(-12.3)           2.00( -8.9)           3.79(-19.1)           6.01(-37.5)       
+Structure on the MD profiles (max over runs / state points; median in parentheses)
+                                 Noether force       Jacobian asym          W+- vs W-+     K non-Hermitian          reflection       loop integral   Stillinger-Lovett
+ours (V2)                     3.8e-14 (5e-17)    9.1e-16 (5e-16)    9.5e-16             7.4e-16             5.7e-14 (5e-15)    2.1e-12 (5e-16)        nan         
+Sammuller c1, +-3 sigma       2.1e-02 (4e-04)    1.1e+00 (8e-01)    8.8e-01             6.0e-01             2.0e-01 (1e-02)    4.0e-02 (1e-03)        nan         
+Sammuller c1, +-6 sigma       8.1e-02 (1e-03)    1.2e+00 (1e+00)    9.1e-01             7.5e-01             4.0e-01 (4e-02)    8.5e-02 (3e-03)        nan         
+Cheng CACE, R 1.5 sigma       7.8e-07 (1e-09)    4.0e-16 (2e-16)    5.6e-16             5.7e-16             3.6e-15 (7e-16)    4.5e-08 (4e-16)        nan         
+Cheng CACE, R 3 sigma         5.5e-08 (3e-09)    3.1e-16 (2e-16)    4.4e-16             4.0e-16             3.1e-15 (5e-16)    6.7e-07 (2e-16)        nan         

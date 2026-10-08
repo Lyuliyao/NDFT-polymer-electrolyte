@@ -1,0 +1,26 @@
+# Does resuming from a checkpoint reproduce an uninterrupted run?
+# nseg=0: run ${n1}+${n2} straight through.  nseg=1: run ${n1}, checkpoint,
+# and (second invocation) continue ${n2} from it.  Both dump the final state.
+units           lj
+atom_style      full
+boundary        p p p
+variable        n1     index 1000
+variable        n2     index 1000
+read_restart    ${restart}
+include         ${ff}
+include         ${potfile}
+fix             int all nvt temp 1.0 1.0 1.0
+fix             extc cations addforce 0.0 0.0 v_fz_cat energy v_ez_cat
+fix             exta anions  addforce 0.0 0.0 v_fz_ani energy v_ez_ani
+timestep        0.005
+thermo          1000
+if "${mode} == straight" then &
+  "run ${n1}" &
+  "run ${n2}" &
+elif "${mode} == first" &
+  "run ${n1}" &
+  "write_restart restart.mid" &
+else &
+  "run ${n2}"
+if "${mode} != first" then &
+  "write_dump ions custom ${out} id x y z vx vy vz modify sort id format float %.15g"

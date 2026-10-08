@@ -1,0 +1,2 @@
+**SI Appendix, Fig. S-SK (Section S4) | Structure factors at all six concentrations, ε_r = 7.5.**
+As Fig. 4, with c = 0.01 included. Relative rms deviation of the neural functional (seed 0; range over three seeds): S_ZZ 3.4 (3.1–3.8), 3.1 (2.9–3.3), 2.5 (2.5–2.8), 2.6 (2.6–3.5), 3.3 (3.3–5.1), 3.4 (3.4–4.1)%; S_NN 4.9 (3.3–4.9), 2.3 (2.3–2.9), 2.2 (2.1–2.2), 2.2 (2.0–2.4), 2.8 (2.4–2.8), 2.2 (2.1–2.2)% at c = 0.01, 0.02, 0.04, 0.05, 0.06, 0.08. Pair closure: S_ZZ 4.1–13.7%, S_NN 3.7–17.6%.

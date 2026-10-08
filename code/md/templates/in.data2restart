@@ -1,0 +1,9 @@
+# Import a data file into this binary's own restart format.  Restart files are
+# not portable across LAMMPS versions; data files are.
+units           lj
+atom_style      full
+boundary        p p p
+read_data       ${data}
+include         ${ff}
+run             0
+write_restart   ${out}

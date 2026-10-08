@@ -1,0 +1,10 @@
+  ours (learned kernels): 3 models
+== salt_in_polymer_lj
+                                   params        ho chi2         ho L2%      Gauss L2%     rho.5 chi2      rho.5 L2%       S(k).5 %          steps        fit min   EL conv
+ours (learned kernels) (3)        19641±0      5.76±0.23      0.55±0.26      0.72±0.72      4.16±0.37      0.27±0.00      15.0±15.4         4000±0            7±2   123/123
+Gamma(k_1): full linear response (deviation in MD sigma); [Hermitian part] where they differ by > 1%
+MD                             0.73±0.01           0.63±0.01           1.13±0.01           2.17±0.02           4.52±0.04           8.83±0.08      
+ours (learned kernels)        0.74( +0.9)           0.64( +0.4)           1.17( +3.3)           2.25( +4.2)           4.52( -0.0)           8.93( +1.3)       
+Structure on the MD profiles (max over runs / state points; median in parentheses)
+                                 Noether force       Jacobian asym          W+- vs W-+     K non-Hermitian          reflection       loop integral   Stillinger-Lovett
+ours (learned kernels)        1.6e-13 (8e-17)    7.5e-16 (6e-16)    1.2e-15             1.2e-15             1.1e-13 (8e-15)    3.5e-14 (1e-15)        nan         

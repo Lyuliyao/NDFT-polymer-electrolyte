@@ -1,0 +1,6 @@
+# Smallest input that makes LAMMPS report its MPI rank count.
+units           lj
+region          b block 0 10 0 10 0 10
+create_box      1 b
+mass            1 1.0
+run             0

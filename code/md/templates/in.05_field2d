@@ -1,0 +1,80 @@
+# Stage 5, two-dimensional potentials: NVT production with a static external potential
+# V_alpha(x, y) on the ions (uniform along z); otherwise in.05_field.
+# The box is already at the mean NPT volume (inherited from stage 4), which is
+# what set k_m = 2 pi m / L_z when the potential was generated.
+units           lj
+atom_style      full
+boundary        p p p
+
+variable        T       index 1.0
+variable        ntrans  index 1100000    # transient, 10 tau_lambda(8 sigma)
+variable        nsteps  index 11000000   # production, 100 tau_lambda(8 sigma)
+variable        ndump   index 200        # 1 tau
+variable        binw    index 0.1
+variable        nrep    index 100        # profile block = 100 tau, fine
+                                         # enough to resolve tau_int in field
+variable        nblock  equal ${ndump}*${nrep}
+variable        resume  index 0          # 1 = continue from a checkpoint
+variable        seg     index 0          # segment counter, for the per-segment files
+variable        nrst    index 500000     # checkpoint interval (restart.<step>)
+
+read_restart    ${restart}
+include         ${ff}
+include         ${potfile}               # defines v_fx_*, v_fy_*, v_e_* for cat and ani
+
+# no net momentum: a COM drift adds t^2 to every MSD and survives Nose-Hoover.
+# On a resume the momentum is already zero and the checkpoint state must not be
+# disturbed, so this is done only on a fresh start.
+if "${resume} == 0" then "velocity all zero linear"
+
+fix             int all nvt temp ${T} ${T} 1.0
+timestep        0.005
+
+# --- the external potential --------------------------------------------------
+fix             extc cations addforce v_fx_cat v_fy_cat 0.0 energy v_e_cat
+fix             exta anions  addforce v_fx_ani v_fy_ani 0.0 energy v_e_ani
+fix_modify      extc energy yes
+fix_modify      exta energy yes
+
+thermo_style    custom step temp epair elong press vol f_extc f_exta
+thermo          5000
+
+# --- transient ---------------------------------------------------------------
+# A resume re-enters directly in the production phase, at the timestep the
+# checkpoint carries; `run ... upto` below then covers only what is left.
+if "${resume} == 0" then "run ${ntrans}" "reset_timestep 0"
+
+# --- production --------------------------------------------------------------
+
+# the profiles along x only (a cheap check); the analysis bins the dumps in (x, y)
+compute         ckcat cations chunk/atom bin/1d x lower ${binw} units box
+compute         ckani anions  chunk/atom bin/1d x lower ${binw} units box
+# one file per segment: a resumed fix cannot append to the previous one
+fix             pcat cations ave/chunk ${ndump} ${nrep} ${nblock} ckcat &
+                density/number fx v_fx_cat file prof_cat.${seg}.dat
+fix             pani anions  ave/chunk ${ndump} ${nrep} ${nblock} ckani &
+                density/number fx v_fx_ani file prof_ani.${seg}.dat
+
+# raw ion data: position, total force, and the external force LAMMPS applied
+dump            dcat cations custom ${ndump} cat.dump id type x y z fx fy fz v_fx_cat v_fy_cat
+dump_modify     dcat sort id format line "%d %d %.4f %.4f %.4f %.5g %.5g %.5g %.5g %.5g"
+dump            dani anions custom ${ndump} ani.dump id type x y z fx fy fz v_fx_ani v_fy_ani
+dump_modify     dani sort id format line "%d %d %.4f %.4f %.4f %.5g %.5g %.5g %.5g %.5g"
+
+# the job script has already cut both dumps back to the checkpoint, so appending
+# continues the trajectory without a gap and without repeating a frame
+if "${resume} == 1" then "dump_modify dcat append yes" "dump_modify dani append yes"
+
+# acceptance check: the mean ion current must vanish
+variable        vzc equal vcm(cations,x)
+variable        vza equal vcm(anions,x)
+variable        vyc equal vcm(cations,y)
+variable        vya equal vcm(anions,y)
+fix             curout all ave/time 200 5 1000 v_vzc v_vza v_vyc v_vya c_thermo_temp c_thermo_press &
+                file current.${seg}.dat title2 "# step vcm_x_cat vcm_x_ani vcm_y_cat vcm_y_ani temp press"
+
+# checkpoints, so a preempted run (scavenger) resumes instead of starting over
+restart         ${nrst} restart.*
+
+run             ${nsteps} upto
+write_restart   ${out}

@@ -1,0 +1,26 @@
+# Stage 3: NPT at p = 0 -- fixes the density, which the paper does not quote.
+units           lj
+atom_style      full
+boundary        p p p
+
+variable        T      index 1.0
+variable        pdamp  index 1.0
+variable        nsteps index 1000000
+
+read_restart    ${restart}
+include         ${ff}
+
+variable        Lbox  equal lx
+variable        rhoall equal atoms/vol
+variable        rhomon equal count(monomers)/vol
+
+fix             int all npt temp ${T} ${T} 1.0 iso 0.0 0.0 ${pdamp}
+thermo_style    custom step temp epair ebond elong press vol v_Lbox v_rhoall v_rhomon
+thermo          5000
+fix             vlog all ave/time 200 1 200 v_Lbox v_rhoall v_rhomon c_thermo_press &
+                file vol.dat title2 "# step L rho_all rho_mono press"
+timestep        0.005
+run             ${nsteps}
+
+write_restart   ${out}
+print           "FINAL_L $(lx)  FINAL_RHO_ALL $(atoms/vol)  FINAL_RHO_MONO $(count(monomers)/vol)"

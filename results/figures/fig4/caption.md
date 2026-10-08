@@ -1,0 +1,3 @@
+# fig4 caption (LaTeX source, as in output/latex/main.tex)
+
+Concentration dependence of effective correlations. Top and bottom rows show $\varepsilon_r=7.5$ and 2. (\textit{A}) Combined correlation kernel, $\mathbf q^{\T}W(k_1)\mathbf q$, versus concentration. Points show estimates from zero-field MD (\textit{SI Appendix}, section S4.3). (\textit{B}) Individual contributions $W_{++}(k_1)$, $W_{--}(k_1)$ and $W_{+-}(k_1)$. Solid curves in \textit{A} and \textit{B} show the neural functional; dashed curves show the pair closure. (\textit{C}) Real-space kernels $W_{--}(r)$ (purple) and $W_{++}(r)$ (green) at $c=0.01$ (light) and 0.08 (dark). The shaded region, $r<0.5\sigma$, is not resolved by the training data.

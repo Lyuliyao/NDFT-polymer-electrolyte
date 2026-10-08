@@ -1,0 +1,48 @@
+### acceptance for /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.01/field_p15  Sun Sep 27 10:40:51 AM EDT 2026
+### lz = 24.345259, mmax = 14
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.01/field_p15  potential=p15 kind=charged pp(V_N)=0.00 pp(psi)=3.23 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 3.92e-05 of range  OK
+        bin-by-bin: 99.2% of 243 bins within 2 sigma, chi^2/bin = 0.46
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     1.03014e-04   1.52443e-04      0.46
+         2   -     7.12539e-05   2.23427e-04      1.11
+         3   -     8.09038e-05   1.11526e-04      0.43
+         4  yes    1.43756e-03   1.56678e-03      1.14
+         5   -     8.09747e-05   1.92096e-04      0.82
+         6   -     1.16472e-04   2.70499e-04      1.33
+         7   -     1.35998e-05   3.57057e-04      1.70
+         8  yes    2.51596e-03   2.66381e-03      0.83
+        driven modes only: max |diff|/err = 1.14
+        n_mean = 0.00832, contrast n_max/n_min = 3.99
+
+  anion: applied external force vs. stored spec, per particle: max dev 4.24e-05 of range  OK
+        bin-by-bin: 100.0% of 243 bins within 2 sigma, chi^2/bin = 0.16
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     1.02932e-04   1.12366e-04      0.12
+         2   -     7.28070e-05   6.86088e-05      0.55
+         3   -     4.08584e-05   7.62849e-05      1.07
+         4  yes    1.60628e-03   1.58845e-03      0.82
+         5   -     7.62110e-05   2.20193e-04      1.22
+         6   -     9.35438e-05   9.91132e-05      0.51
+         7   -     1.39725e-04   1.56268e-04      0.30
+         8  yes    3.01148e-03   2.95480e-03      1.05
+        driven modes only: max |diff|/err = 1.05
+        n_mean = 0.00832, contrast n_max/n_min = 3.45
+
+wrote /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.01/field_p15/profiles.npz
+==========================================================================
+==========================================================================
+field acceptance  /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.01/field_p15
+  L = 24.3453, driven modes [4, 8, 12, 16, 20, 24]
+  cation: halves agree on 99.2% of 244 bins (chi^2/bin 0.55, max pull 2.1)   [diagnostic]
+          driven modes: median 1.2 sigma, worst m=8 at 1.5 sigma  OK   [undriven worst m=7 at 1.0 sigma, not a gate]
+  anion : halves agree on 98.8% of 244 bins (chi^2/bin 0.56, max pull 2.1)   [diagnostic]
+          driven modes: median 1.1 sigma, worst m=8 at 1.2 sigma  OK   [undriven worst m=3 at 1.2 sigma, not a gate]
+  mean ion current over 8200 samples:
+    v_cm,z(cation) = +6.876e-04 +- 4.9e-04  (1.4 sigma from zero)  OK
+    v_cm,z(anion ) = +8.262e-05 +- 4.9e-04  (0.2 sigma from zero)  OK
+  -> PASS
+==========================================================================
+### acceptance p15 done Sun Sep 27 10:41:33 AM EDT 2026

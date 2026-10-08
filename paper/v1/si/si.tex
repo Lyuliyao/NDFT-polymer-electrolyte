@@ -1,0 +1,40 @@
+% PNAS SI Appendix. Uses the 2019 PNAS SI class (pnas-new.cls v1.45 with pnassupportinginfo.sty); the 2023 class of the
+% main text does not compile with the SI style. Build: pdflatex si; bibtex si; pdflatex si; pdflatex si
+\documentclass[9pt,twoside]{pnas-new}
+\templatetype{pnassupportinginfo}
+
+\usepackage{amsmath,amssymb,amsthm,bm}
+\usepackage{jabbrv}
+\graphicspath{{../figures/}{../../figures/}{../../../figures/}}
+\newcommand{\vr}{\mathbf r}
+\newcommand{\vn}{\mathbf n}
+\newcommand{\vz}{\mathbf z}
+\newcommand{\vf}{\mathbf f}
+\newcommand{\T}{\mathsf T}
+\newcommand{\rmd}{\mathrm d}
+\newcommand{\Fid}{F_{\rm id}}
+\newcommand{\FC}{F_{\rm Coul}}
+\newcommand{\Fex}{F_{\rm ex}}
+\newcommand{\nb}{\bar n}
+\renewcommand{\theequation}{S\arabic{equation}}
+\makeatletter\newcommand{\tablenote}[1]{{\raggedright\setlength{\leftskip}{0pt}\fontsize{7}{9}\selectfont#1\par}}\makeatother
+\let\oldtabular\tabular
+\renewcommand{\tabular}{\footnotesize\setlength{\tabcolsep}{3pt}\oldtabular}
+
+\input{../metadata}
+\title{\PaperTitle}
+\hypersetup{pdfauthor={\PaperAuthor},pdftitle={\PaperTitle}}
+\author{\PaperAuthor}
+\correspondingauthor{\PaperAuthor.\\E-mail: \PaperEmail}
+
+\begin{document}
+
+\maketitle
+
+\SItext
+
+\input{si-content}
+
+\bibliography{../references}
+
+\end{document}

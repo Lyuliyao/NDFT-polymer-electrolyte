@@ -1,0 +1,33 @@
+# GitHub holds the code, the MD profiles and analyses, the paper's models and the results; the full archive (zip) holds
+# everything.  Large or auxiliary data are excluded here.
+__pycache__/
+*.pyc
+# the models that the paper does not quote (the full archive has all of them); the paper's models are whitelisted below
+data/models/*/*
+!data/models/*/interpretation
+!data/models/eps75/joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kn1softplus*_kbK2_long_s*
+!data/models/eps75/joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kn1softplus_long_s*
+!data/models/eps75/joint_v1_L1_C4_R128x128_H64_*_val3_kn1softplus_kbK2_long_s*
+!data/models/eps75/joint_c1win_W*_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3*_kbK2_long_s*
+!data/models/eps75/joint_cace_a5q*_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3*_kbK2_long_s*
+!data/models/eps75/joint_cnn_d2_L1_C4_c001_c002_c004_c006_c008_val3_force_kbK2_long_s*
+!data/models/eps75/joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kbK2_long_s*
+!data/models/eps2/joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kn1softplus*_kbK2_s*
+!data/models/eps2/joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kn1softplus_s*
+!data/models/eps2/joint_v1_L1_C4_R128x128_H64_*_val3_kn1softplus_kbK2_s*
+!data/models/eps2/joint_c1win_W*_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3*_kbK2_full_s*
+!data/models/eps2/joint_cace_a5q*_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3*_kbK2_full_s*
+!data/models/eps2/joint_cnn_d2_L1_C4_c001_c002_c004_c006_c008_val3_force_kbK2_s*
+!data/models/eps2/joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_kbK2_full_s*
+!data/models/lj1/joint_*_kbK2_lj1_s*
+!data/models/lj1/joint_v1_*_lj1_s*
+# prediction caches and replica modes: full archive only
+data/predictions/*/*
+!data/predictions/bigbox/*.json
+!data/predictions/bigbox/*.txt
+!data/predictions/field2d/*.json
+!data/predictions/field2d/*.txt
+data/md/*/*/zerofield_rep/
+data/md/field2d/**/profiles2d.npz
+data/models/eps75_early/
+data/models/lj/

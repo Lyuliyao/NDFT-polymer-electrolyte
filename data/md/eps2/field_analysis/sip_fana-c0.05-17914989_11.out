@@ -1,0 +1,43 @@
+### acceptance for /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.05/field_p11  Sun Sep 27 07:23:40 PM EDT 2026
+### lz = 24.493736, mmax = 22
+warning: could not write /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.05/field_p11/cat.dump.npz: [Errno 28] No space left on device
+Exception ignored in: <function ZipFile.__del__ at 0x151451541a80>
+Traceback (most recent call last):
+  File "/mnt/home/lyuliyao/.conda/envs/mdmd/lib/python3.11/zipfile.py", line 1908, in __del__
+    self.close()
+  File "/mnt/home/lyuliyao/.conda/envs/mdmd/lib/python3.11/zipfile.py", line 1930, in close
+    self._fpclose(fp)
+  File "/mnt/home/lyuliyao/.conda/envs/mdmd/lib/python3.11/zipfile.py", line 2030, in _fpclose
+    fp.close()
+OSError: [Errno 28] No space left on device
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.05/field_p11  potential=p11 kind=both pp(V_N)=2.37 pp(psi)=0.80 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 8.32e-05 of range  OK
+        bin-by-bin: 95.9% of 245 bins within 2 sigma, chi^2/bin = 0.93
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     7.59240e-05   1.58113e-04      0.92
+         2   -     5.85744e-06   1.09787e-04      0.73
+         3   -     1.67244e-05   3.44961e-04      1.33
+         4  yes    2.03986e-03   2.10160e-03      0.51
+         5  yes    1.45329e-03   1.75079e-03      1.21
+         6  yes    6.23534e-03   6.34237e-03      0.43
+         7   -     8.60720e-05   4.75072e-05      0.51
+         8  yes    5.66499e-03   5.80501e-03      0.52
+        driven modes only: max |diff|/err = 1.21
+        n_mean = 0.04083, contrast n_max/n_min = 3.57
+Traceback (most recent call last):
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/analyze_profiles.py", line 197, in <module>
+    main()
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/analyze_profiles.py", line 123, in main
+    zc, nb, ftb, feb, pp_dev = bin_species(path, lz, a.binw, a.nblock, zlo,
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/analyze_profiles.py", line 53, in bin_species
+    steps, boxes, cols, data = dumpio.read_dump(dumpfile)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/dumpio.py", line 48, in read_dump
+    for k, (st, bx, cl, ar) in enumerate(_frames(fn)):
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/dumpio.py", line 33, in _frames
+    arr = np.fromstring("".join(buf), sep=" ").reshape(nat, len(cols))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 2941 into shape (600,9)

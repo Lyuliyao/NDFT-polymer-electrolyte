@@ -1,0 +1,40 @@
+### acceptance for /mnt/scratch/lyuliyao/salt_in_polymer/runs/pilot_T1.0_c0.04_one_both/field_p25  Fri Sep 25 09:44:52 AM EDT 2026
+### lz = 24.502285, mmax = 4
+==========================================================================
+YBG check  run=/mnt/scratch/lyuliyao/salt_in_polymer/runs/pilot_T1.0_c0.04_one_both/field_p25  potential=p25 kind=neutral pp(V_N)=0.72 pp(psi)=0.00 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 2.30e-05 of range  OK
+        bin-by-bin: 96.7% of 245 bins within 2 sigma, chi^2/bin = 0.79
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1  yes    1.60935e-04   2.18235e-04      0.35
+         2  yes    7.24663e-04   4.83389e-04      1.02
+         3   -     5.79317e-05   2.91482e-04      1.20
+         4   -     7.79323e-06   2.06349e-04      1.07
+        driven modes only: max |diff|/err = 1.02
+        n_mean = 0.03263, contrast n_max/n_min = 1.28
+
+  anion: applied external force vs. stored spec, per particle: max dev 2.26e-05 of range  OK
+        bin-by-bin: 99.2% of 245 bins within 2 sigma, chi^2/bin = 0.64
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1  yes    1.46755e-04   2.80380e-04      0.97
+         2  yes    5.35111e-04   5.40327e-04      0.04
+         3   -     8.21234e-06   9.67034e-05      0.86
+         4   -     2.90028e-05   1.21914e-04      0.75
+        driven modes only: max |diff|/err = 0.97
+        n_mean = 0.03263, contrast n_max/n_min = 1.21
+
+wrote /mnt/scratch/lyuliyao/salt_in_polymer/runs/pilot_T1.0_c0.04_one_both/field_p25/profiles.npz
+==========================================================================
+==========================================================================
+field acceptance  /mnt/scratch/lyuliyao/salt_in_polymer/runs/pilot_T1.0_c0.04_one_both/field_p25
+  L = 24.5023, driven modes [1, 2]
+  cation: halves agree on 99.6% of 246 bins (chi^2/bin 0.54, max pull 2.1)   [diagnostic]
+          driven modes: median 0.5 sigma, worst m=2 at 0.5 sigma  OK   [undriven worst m=7 at 1.5 sigma, not a gate]
+  anion : halves agree on 99.2% of 246 bins (chi^2/bin 0.64, max pull 2.3)   [diagnostic]
+          driven modes: median 0.5 sigma, worst m=2 at 0.6 sigma  OK   [undriven worst m=6 at 1.1 sigma, not a gate]
+  mean ion current over 11600 samples:
+    v_cm,z(cation) = -3.162e-06 +- 5.0e-04  (0.0 sigma from zero)  OK
+    v_cm,z(anion ) = -2.649e-04 +- 5.3e-04  (0.5 sigma from zero)  OK
+  -> PASS
+==========================================================================
+### acceptance p25 done Fri Sep 25 09:49:00 AM EDT 2026

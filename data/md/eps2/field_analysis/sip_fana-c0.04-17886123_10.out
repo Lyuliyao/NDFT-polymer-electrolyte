@@ -1,0 +1,19 @@
+### acceptance for /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.04/field_p10  Sun Sep 27 11:27:32 AM EDT 2026
+### lz = 24.416564, mmax = 14
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.04/field_p10  potential=p10 kind=both pp(V_N)=0.59 pp(psi)=1.64 kT
+Traceback (most recent call last):
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/analyze_profiles.py", line 197, in <module>
+    main()
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/analyze_profiles.py", line 123, in main
+    zc, nb, ftb, feb, pp_dev = bin_species(path, lz, a.binw, a.nblock, zlo,
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/analyze_profiles.py", line 53, in bin_species
+    steps, boxes, cols, data = dumpio.read_dump(dumpfile)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/dumpio.py", line 48, in read_dump
+    for k, (st, bx, cl, ar) in enumerate(_frames(fn)):
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/dumpio.py", line 33, in _frames
+    arr = np.fromstring("".join(buf), sep=" ").reshape(nat, len(cols))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 1168 into shape (480,9)

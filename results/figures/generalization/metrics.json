@@ -1,0 +1,106 @@
+{
+  "profiles": {
+    "7.5": {
+      "potential": "p62 (mode at k_1/2 + aperiodic in-range structure)",
+      "species": "cation",
+      "seed": 0,
+      "model": "KBK2",
+      "box_replication": 2,
+      "box_length": 49.00457,
+      "bins": 490,
+      "mean_md_density": 0.032630330764000175,
+      "uncertainty": "plus/minus 2 archived MD standard errors",
+      "processing": "raw full-box profiles; no smoothing or folding",
+      "relative_l2_error": 0.010560041348233214,
+      "relative_mean_density_difference": -2.220446049250313e-16,
+      "density_axis_limits": [
+        0,
+        2.5
+      ]
+    },
+    "2": {
+      "potential": "p62 (mode at k_1/2 + aperiodic in-range structure)",
+      "species": "cation",
+      "seed": 1,
+      "model": "KBK2",
+      "box_replication": 2,
+      "box_length": 48.833128,
+      "bins": 488,
+      "mean_md_density": 0.03297521173165392,
+      "uncertainty": "plus/minus 2 archived MD standard errors",
+      "processing": "raw full-box profiles; no smoothing or folding",
+      "relative_l2_error": 0.014219576775924985,
+      "relative_mean_density_difference": 0.0,
+      "density_axis_limits": [
+        0,
+        2.5
+      ]
+    }
+  },
+  "maps": {
+    "7.5": {
+      "potential": "p55 (aperiodic: oblique plane waves + irregular Gaussian wells and barriers)",
+      "species": "cation",
+      "seed": 0,
+      "shape": [
+        245,
+        245
+      ],
+      "mean_md_density": 0.032630330764000175,
+      "density_color_limits": [
+        0,
+        4.0
+      ],
+      "binwise_rms_difference_in_md_error_units": 1.2460219362807639
+    },
+    "2": {
+      "potential": "p55 (aperiodic: oblique plane waves + irregular Gaussian wells and barriers)",
+      "species": "cation",
+      "seed": 1,
+      "shape": [
+        244,
+        244
+      ],
+      "mean_md_density": 0.03297521173165392,
+      "density_color_limits": [
+        0,
+        2.5
+      ],
+      "binwise_rms_difference_in_md_error_units": 1.2135725804044881
+    }
+  },
+  "sources": {
+    "paper/figures/generalization/data/bigbox/profiles.npz": "f8f31ae04585a95f6fe58bb119e385ff82ca34d54c896a3b2c9f7ed743276291",
+    "paper/figures/generalization/data/aperiodic2d/maps.npz": "013093f1a1782052c0928e36775af893dcfa09bc8609b6c425af451f5ca51c4c"
+  },
+  "remote_sources": {
+    "eps75": {
+      "md": "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/field2d/eps75_c0.04/field_p55/profiles2d.npz",
+      "prediction": "/mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_field2d/eps75/p55_pred.npz",
+      "prediction_key": "n_NF s0"
+    },
+    "eps2": {
+      "md": "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/field2d/eps2_c0.04/field_p55/profiles2d.npz",
+      "prediction": "/mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_field2d/eps2/p55_pred.npz",
+      "prediction_key": "n_NF s1"
+    }
+  },
+  "remote_profile_sources": {
+    "eps75": {
+      "md": "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/bigbox/eps75_c0.04_x2/field_p62/profiles.npz",
+      "prediction": "/mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_bigbox/eps75_c0.04_x2/runs/learn/KBK2_s0/predict_c004/predicted.npz",
+      "prediction_key": "transfer_c0.04_p62",
+      "model": "KBK2_s0",
+      "md_sha256": "53a8d045553b224eea5ffa32967fbb8d71cea7255952a2904bc7e350790c9251",
+      "prediction_sha256": "8088b66e9bbe7278aaade44cc28c6ce75e39cac47e97926866c5f25466b62c90"
+    },
+    "eps2": {
+      "md": "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/bigbox/eps2_c0.04_x2/field_p62/profiles.npz",
+      "prediction": "/mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_bigbox/eps2_c0.04_x2/runs/learn/KBK2_s1/predict_c004/predicted.npz",
+      "prediction_key": "transfer_c0.04_p62",
+      "model": "KBK2_s1",
+      "md_sha256": "f9ad123074b012b1e98cd42e794523261d2dbdeea8ea43bef660c6d5f02212ae",
+      "prediction_sha256": "0c2f7870b6e1dea69a80fe8a49e88d0941b2c37f465ea375548de997ee364ecb"
+    }
+  }
+}

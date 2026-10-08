@@ -1,0 +1,13 @@
+### acceptance for /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.06/field_p10  Sun Sep 27 07:23:40 PM EDT 2026
+### lz = 24.590851, mmax = 14
+warning: could not write /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.06/field_p10/cat.dump.npz: [Errno 28] No space left on device
+Exception ignored in: <function ZipFile.__del__ at 0x148815875a80>
+Traceback (most recent call last):
+  File "/mnt/home/lyuliyao/.conda/envs/mdmd/lib/python3.11/zipfile.py", line 1908, in __del__
+    self.close()
+  File "/mnt/home/lyuliyao/.conda/envs/mdmd/lib/python3.11/zipfile.py", line 1930, in close
+    self._fpclose(fp)
+  File "/mnt/home/lyuliyao/.conda/envs/mdmd/lib/python3.11/zipfile.py", line 2030, in _fpclose
+    fp.close()
+OSError: [Errno 28] No space left on device
+[2026-09-27T19:25:52.458] error: *** JOB 17915074 ON nvf-017 CANCELLED AT 2026-09-27T19:25:52 DUE to SIGNAL Terminated ***

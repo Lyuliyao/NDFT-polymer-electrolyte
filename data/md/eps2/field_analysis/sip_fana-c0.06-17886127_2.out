@@ -1,0 +1,32 @@
+### acceptance for /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.06/field_p02  Sun Sep 27 03:02:08 PM EDT 2026
+### lz = 24.590851, mmax = 7
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.06/field_p02  potential=p02 kind=both pp(V_N)=2.64 pp(psi)=2.25 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 3.42e-05 of range  OK
+        bin-by-bin: 93.5% of 246 bins within 2 sigma, chi^2/bin = 1.03
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     2.37216e-05   1.74983e-04      0.80
+         2   -     1.21889e-05   2.03404e-04      0.92
+         3   -     3.12775e-05   3.42643e-04      1.17
+         4  yes    4.33170e-03   4.53349e-03      1.18
+         5  yes    9.47945e-03   9.67595e-03      0.86
+         6   -     1.19255e-04   3.71556e-04      1.41
+         7   -     9.81904e-05   4.17107e-04      1.73
+        driven modes only: max |diff|/err = 1.18
+        n_mean = 0.04842, contrast n_max/n_min = 2.64
+Traceback (most recent call last):
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/analyze_profiles.py", line 197, in <module>
+    main()
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/analyze_profiles.py", line 123, in main
+    zc, nb, ftb, feb, pp_dev = bin_species(path, lz, a.binw, a.nblock, zlo,
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/analyze_profiles.py", line 53, in bin_species
+    steps, boxes, cols, data = dumpio.read_dump(dumpfile)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/dumpio.py", line 48, in read_dump
+    for k, (st, bx, cl, ar) in enumerate(_frames(fn)):
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/dumpio.py", line 33, in _frames
+    arr = np.fromstring("".join(buf), sep=" ").reshape(nat, len(cols))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 4779 into shape (720,9)

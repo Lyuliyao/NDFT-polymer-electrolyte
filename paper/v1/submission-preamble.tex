@@ -1,0 +1,28 @@
+% Add the lineno option to show line numbers for review.
+
+\articletype{APPLIED PHYSICAL SCIENCES} % TODO PNAS classification (Applied Physical Sciences or Chemistry), decide at submission
+\templatetype{pnasresearcharticle}
+
+% Initial TeX Live 2024 binaries lose \aftergroup callbacks in \output
+% (https://github.com/latex3/latex2e/issues/1311). Flush any pending
+% PNAS sidebar after the first column, before \Parasplit clears the page.
+% With a fixed engine, the callback has already run and this is a no-op.
+\makeatletter
+\patchcmd{\Parasplit}{\eject\clearpage}{%
+  \eject
+  \ifx\AP@\relax\else
+    \global\output\expandafter{\the\AP@output}%
+    \global\expandafter\let\expandafter\AP@\expandafter\relax\AP@
+  \fi
+  \clearpage
+}{}{\PackageError{pnas-firstpage}{Could not patch \string\Parasplit}{Check the PNAS template version.}}
+\makeatother
+
+% Journal-specific title, abstract, sidebar and first-page layout.
+\newcommand{\NDFTMakeTitle}{%
+\maketitle
+\thispagestyle{firststyle}
+\ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
+
+\Firstpage
+}

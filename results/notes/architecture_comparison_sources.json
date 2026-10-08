@@ -1,0 +1,88 @@
+{
+  "checked_date": "2026-10-05",
+  "scope": "Original formulations; excludes our adapted-baseline error measurements",
+  "sources": {
+    "Sammuller2023": {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10723051/",
+      "sections": [
+        "A.1--A.4: GCMC labels and planar local network",
+        "B.2: numerical Noether tests",
+        "B.3: functional line integration",
+        "C.3: larger planar systems"
+      ],
+      "interpretation": "Learning c1 directly does not impose the Helmholtz condition; this is an architectural inference, not a claim that the published tests failed."
+    },
+    "BuiCox2025": {
+      "url": "https://arxiv.org/html/2410.02556v2",
+      "sections": [
+        "Main text, Eqs. 1--3: mimic-system GCMC labels",
+        "Main text, network description: independent cation/anion networks",
+        "Main text, Eqs. 5 and 8--12: screening, LMFT and line integration",
+        "Supplement S7: planar local input and optional bulk correlation matching"
+      ],
+      "interpretation": "Separate direct-output networks do not impose cross-species functional reciprocity. Long-range electrostatics and screening are already addressed in the original paper."
+    },
+    "Cheng2026": {
+      "url": "https://arxiv.org/html/2608.13506v1",
+      "sections": [
+        "II.1, Eqs. 2--5: cubic-grid CACE and Oh invariance",
+        "II.2, Eqs. 6--9: free-energy derivatives, canonical centered balance and gauge",
+        "IV: fixed discretization and larger-cell transfer",
+        "V.1: one constant radial channel",
+        "V.2: one-component LJTS and full 3D training fields"
+      ],
+      "interpretation": "Integrability and 3D geometry are shared capabilities. Cubic-group invariance alone is insufficient to infer continuous translation/rotation Noether identities."
+    },
+    "This work": {
+      "sources": [
+        "paper/output/latex/main.tex",
+        "paper/output/latex/si/si_s1.tex"
+      ],
+      "sections": [
+        "Neural functional and training",
+        "SI S1, Propositions 1--3"
+      ],
+      "interpretation": "Continuum radial invariance precedes discretization; exact transformations are restricted by the domain. Tests of full 3D inhomogeneity are not claimed."
+    }
+  },
+  "transfer_rows_updated_date": "2026-10-07",
+  "transfer_rows": {
+    "larger_domain_evaluation": {
+      "criterion": "Architectural applicability with the same learned parameters; not a claim that all original papers report a larger-box experiment.",
+      "Sammuller2023": "Local planar window; original larger-column example.",
+      "BuiCox2025": "Local planar windows with analytic LMFT electrostatics; larger-domain applicability inferred from the published representation.",
+      "Cheng2026": "Shared local grid functional, explicit larger-cell transfer test.",
+      "This work": "Radial convolutions and pointwise map; repeated-potential tests at 2L, 4L and 8L and aperiodic-potential tests at 2L."
+    },
+    "one_dimensional_training_two_dimensional_prediction": {
+      "criterion": "Demonstrated in the cited original study; crosses mean not demonstrated, not impossibility.",
+      "Sammuller2023": false,
+      "BuiCox2025": false,
+      "Cheng2026": false,
+      "This work": true,
+      "Cheng2026_training": "Original V.2 uses fully three-dimensional training fields.",
+      "This_work_test": "Periodic and aperiodic two-dimensional potentials; SI S4.1."
+    }
+  },
+  "spatial_transferability_row": {
+    "criterion": "Reuse of the learned model across both domain sizes and nonplanar density-field geometries. This combines the two previous transfer rows.",
+    "Sammuller2023": false,
+    "BuiCox2025": false,
+    "Cheng2026": true,
+    "This work": true,
+    "interpretation": "The first two original formulations transfer across planar domain sizes, but do not support nonplanar fields as formulated. Cheng demonstrates larger-cell and nonplanar-geometry transfer after 3D training. This work demonstrates larger-domain and 2D predictions after planar-only training; that distinct training requirement remains explicit in the abstract and Introduction."
+  },
+  "transfer_without_fixed_discretization_row": {
+    "criterion": "Learned representation and parameters defined independently of the evaluation grid; numerical quadrature errors remain possible. Resampling inputs to an unchanged fixed input grid does not meet this criterion.",
+    "Sammuller2023": false,
+    "BuiCox2025": false,
+    "Cheng2026": false,
+    "This work": true,
+    "sources": {
+      "Sammuller2023": "Published local network takes a sampled density window of fixed dimension.",
+      "BuiCox2025": "Supplement S7.2; sampled planar density windows feed fixed-dimension networks.",
+      "Cheng2026": "https://arxiv.org/html/2608.13506v1, IV: larger-cell transfer at unchanged grid spacing; transfer across resolution remains open.",
+      "This work": "Continuum radial kernels and pointwise density functional; numerical grid used for evaluation."
+    }
+  }
+}

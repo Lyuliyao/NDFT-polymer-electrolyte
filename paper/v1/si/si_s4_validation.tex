@@ -1,0 +1,108 @@
+\section*{S4. Transfer and comparisons with other functionals}
+
+\subsection*{S4.1 Larger boxes and nonplanar densities}
+At $c=0.04$ and both dielectric constants, we test transfer
+without retraining using the models trained on planar profiles.
+The tests include four aperiodic potentials absent from training,
+applied in a box twice the training length. They combine irregular Gaussian wells and barriers with Fourier modes at and between the training wavenumbers, with amplitudes within the trained range. Two contain no wavelength longer than the training box. The other two add a mode at $k_1/2$ with a peak-to-peak amplitude of $1\,k_BT$, in the neutral part alone or in the neutral and charged parts. The neural functional reproduces the density profiles with relative $L_2$ errors of $1.4--1.6\%$ without the long mode and $0.8--1.6\%$ with it, compared with $2.4--6.2\%$ for the pair closure. The driven-mode amplitudes of the two halves of each MD run agree within 2.6 standard errors (median $0.6--1.0$).
+
+Six potentials varying in $x$ and $y$ test transfer beyond planar geometry: an egg carton, neutral and charged Gaussian rods on a square lattice, a checkerboard with oblique wavevectors, and two aperiodic potentials. Aperiodic I combines six irregularly placed Gaussian wells and barriers and two oblique plane waves in the neutral part with three charged Gaussian wells. Aperiodic II combines three oblique plane waves and three Gaussian barriers with four irregularly placed charged wells. All amplitudes remain within the trained range. Single bins of the MD maps carry a sampling noise of 5--6\%, so Table~\ref{tab:S:field2d} reports the relative profile error on the Fourier modes that MD resolves, those with amplitudes above three standard errors, together with the MD noise level of the same quantity. On the aperiodic potentials, the neural functional reaches this noise level, with errors of 1.8--3.1\% against noise levels of 1.7--3.0\%, while the pair closure errs by 3.6--5.5\% and Poisson--Boltzmann theory by 31--62\%. On the periodic potentials, its errors are 0.6--3.7\%, against 2.5--7.6\% for the pair closure. The largest error occurs for the charged rods at $\varepsilon_r=2$, 3.7\% against 5.0\% for the pair closure.
+
+\begin{table}[H]
+\centering
+\caption{Two-dimensional potentials at $c=0.04$: relative profile errors (\%) of the density maps predicted by the functionals trained on planar profiles. As for the planar profiles, the error is $\|n^{\rm pred}_\alpha-n^{\rm MD}_\alpha\|_2/\|n^{\rm MD}_\alpha\|_2$, averaged over cations and anions. It is evaluated on the Fourier modes of the maps that MD resolves, those with amplitudes above three standard errors (their number for both species is given), because single bins of the MD maps carry a sampling noise of 5--6\%. The last column gives the MD noise level of the same quantity; an error at this level means agreement within the MD precision.}
+\label{tab:S:field2d}
+\begin{tabular}{llccccc}
+$\varepsilon_r$ & potential & resolved modes & neural functional & pair closure & PB & MD noise\\
+\midrule
+7.5 & egg carton & 32 & 1.0 & 3.5 & 40 & 1.0\\
+ & neutral rods & 115 & 2.1 & 3.7 & 68 & 1.3\\
+ & charged rods & 102 & 1.3 & 2.4 & 26 & 1.2\\
+ & checkerboard & 54 & 1.2 & 2.9 & 42 & 1.1\\
+ & aperiodic I & 327 & 3.1 & 3.6 & 61 & 3.0\\
+ & aperiodic II & 218 & 3.0 & 4.1 & 33 & 2.6\\
+2 & egg carton & 10 & 0.6 & 6.4 & 33 & 0.4\\
+ & neutral rods & 114 & 2.2 & 5.4 & 70 & 1.1\\
+ & charged rods & 96 & 3.7 & 5.0 & 15 & 1.0\\
+ & checkerboard & 20 & 1.3 & 7.6 & 34 & 0.6\\
+ & aperiodic I & 235 & 2.4 & 4.3 & 62 & 2.3\\
+ & aperiodic II & 154 & 1.8 & 5.5 & 31 & 1.7\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{S4.2 Original formulations, adaptations and comparison protocol}
+Table~1 of the main text refers to the original formulations. The one-body networks of refs.~\cite{sammuller2023neural,bui2025learning} apply a single network to a sliding window of a planar density profile on a fixed grid. They are therefore equivariant under translations by the grid spacing and can be applied to planar domains larger than their training boxes. Ref.~\cite{sammuller2023neural} includes mirror symmetry only through data augmentation and verifies the thermal Noether sum rules and the symmetry of the pair direct correlation function numerically. Ref.~\cite{bui2025learning} trains separate networks for cations and anions, so their cross derivatives need not coincide, and verifies the contact theorem instead. The convolutional free energy of ref.~\cite{dijkman2025learning} applies average pooling after each layer to an input of fixed length, which breaks invariance under lattice translations and ties the model to the training box and grid. Ref.~\cite{cheng2026equivariant} builds invariance under the cubic point group $O_h$ into finite-range environments on a fixed voxel grid and demonstrates transfer to larger cells and three-dimensional geometries at unchanged grid spacing. For the present functional, the guarantees hold for the continuous formulation (section S1); their finite-grid residuals are reported in section S4.3, and transfer to larger boxes and nonplanar densities in section S4.1.
+
+\textit{Common protocol.} Each adapted form replaces only the excess free energy $\Fex$ of our functional or, for the one-body network, its excess chemical potentials $\mu^{\rm ex}_\alpha$. Its input is the density profile on the $0.1\sigma$ bins of the MD data, continued periodically and divided by $n_{\rm ref}=0.02\sigma^{-3}$ ($0.4\sigma^{-3}$ for the Lennard-Jones fluid). For the ions, the Coulomb mean field $\FC$ is kept analytic, as in our functional, so each network represents only the excess part. All forms are trained with the force-matching loss, optimizer, step budget and model selection of our functional, on the same splits (71 training runs at $\varepsilon_r=7.5$ and 82 at $\varepsilon_r=2$). The comparison therefore tests the architectures under one training protocol, not the published methods with their own data and training targets.
+
+\textit{One-body network.} Refs.~\cite{sammuller2023neural,bui2025learning} fit the one-body direct correlation function $c_1=-\mu^{\rm ex}/k_BT$, obtained from grand-canonical simulations at known chemical potential, with a perceptron that acts on a window of the density profile. In ref.~\cite{sammuller2023neural}, the window spans $\pm2.56\sigma$ at a resolution of $0.01\sigma$ (513 inputs) and the perceptron has three hidden layers of 512 units with smooth activations. Ref.~\cite{bui2025learning} adds the long-range electrostatics through local molecular field theory.
+Our adaptation maps the cation and anion densities in a window of $\pm3\sigma$ around $z$, $2\times61$ values, to both excess chemical potentials $\mu^{\rm ex}_{\theta,+}(z)$ and $\mu^{\rm ex}_{\theta,-}(z)$ with a single perceptron instead of one network per species. The perceptron has two hidden layers of 128 units with SiLU activations (32{,}514 parameters). The two outputs share hidden features, but $\partial\mu^{\rm ex}_{\theta,+}/\partial n_-$ and $\partial\mu^{\rm ex}_{\theta,-}/\partial n_+$ are not constrained to agree. The output enters force matching only through the force density $-n_\alpha\partial_z(e_\alpha\phi+\mu^{\rm ex}_{\theta,\alpha})$, so canonical data without chemical-potential labels suffice. A window of $\pm6\sigma$ (47{,}874 parameters) gives a validation residual 4\% and 40\% larger at $\varepsilon_r=7.5$ and $2$, and about ten times larger for the Lennard-Jones fluid.
+
+\textit{Lattice free energy.} Ref.~\cite{cheng2026equivariant} writes the excess free energy of a one-component fluid on a cubic grid of spacing $\Delta L=0.5\sigma$ and voxel volume $\Delta V=\Delta L^3$ as $\Fex=\Delta V\sum_g\rho_g\,[a_{\rm loc}(\rho_g)+a_{\rm CACE}(\rho_g,\mathbf B_g)]$. The features $\mathbf B_g$ are built from the Cartesian moments $A_{\mathbf l}(g)=\sum_{\mathbf q}\rho_{g+\mathbf q}\,q_x^{l_x}q_y^{l_y}q_z^{l_z}$ with $|\mathbf l|\le3$, summed with unit weight over the 122 nonzero integer offsets with $|\mathbf q|\le3$. Products of up to two moments, averaged over the 48 elements of $O_h$, give 15 invariants. Both read-outs have hidden layers of 32 and 16 SiLU units and also take the temperature (1{,}762 parameters in total).  We form the moments separately for cations and anions. The first-order invariants of each species and the second-order invariants within and across species, averaged over $O_h$ and with vanishing and duplicate forms removed, give 47 invariants (15 for one species, as in the original). Both read-outs have one output per species, and $\Fex=A\,\Delta z\sum_i\sum_\alpha\bar n_\alpha(z_i)\,a_\alpha(z_i)$, where $A$ is the cross-sectional area and $\Delta z$ the bin width. The voxel density $\bar n_\alpha(z_i)$ is the average of the profile over the five bins ($0.5\sigma$) centred on bin $i$. For a planar density, the lateral sums in the moments reduce to fixed weights, $A^\alpha_{\mathbf l}(z_i)=\sum_{q_z}C_{\mathbf l}(q_z)\,\bar n_\alpha(z_i+q_z\Delta L)$ with $C_{\mathbf l}(q_z)=\sum_{q_x,q_y}q_x^{l_x}q_y^{l_y}q_z^{l_z}$ over the stencil, which are evaluated exactly; six of the 47 invariants (two of the 15) then vanish identically. Every bin is a voxel centre, so $\Fex$ averages the lattice free energy over the registrations of the lattice on the bin grid and is invariant under translations by one bin. Densities are divided by $n_{\rm ref}$, each invariant by its root-mean-square value over the training profiles, and temperature is not an input. The read-out $a_{\rm CACE}$ is widened to two hidden layers of 128 units, the width of our read-out, while $a_{\rm loc}$ keeps 32 and 16 (23{,}828 parameters). The excess chemical potentials $\mu^{\rm ex}_\alpha=\delta\Fex/\delta n_\alpha$ follow by automatic differentiation and are trained by force matching. We keep the stencil radius of the original, $1.5\sigma$. A radius of $3\sigma$, with the same invariants and number of parameters, raises the validation residual sevenfold at $\varepsilon_r=7.5$ and 27-fold for the Lennard-Jones fluid. At $\varepsilon_r=2$, it lowers the validation residual by about a quarter and the mean held-out profile error from 7.2\% to 5.2\%, but the Euler--Lagrange solution fails for 15 instead of 10 of the 42 test runs.
+
+\textit{Convolutional free energy.} Ref.~\cite{dijkman2025learning} represents the excess free energy of a one-component fluid on 320 grid points ($\Delta z=\sigma/32$) by six periodic dilated convolutions (kernel size 3, dilation 2, channels 16, 16, 32, 32, 64, 64), each followed by average pooling over two points, and a scalar output. Its stated size of about 24{,}400 parameters implies a linear read-out of the flattened final feature map, 64 channels at five positions; the activation is not specified. The network is trained by pair-correlation matching: rows of its Hessian are fitted to the laterally integrated direct correlation functions of bulk grand-canonical simulations, together with an offset term for the first derivative. We keep the convolution and pooling stack. The input has two channels, $n_+/n_{\rm ref}$ and $n_-/n_{\rm ref}$ (one for the Lennard-Jones fluid), padding is periodic and the activations are softplus. Pooling drops an odd last point, so six poolings leave three positions for any grid of 192 to 255 bins, which covers all boxes here (243 to 250 bins for the ions, 240 for the Lennard-Jones fluid). A linear layer maps the $3\times64$ final features to $\Fex$ (24{,}321 parameters). The network is trained by force matching on the inhomogeneous profiles instead of by pair-correlation matching on bulk data.
+
+\textit{Lennard-Jones fluid.} The truncated and shifted fluid has $r_c=2.5\sigma$, $T=1.5$ and $L=24\sigma$. It has a single species and no Coulomb term, so each form takes one density; the forms then have 18{,}861 (ours), 24{,}577 (one-body network), 19{,}426 (lattice free energy) and 24{,}273 (convolutional free energy) parameters. The planar potentials use the same families as the ion data, 22 per density. One run each at 0.5 and $0.6\sigma^{-3}$ violates the force balance $k_BT\,\partial_zn=f^{\rm ext}+f^{\rm int}$ beyond its sampling error and is discarded. At the trained densities 0.1, 0.2, 0.4, 0.6 and $0.7\sigma^{-3}$, four runs per density are held out and three are used for validation, which leaves 74 training runs; the 21 runs at $0.5\sigma^{-3}$ are never trained. This comparison tests the adapted implementations on a simple fluid, but does not isolate the cause of their different performance on the ions.
+
+\subsection*{S4.3 Data efficiency and structural consistency}
+Table~\ref{tab:S:archfrac} reports nested, stratified fractions of the ion training data, with validation and test runs fixed. The comparison in the main text uses these same fits.
+
+\begin{table}[H]
+\centering
+\caption{Data efficiency on the ions. Mean relative profile errors (\%) of the held-out runs / of the runs at the untrained concentration $c=0.05$, for the training fractions shown. Means exclude Euler--Lagrange solutions that do not converge or collapse onto a density spike (error above 50\%). The one-body window is $\pm3\sigma$ and the lattice stencil radius is $1.5\sigma$.}
+\label{tab:S:archfrac}
+\begin{tabular}{c c c c c}
+$\varepsilon_r$ & Training fraction & Neural functional & One-body network & Lattice free energy\\
+\midrule
+7.5 & 0.25 & 1.55 / 0.92 & 3.00 / 2.18 & 4.53 / 3.98\\
+7.5 & 0.5 & 1.48 / 0.84 & 2.09 / 1.27 & 3.72 / 3.32\\
+7.5 & 1 & 1.50 / 0.85 & 1.75 / 1.01 & 2.97 / 2.06\\
+2 & 0.25 & 3.56 / 1.28 & 5.55 / 1.96 & 6.31 / 5.12\\
+2 & 0.5 & 3.45 / 1.02 & 4.95 / 1.24 & 6.00 / 2.54\\
+2 & 1 & 3.11 / 0.98 & 3.41 / 0.85 & 7.16 / 2.72\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+Structural errors in Table~\ref{tab:S:archstruct} are evaluated on the MD profiles. The relative net internal force is $|\sum_\alpha\int f^{\rm int}_\alpha\,\rmd z|/\sum_\alpha\int|f^{\rm int}_\alpha|\,\rmd z$, including Coulomb forces. Integrability is tested by $\|J-J^{\T}\|/\|J\|$ for $J=\partial\mu^{\rm ex}/\partial n$. Reflection error is $\|\mu[Rn]-R\mu[n]\|/\|\mu-\langle\mu\rangle\|$, with $R:z\mapsto-z$. Path dependence is $|\oint\mu^{\rm ex}\cdot\rmd n|/\sum|{\rm legs}|$ on closed paths $\nb\to n_1\to n_2\to\nb$ through held-out profiles. The continuum identities of section S1 and their finite-grid residuals are distinct from predictive accuracy.
+
+Grid independence is tested by evaluating each form, with unchanged parameters, on the test profiles resampled by band-limited interpolation from the $0.1\sigma$ bins to grids of $0.05\sigma$ and $0.2\sigma$. The rms change of $\mu^{\rm ex}_\theta$ relative to its variation over the box, averaged over the 42 test runs of each $\varepsilon_r$, is below $10^{-9}$ on the finer and $3\times10^{-6}$ on the coarser grid for the neural functional (maxima $10^{-8}$ and $5\times10^{-5}$), and below $10^{-13}$ and $10^{-6}$ for the pair closure. The one-body network changes by 65--79\% and the lattice free energy by 62--77\%, because their window and voxel are fixed numbers of bins; the convolutional free energy cannot be evaluated, because its read-out fixes the number of grid points.
+
+\begin{table}[H]
+\centering
+\caption{Structural errors for the selected implementations. Values are maxima over runs and state points. Parentheses give arithmetic means over runs where available.}
+\label{tab:S:archstruct}
+\begin{tabular}{l c c c c c}
+Form & $\varepsilon_r$ & Net force & Jacobian asymmetry & Reflection & Path dependence\\
+\midrule
+Neural functional & 7.5 & $10^{-7}$ ($10^{-9}$) & $2\times10^{-16}$ ($2\times10^{-16}$) & $10^{-14}$ & $2\times10^{-14}$\\
+Neural functional & 2 & $2\times10^{-6}$ ($10^{-8}$) & $3\times10^{-16}$ ($2\times10^{-16}$) & $2\times10^{-14}$ & $2\times10^{-12}$\\
+One-body network & 7.5 & 0.14 (0.008) & 0.55 (0.31) & 0.38 & 0.008\\
+One-body network & 2 & 0.08 (0.005) & 0.46 (0.25) & 0.16 & 0.009\\
+Lattice free energy & 7.5 & $7\times10^{-4}$ ($7\times10^{-6}$) & $2\times10^{-16}$ ($2\times10^{-16}$) & $4\times10^{-15}$ & $2\times10^{-10}$\\
+Lattice free energy & 2 & $2\times10^{-5}$ ($3\times10^{-7}$) & $2\times10^{-16}$ ($10^{-16}$) & $10^{-14}$ & $7\times10^{-8}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection*{S4.4 Convolutional free-energy baseline}
+Table~\ref{tab:S:dijkman} compares the convolutional free energy of section S4.2 with our functional, both trained by force matching on the same data. Its scalar output preserves integrability, but pooling and the read-out break translation and reflection invariance, so its bulk Hessian is not diagonal in $k$. Its structure factors use the Fourier diagonal of the Hessian at uniform density, averaged over eight phase-aligned rows. The convolutional form has larger force and profile errors, and few of its Euler--Lagrange solutions converge.
+
+\begin{table}[H]
+\centering
+\caption{Force-matching comparison of the neural and convolutional free energies. Structure-factor errors are the largest relative rms errors across $c=0.02$--0.08 ($S_{ZZ}$ / $S_{NN}$).}
+\label{tab:S:dijkman}
+\begin{tabular}{c l c c c c}
+$\varepsilon_r$ & Form & Held-out $\chi^2$ & Profile (\%) & EL converged & $S(k)$ error (\%)\\
+\midrule
+7.5 & neural functional & 0.63 & 1.50 & 42/42 & 4.1 / 3.6\\
+7.5 & convolutional & 83.4 & 13.8 & 5/42 & 1171 / 160\\
+2 & neural functional & 1.18 & 3.11 & 42/42 & 4.5 / 5.3\\
+2 & convolutional & 97.0 & 15.1 & 0/42 & 48 / 30\\
+\bottomrule
+\end{tabular}
+\par\smallskip\tablenote{Convolutional profile errors include Euler--Lagrange iterations that did not converge. EL counts cover all 42 test runs.}
+\end{table}

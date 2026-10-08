@@ -1,0 +1,74 @@
+\section*{S3. Predictive accuracy and many-body correlations}
+
+\subsection*{S3.1 Predictions across concentrations}
+Table~\ref{tab:S:profiles} collects the concentration-resolved force residuals and profile errors at both dielectric constants. Table~\ref{tab:S:sk} gives the corresponding bulk structure-factor errors and finite-wavenumber number response. The lowest concentration at strong coupling is the least accurate state for the number structure factor. The representative profiles and structure factors are shown in the main text.
+
+\begin{table}[H]
+\centering
+\caption{Predictions by concentration. Force residual $\chi^2$ and relative profile error in percent (cation / anion), averaged over held-out runs. At $c=0.05$ all 22 runs are untrained.}
+\label{tab:S:profiles}
+\begin{tabular}{c l c c c c}
+$\varepsilon_r$ & $c$ & NF $\chi^2$ & NF profile (\%) & Pair $\chi^2$ & Pair profile (\%)\\
+\midrule
+7.5 & 0.01 & 0.559 & 3.5 / 2.7 & 1.82 & 5.7 / 8.6\\
+7.5 & 0.02 & 0.574 & 1.8 / 1.4 & 3.25 & 4.9 / 7.4\\
+7.5 & 0.04 & 0.573 & 1.2 / 0.8 & 2.12 & 2.7 / 3.2\\
+7.5 & 0.05 & 0.606 & 1.0 / 0.7 & 1.51 & 2.0 / 1.8\\
+7.5 & 0.06 & 0.615 & 0.9 / 0.6 & 0.82 & 1.5 / 1.0\\
+7.5 & 0.08 & 0.837 & 1.4 / 0.8 & 2.94 & 5.2 / 1.9\\
+2 & 0.01 & 0.693 & 9.2 / 8.9 & 6.28 & 14.9 / 15.7\\
+2 & 0.02 & 0.618 & 2.8 / 2.6 & 20.50 & 14.9 / 15.8\\
+2 & 0.04 & 2.559 & 1.6 / 2.3 & 20.21 & 6.6 / 7.1\\
+2 & 0.05 & 0.748 & 1.0 / 0.9 & 4.56 & 2.1 / 3.1\\
+2 & 0.06 & 0.865 & 1.1 / 0.9 & 2.42 & 1.0 / 2.9\\
+2 & 0.08 & 1.154 & 1.3 / 0.5 & 19.88 & 3.7 / 5.2\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\caption{Bulk predictions at both dielectric constants. Structure-factor errors are relative rms deviations in percent over the MD wavevectors up to $k=2.1\sigma^{-1}$, shown as neural functional / pair closure. $\Gamma=2\nb/S_{NN}(k_1)$ uses the MD uncertainty procedure of section S2.3.}
+\label{tab:S:sk}
+\begin{tabular}{c c c c c c c}
+$\varepsilon_r$ & $c$ & $S_{ZZ}$ error & $S_{NN}$ error & $\Gamma$ MD & $\Gamma$ NF & $\Gamma$ pair\\
+\midrule
+7.5 & 0.01 & 4.8 / 12.2 & 6.7 / 18.0 & $1.20\pm0.06$ & 1.34 & 1.96\\
+7.5 & 0.02 & 4.1 / 12.6 & 3.6 / 16.1 & $1.97\pm0.07$ & 2.22 & 2.91\\
+7.5 & 0.04 & 2.7 / 7.8 & 2.6 / 8.4 & $4.38\pm0.15$ & 4.47 & 4.76\\
+7.5 & 0.05 & 3.6 / 5.2 & 2.8 / 4.3 & $5.42\pm0.15$ & 5.53 & 5.65\\
+7.5 & 0.06 & 3.8 / 4.7 & 2.8 / 3.4 & $6.42\pm0.26$ & 6.73 & 6.51\\
+7.5 & 0.08 & 3.9 / 13.0 & 2.4 / 13.5 & $9.26\pm0.26$ & 9.08 & 8.12\\
+2 & 0.01 & 9.9 / 22.1 & 25.6 / 52.2 & $0.42\pm0.07$ & 0.31 & 1.84\\
+2 & 0.02 & 4.5 / 31.6 & 5.3 / 38.3 & $0.98\pm0.10$ & 0.97 & 2.68\\
+2 & 0.04 & 2.7 / 30.1 & 2.6 / 18.7 & $3.14\pm0.56$ & 3.70 & 4.32\\
+2 & 0.05 & 3.5 / 23.8 & 2.7 / 8.1 & $4.41\pm0.49$ & 5.14 & 5.12\\
+2 & 0.06 & 2.7 / 15.3 & 3.1 / 7.7 & $6.09\pm0.91$ & 6.77 & 5.88\\
+2 & 0.08 & 2.7 / 10.4 & 2.8 / 42.1 & $11.05\pm0.81$ & 10.36 & 7.33\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+A pair closure can reproduce profiles at a single concentration but cannot adjust its bulk kernel with density. At $\varepsilon_r=7.5$, fitting only $c=0.04$ gives a held-out residual of 0.70 and cation/anion profile errors of 2.5/1.3\%. Its held-out residual rises to 1.30 when $c=0.01$ and 0.02 are added, to 1.55 after adding $c=0.06$, and to 2.19 after adding $c=0.08$. This comparison motivates the density-dependent correlations of the neural functional.
+
+\subsection*{S3.2 Number response}
+For $\nb_+=\nb_-=\nb$, write the regular part of $S^{-1}$ in the orthonormal number and charge basis, $\mathbf e_N=(1,1)^{\T}/\sqrt2$ and $\mathbf e_Z=(1,-1)^{\T}/\sqrt2$. In the energy units of section S1,
+\[
+A_{NN}=\nb^{-1}+\tfrac12(W_{++}+W_{--}+2W_{+-}),\qquad
+A_{ZZ}=\nb^{-1}+\tfrac12(W_{++}+W_{--}-2W_{+-}),\qquad
+A_{NZ}=\tfrac12(W_{++}-W_{--}).
+\]
+Inverting Eq.~\ref{eq:S:OZ} gives
+\begin{equation}
+\Gamma(k)\equiv\frac{2\nb}{S_{NN}(k)}
+=1+\frac{\nb}{2}\sum_{\alpha\beta}W_{\alpha\beta}(k)
+-\frac{\nb A_{NZ}^2}{A_{ZZ}+8\pi l_B/k^2}.
+\label{eq:S:gamma}
+\end{equation}
+The last term accounts for coupling between number and charge fluctuations. It vanishes as $k\to0$ and contributes 1--4\% of $\Gamma$ at $k_1$ in the reported models. Neglecting that correction yields the MD estimate used in the main text,
+\[
+\mathbf q^{\T}W(k_1)\mathbf q\simeq\frac{2[\Gamma(k_1)-1]}{\nb},\qquad \mathbf q=(1,1)^{\T}.
+\]
+Multiplying by $k_BT$ restores energy units.

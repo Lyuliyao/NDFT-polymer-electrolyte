@@ -1,0 +1,45 @@
+### acceptance for /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.08/field_p20  Mon Sep 28 10:04:54 PM EDT 2026
+### lz = 24.823562, mmax = 5
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.08/field_p20  potential=p20 kind=both pp(V_N)=1.07 pp(psi)=0.84 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 2.31e-05 of range  OK
+        bin-by-bin: 96.0% of 248 bins within 2 sigma, chi^2/bin = 1.01
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1  yes    2.23981e-04   4.47621e-05      1.49
+         2  yes    3.02705e-04   4.07688e-04      1.21
+         3  yes    1.07714e-03   1.29454e-03      1.32
+         4   -     1.28150e-05   1.54896e-04      0.86
+         5   -     1.74211e-05   1.51300e-04      0.84
+        driven modes only: max |diff|/err = 1.49
+        n_mean = 0.06276, contrast n_max/n_min = 1.14
+
+  anion: applied external force vs. stored spec, per particle: max dev 2.29e-05 of range  OK
+        bin-by-bin: 98.4% of 248 bins within 2 sigma, chi^2/bin = 0.62
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1  yes    2.16506e-04   2.20504e-04      0.50
+         2  yes    2.91155e-04   1.71338e-04      1.37
+         3  yes    8.35307e-04   9.32802e-04      1.18
+         4   -     5.98144e-06   1.72678e-04      1.48
+         5   -     2.91955e-05   9.50332e-05      1.28
+        driven modes only: max |diff|/err = 1.37
+        n_mean = 0.06276, contrast n_max/n_min = 1.13
+
+wrote /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.08/field_p20/profiles.npz
+==========================================================================
+==========================================================================
+field acceptance  /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.08/field_p20
+  L = 24.8236, driven modes [1, 2, 3]
+Traceback (most recent call last):
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_acceptance.py", line 202, in <module>
+    main()
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_acceptance.py", line 152, in main
+    (n1, e1), (n2, e2), zc, nframe = halves(a.run, which)
+                                     ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_acceptance.py", line 59, in halves
+    st, zc, nn = read_ave_chunk(f)
+                 ^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_trend.py", line 46, in read_ave_chunk
+    step, nch = int(head[0]), int(head[1])
+                ^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: '0.0646858'

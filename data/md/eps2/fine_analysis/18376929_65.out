@@ -1,0 +1,27 @@
+### Sun Oct  4 06:14:27 AM EDT 2026: /mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/prod_T1.0_c0.02/field_p19 -> /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005/runs/prod_T1.0_c0.02/field_p19/profiles.npz (mmax 4, binw 0.05)
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/prod_T1.0_c0.02/field_p19  potential=p19 kind=both pp(V_N)=1.01 pp(psi)=2.69 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 1.40e-05 of range  OK
+        bin-by-bin: 97.7% of 488 bins within 2 sigma, chi^2/bin = 0.67
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1  yes    3.15919e-04   4.32844e-04      0.98
+         2  yes    1.36045e-03   1.51483e-03      0.53
+         3   -     7.43638e-05   9.42719e-05      0.47
+         4   -     1.57012e-04   4.76142e-05      0.76
+        driven modes only: max |diff|/err = 0.98
+        n_mean = 0.01657, contrast n_max/n_min = 2.51
+
+  anion: applied external force vs. stored spec, per particle: max dev 1.67e-05 of range  OK
+        bin-by-bin: 99.4% of 488 bins within 2 sigma, chi^2/bin = 0.59
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1  yes    2.85716e-04   4.26143e-04      1.19
+         2  yes    4.89583e-04   4.76205e-04      0.58
+         3   -     2.52140e-05   1.26446e-04      1.21
+         4   -     1.13448e-05   7.31786e-05      0.59
+        driven modes only: max |diff|/err = 1.19
+        n_mean = 0.01657, contrast n_max/n_min = 1.61
+
+wrote /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005/runs/prod_T1.0_c0.02/field_p19/profiles.npz
+==========================================================================
+### done Sun Oct  4 06:14:40 AM EDT 2026

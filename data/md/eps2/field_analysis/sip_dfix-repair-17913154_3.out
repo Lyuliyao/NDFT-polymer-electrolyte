@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/dump_repair.py", line 144, in <module>
+    main()
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/dump_repair.py", line 130, in main
+    r = process(fn, write=not a.check)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/dump_repair.py", line 109, in process
+    out.write("\n".join(atoms) + "\n")
+OSError: [Errno 28] No space left on device

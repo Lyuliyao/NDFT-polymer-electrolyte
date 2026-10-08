@@ -1,0 +1,38 @@
+% Journal submission entry point. Scientific content is shared.
+\documentclass[9pt,twocolumn,twoside]{pnas-new}
+\input{submission-preamble}
+\input{common-preamble}
+\input{metadata}
+\renewcommand{\openingletter}[1]{\dropcap{#1}}
+\renewcommand{\layoutbreak}{\Parasplit}
+\renewcommand{\siref}{\textit{SI Appendix}}
+\newcommand{\tablenote}[1]{\addtabletext{#1}}
+
+\begin{document}
+\title{\PaperTitle}
+\hypersetup{pdfauthor={\PaperAuthor},pdftitle={\PaperTitle}}
+\author[a,b,c,1]{\PaperAuthor}
+\affil[a]{\PaperAffiliationA}
+\affil[b]{\PaperAffiliationB}
+\affil[c]{\PaperAffiliationC}
+\leadauthor{\PaperLeadAuthor}
+\significancestatement{\input{significance}}
+\authorcontributions{[To add.]}
+\authordeclaration{\PaperDeclaration}
+\correspondingauthor{\textsuperscript{1}To whom correspondence should be addressed. E-mail: \PaperEmail}
+\keywords{\PaperKeywords}
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+\dates{This manuscript was compiled on \today}
+\doi{\url{www.pnas.org/cgi/doi/10.1073/pnas.XXXXXXXXXX}}
+\NDFTMakeTitle
+
+\input{main}
+\matmethods{\input{methods}}
+\showmatmethods{}
+\dataavail{\PaperDataAvailability}
+\acknow{\PaperAcknowledgments}
+\showacknow{}
+\bibliography{references}
+\end{document}

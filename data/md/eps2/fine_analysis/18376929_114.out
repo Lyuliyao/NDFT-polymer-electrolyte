@@ -1,0 +1,33 @@
+### Sun Oct  4 06:19:14 AM EDT 2026: /mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/prod_T1.0_c0.08/field_p02 -> /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005/runs/prod_T1.0_c0.08/field_p02/profiles.npz (mmax 7, binw 0.05)
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/prod_T1.0_c0.08/field_p02  potential=p02 kind=both pp(V_N)=2.64 pp(psi)=2.25 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 3.50e-05 of range  OK
+        bin-by-bin: 99.4% of 499 bins within 2 sigma, chi^2/bin = 0.39
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     2.55066e-05   2.99626e-04      1.28
+         2   -     2.11104e-05   4.42793e-05      0.26
+         3   -     4.75255e-05   1.68893e-04      0.91
+         4  yes    1.10113e-02   1.11815e-02      0.76
+         5  yes    2.75329e-02   2.78221e-02      1.10
+         6   -     9.98668e-04   1.02459e-03      0.08
+         7   -     3.79862e-04   2.96886e-04      0.45
+        driven modes only: max |diff|/err = 1.10
+        n_mean = 0.06165, contrast n_max/n_min = 10.63
+
+  anion: applied external force vs. stored spec, per particle: max dev 3.62e-05 of range  OK
+        bin-by-bin: 99.8% of 499 bins within 2 sigma, chi^2/bin = 0.40
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     2.05825e-05   5.44724e-05      0.30
+         2   -     9.65416e-06   4.92319e-05      0.50
+         3   -     1.25953e-05   1.33234e-04      1.19
+         4  yes    4.52902e-04   3.54025e-04      0.58
+         5  yes    8.01732e-03   8.04842e-03      0.24
+         6   -     3.64204e-04   3.54732e-04      0.31
+         7   -     1.82351e-04   2.34172e-04      0.53
+        driven modes only: max |diff|/err = 0.58
+        n_mean = 0.06165, contrast n_max/n_min = 1.72
+
+wrote /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005/runs/prod_T1.0_c0.08/field_p02/profiles.npz
+==========================================================================
+### done Sun Oct  4 06:22:20 AM EDT 2026

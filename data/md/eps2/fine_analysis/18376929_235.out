@@ -1,0 +1,35 @@
+### Sun Oct  4 06:27:43 AM EDT 2026: /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.06/field_p01 -> /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps2_dz005/runs/prod_T1.0_c0.06/field_p01/profiles.npz (mmax 8, binw 0.05)
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.06/field_p01  potential=p01 kind=both pp(V_N)=2.80 pp(psi)=2.80 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 3.78e-05 of range  OK
+        bin-by-bin: 98.2% of 492 bins within 2 sigma, chi^2/bin = 0.63
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     4.77333e-05   4.62872e-04      2.42
+         2   -     4.27473e-05   1.98399e-04      0.84
+         3  yes    2.16066e-03   2.15513e-03      1.31
+         4  yes    3.85818e-03   4.02698e-03      0.98
+         5  yes    6.29821e-03   6.23571e-03      0.52
+         6  yes    6.04293e-03   6.46445e-03      2.64
+         7   -     1.51822e-04   2.86348e-04      0.73
+         8   -     1.63252e-04   7.40443e-05      0.65
+        driven modes only: max |diff|/err = 2.64
+        n_mean = 0.04842, contrast n_max/n_min = 3.49
+
+  anion: applied external force vs. stored spec, per particle: max dev 3.82e-05 of range  OK
+        bin-by-bin: 99.6% of 492 bins within 2 sigma, chi^2/bin = 0.41
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     4.65899e-05   5.91789e-05      0.33
+         2   -     3.55593e-05   1.10535e-04      1.22
+         3  yes    1.85790e-03   1.74769e-03      0.99
+         4  yes    3.14715e-03   3.04308e-03      0.78
+         5  yes    4.86374e-03   4.76226e-03      0.92
+         6  yes    3.82773e-03   3.83645e-03      0.54
+         7   -     2.79171e-04   4.13696e-04      1.20
+         8   -     2.62335e-04   3.29993e-04      0.29
+        driven modes only: max |diff|/err = 0.99
+        n_mean = 0.04842, contrast n_max/n_min = 2.05
+
+wrote /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps2_dz005/runs/prod_T1.0_c0.06/field_p01/profiles.npz
+==========================================================================
+### done Sun Oct  4 06:29:37 AM EDT 2026

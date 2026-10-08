@@ -1,0 +1,51 @@
+### acceptance for /mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/prod_T1.0_c0.05/field_p14  Thu Sep 24 09:43:27 PM EDT 2026
+### lz = 24.597787, mmax = 22
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/prod_T1.0_c0.05/field_p14  potential=p14 kind=neutral pp(V_N)=1.87 pp(psi)=0.00 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 5.33e-05 of range  OK
+        bin-by-bin: 95.5% of 246 bins within 2 sigma, chi^2/bin = 0.96
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     1.53640e-05   2.51330e-04      1.01
+         2   -     2.33019e-05   4.78742e-04      1.59
+         3   -     4.11410e-05   3.96775e-04      1.87
+         4  yes    9.14140e-03   9.26787e-03      0.67
+         5   -     7.49185e-05   1.20169e-04      0.70
+         6   -     1.79152e-04   3.54259e-04      0.66
+         7   -     6.13860e-05   2.52396e-04      0.81
+         8  yes    4.76829e-04   4.26462e-04      0.47
+        driven modes only: max |diff|/err = 1.61
+        n_mean = 0.04031, contrast n_max/n_min = 3.18
+
+  anion: applied external force vs. stored spec, per particle: max dev 5.31e-05 of range  OK
+        bin-by-bin: 100.0% of 246 bins within 2 sigma, chi^2/bin = 0.64
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     1.54488e-05   6.28100e-05      0.48
+         2   -     2.03404e-05   1.26579e-04      0.85
+         3   -     1.06945e-05   1.97081e-04      1.65
+         4  yes    3.22271e-03   3.33655e-03      1.17
+         5   -     4.66620e-05   2.14730e-04      1.29
+         6   -     5.06490e-05   1.59275e-04      0.65
+         7   -     3.85407e-05   2.18580e-04      1.19
+         8  yes    3.87674e-03   3.99868e-03      0.64
+        driven modes only: max |diff|/err = 1.17
+        n_mean = 0.04031, contrast n_max/n_min = 1.73
+
+wrote /mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/prod_T1.0_c0.05/field_p14/profiles.npz
+==========================================================================
+==========================================================================
+field acceptance  /mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/prod_T1.0_c0.05/field_p14
+  L = 24.5978, driven modes [4, 8, 12, 16, 20, 24, 28, 32, 36]
+Traceback (most recent call last):
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_acceptance.py", line 198, in <module>
+    main()
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_acceptance.py", line 148, in main
+    (n1, e1), (n2, e2), zc, nframe = halves(a.run, which)
+                                     ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_acceptance.py", line 59, in halves
+    st, zc, nn = read_ave_chunk(f)
+                 ^^^^^^^^^^^^^^^^^
+  File "/mnt/gs21/scratch/lyuliyao/salt_in_polymer/tools/field_trend.py", line 46, in read_ave_chunk
+    return np.array(steps[:len(a)]), a[0, :, 0], a[:, :, 1]
+                                     ~^^^^^^^^^
+IndexError: too many indices for array: array is 1-dimensional, but 3 were indexed

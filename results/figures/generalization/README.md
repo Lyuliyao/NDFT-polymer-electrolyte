@@ -1,0 +1,11 @@
+# Generalization figure (main-text Fig. 3)
+
+Run `python paper/figures/make_generalization.py` from an environment with NumPy and Matplotlib. PDF, SVG and PNG outputs use the same data and layout.
+
+Panel A shows the full cation density profile in a box twice the training length under the superposed potential p62 (a mode at k_1/2, half the smallest wavenumber of the training box, with a peak-to-peak amplitude of 1 kT, plus five irregular Gaussian wells and barriers and Fourier modes between the training wavenumbers in the neutral part; modes at training wavenumbers in the charged part), at c = 0.04 and dielectric constants 7.5 and 2. Black curves and gray bands show MD means and ±2 archived standard errors; blue dashed curves show the spectrum-loss neural functional (KBK2; seed 0 at eps_r = 7.5 and seed 1 at eps_r = 2, the initializations with the lowest validation residual). The rows share density-axis limits. Profiles are neither smoothed nor folded. Since 2026-10-06 this potential replaces the repeated training potential p01; statistics for all long-box tests are in SI section S4.1.
+
+Panels B and C show MD and predicted cation densities for the aperiodic two-dimensional potential p55 (three oblique plane waves and three Gaussian barriers in the neutral part, four irregularly placed charged Gaussian wells) at the same concentration and dielectric constants; it replaces the egg carton p50. Prediction maps use the same models. No baseline predictions or difference panel are plotted.
+
+`data/bigbox/profiles.npz` contains the raw MD cation profiles, archived standard errors, the predictions of these models, potential specifications, and source paths/hashes. `export_profiles.py` reads the original amd20 archives and emits this compact cache on standard output. `data/aperiodic2d/maps.npz` contains the MD density, its binwise standard error, the neural prediction, and geometry/source metadata; it is produced by `export_data.py`. `metrics.json` records source paths, hashes, scales and numerical checks. The retained binwise difference diagnostic is distinct from the Fourier-mode RMS errors quoted in the manuscript and is not displayed.
+
+The MD and prediction maps share one density color scale within each row. Maps are displayed without spatial smoothing.

@@ -1,0 +1,73 @@
+{
+  "variant": "cace",
+  "M": 8,
+  "s_min": 0.25,
+  "s_max": 2.0,
+  "depth": 1,
+  "C": 4,
+  "hidden": 64,
+  "readout_hidden": [
+    128,
+    128
+  ],
+  "grad_invariants": false,
+  "grad_channels": [
+    2,
+    5
+  ],
+  "n_ref": 0.4,
+  "deep_s_max": -1.0,
+  "avni_a": 1.0,
+  "pair_scale": 100.0,
+  "packing": false,
+  "pack_width": 0.5,
+  "pack_vmax": 4.0,
+  "pack_eta_max": 0.95,
+  "pack_v0": [
+    -1.0,
+    -1.0
+  ],
+  "log_inputs": false,
+  "win_bins": 30,
+  "cace_a": 5,
+  "cace_qcut": 3,
+  "cace_scale": [
+    6758.304336646205,
+    13060.062748410777,
+    1282628.639175479,
+    2478316.8464674917,
+    17309.415057571103,
+    60920.78563834618,
+    28164.57645351384,
+    4790033.94143279,
+    4788375.695091442,
+    1.0,
+    214917.56077478398,
+    99026.67973681702,
+    45847.10152493848,
+    45847.10152493848,
+    1.0
+  ],
+  "loc_hidden": [
+    32,
+    16
+  ],
+  "kernel_net": [],
+  "activation": "silu",
+  "kernel_dr": 0.01,
+  "kernel_rmax": 5.0,
+  "cnn_channels": [
+    16,
+    16,
+    32,
+    32,
+    64,
+    64
+  ],
+  "cnn_kernel": 3,
+  "cnn_dilation": 2,
+  "cnn_len": 3,
+  "cnn_rows": 8,
+  "seed": 1,
+  "n_species": 1
+}

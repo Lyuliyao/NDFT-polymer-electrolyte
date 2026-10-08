@@ -1,0 +1,48 @@
+### acceptance for /mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/pilot_T1.0_c0.04_one_both/field_p18  Thu Sep 24 09:54:31 PM EDT 2026
+### lz = 24.502285, mmax = 22
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/pilot_T1.0_c0.04_one_both/field_p18  potential=p18 kind=both pp(V_N)=2.08 pp(psi)=0.75 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 8.99e-05 of range  OK
+        bin-by-bin: 95.9% of 245 bins within 2 sigma, chi^2/bin = 0.88
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     2.71412e-05   1.75225e-04      1.09
+         2   -     3.13270e-05   5.60102e-05      0.31
+         3  yes    3.88768e-04   4.56025e-04      0.64
+         4  yes    7.84289e-04   7.89510e-04      0.67
+         5  yes    5.90013e-03   5.87023e-03      0.34
+         6  yes    7.69413e-03   7.80109e-03      0.34
+         7   -     2.50876e-04   2.91761e-04      0.23
+         8  yes    7.50595e-03   7.53751e-03      0.44
+        driven modes only: max |diff|/err = 0.69
+        n_mean = 0.03263, contrast n_max/n_min = 6.35
+
+  anion: applied external force vs. stored spec, per particle: max dev 9.65e-05 of range  OK
+        bin-by-bin: 91.8% of 245 bins within 2 sigma, chi^2/bin = 1.36
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     2.14328e-05   5.50973e-05      0.67
+         2   -     1.43112e-05   8.49614e-05      1.01
+         3  yes    1.34180e-04   2.01056e-04      1.19
+         4  yes    2.87294e-04   4.13879e-04      1.45
+         5  yes    2.59258e-03   2.57176e-03      0.65
+         6  yes    3.51781e-03   3.48330e-03      0.43
+         7   -     1.39042e-04   1.24960e-04      0.10
+         8  yes    7.27492e-03   7.32512e-03      0.33
+        driven modes only: max |diff|/err = 1.76
+        n_mean = 0.03263, contrast n_max/n_min = 4.85
+
+wrote /mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/pilot_T1.0_c0.04_one_both/field_p18/profiles.npz
+==========================================================================
+==========================================================================
+field acceptance  /mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/pilot_T1.0_c0.04_one_both/field_p18
+  L = 24.5023, driven modes [3, 4, 5, 6, 8, 20]
+  cation: halves agree on 99.6% of 246 bins (chi^2/bin 0.82, max pull 2.5)   [diagnostic]
+          driven modes: median 0.7 sigma, worst m=4 at 1.2 sigma  OK   [undriven worst m=7 at 1.3 sigma, not a gate]
+  anion : halves agree on 93.1% of 246 bins (chi^2/bin 1.25, max pull 2.7)   [diagnostic]
+          driven modes: median 0.7 sigma, worst m=4 at 1.4 sigma  OK   [undriven worst m=7 at 2.3 sigma, not a gate]
+  mean ion current over 11600 samples:
+    v_cm,z(cation) = -1.648e-04 +- 2.1e-04  (0.8 sigma from zero)  OK
+    v_cm,z(anion ) = -1.759e-05 +- 2.1e-04  (0.1 sigma from zero)  OK
+  -> PASS
+==========================================================================
+### acceptance p18 done Thu Sep 24 09:55:08 PM EDT 2026

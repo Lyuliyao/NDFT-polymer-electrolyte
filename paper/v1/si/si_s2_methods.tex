@@ -1,0 +1,172 @@
+\section*{S2. Data, force matching and prediction}
+
+\subsection*{S2.1 Model and data}
+The molecular dynamics model and simulation protocol are described in the main text. The additional interaction parameters are the FENE bond constants $K=30\epsilon/\sigma^2$ and $R_0=1.5\sigma$, the Lennard-Jones mixing rule $\sigma_{ij}=(\sigma_i+\sigma_j)/2$, and a $2\sigma$ cutoff for monomer pairs. Interactions involving ions are purely repulsive apart from electrostatics and the ion--monomer solvation potential \cite{tsamopoulos2024ion,shen2020ion},
+\[
+U_{\rm solv}(r)=-S\left[\left(\frac{\sigma}{r}\right)^4-\left(\frac{\sigma}{r_c}\right)^4\right],\qquad r\le r_c,
+\]
+with $S=4.33\epsilon$, $r_c=5\sigma$ and $\epsilon=k_BT$. Each concentration is equilibrated at zero pressure and sampled at its mean volume. The two dielectric constants use the same interaction parameters apart from electrostatics.
+Four runs at each training concentration are held out, covering the different potential families, and three further runs are used for validation. 
+Densities and internal force densities are recorded on $0.1\sigma$ bins. Profile uncertainties use eight time blocks. In the covariance-aware analysis, internal-force blocks are formed as $f_b^{\rm int}=f_b^{\rm tot}-f_b^{\rm ext}$ before computing their standard error.
+
+\subsection*{S2.2 Force matching}
+Let $\mathbf R$ denote all particle coordinates and
+$\rmd\mathbf R$ the corresponding configurational measure.
+The normalized canonical distribution is
+\[
+P(\mathbf R)
+=
+Z^{-1}\exp\left[
+-\frac{1}{k_BT}
+\left(
+U_{\rm int}(\mathbf R)
++\sum_\alpha\sum_{j\in\alpha}V_\alpha(\vr_j)
+\right)
+\right],
+\]
+and the one-body density is
+\[
+n_\alpha(\vr)
+=
+\left\langle
+\sum_{j\in\alpha}\delta(\vr-\vr_j)
+\right\rangle
+=
+\sum_{j\in\alpha}\int\rmd\mathbf R\,
+P(\mathbf R)\,\delta(\vr-\vr_j).
+\]
+Using
+$\nabla_{\vr}\delta(\vr-\vr_j)
+=-\nabla_j\delta(\vr-\vr_j)$
+and integrating by parts over $\vr_j$, we obtain
+\[
+\begin{aligned}
+\nabla n_\alpha(\vr)
+&=
+\sum_{j\in\alpha}\int\rmd\mathbf R\,
+P(\mathbf R)\,\nabla_{\vr}\delta(\vr-\vr_j)\\
+&=
+-\sum_{j\in\alpha}\int\rmd\mathbf R\,
+P(\mathbf R)\,\nabla_j\delta(\vr-\vr_j)\\
+&=
+\sum_{j\in\alpha}\int\rmd\mathbf R\,
+\delta(\vr-\vr_j)\,\nabla_jP(\mathbf R).
+\end{aligned}
+\]
+The boundary term vanishes for periodic boundaries
+(with the periodic delta function), or for sufficiently
+decaying distributions. For $j\in\alpha$,
+\[
+\nabla_jP(\mathbf R)
+=
+-\frac{P(\mathbf R)}{k_BT}
+\left[
+\nabla_jU_{\rm int}(\mathbf R)
++\nabla_jV_\alpha(\vr_j)
+\right].
+\]
+Substitution therefore gives
+\[
+\begin{aligned}
+k_BT\nabla n_\alpha(\vr)
+={}&
+-\left\langle
+\sum_{j\in\alpha}\delta(\vr-\vr_j)
+\nabla_jU_{\rm int}
+\right\rangle\\
+&-
+\left\langle
+\sum_{j\in\alpha}\delta(\vr-\vr_j)
+\nabla_jV_\alpha(\vr_j)
+\right\rangle.
+\end{aligned}
+\]
+Since the delta function fixes $\vr_j=\vr$,
+\[
+\left\langle
+\sum_{j\in\alpha}\delta(\vr-\vr_j)
+\nabla_jV_\alpha(\vr_j)
+\right\rangle
+=
+n_\alpha(\vr)\nabla V_\alpha(\vr).
+\]
+Defining the internal force density by
+\[
+\vf^{\rm int}_\alpha(\vr)
+=
+-\left\langle
+\sum_{j\in\alpha}\delta(\vr-\vr_j)
+\nabla_jU_{\rm int}
+\right\rangle,
+\]
+we recover the local force balance
+\cite{tschopp2022force,hansen2013theory},
+\begin{equation}
+k_BT\nabla n_\alpha(\vr)
+=
+\vf^{\rm int}_\alpha(\vr)
+-n_\alpha(\vr)\nabla V_\alpha(\vr).
+\label{eq:S:YBG}
+\end{equation}
+Taking the gradient of the Euler--Lagrange equation and using Eq.~\ref{eq:S:YBG} yields $\vf^{\rm int}_\alpha=-n_\alpha\nabla(e_\alpha\phi+\mu^{\rm ex}_\alpha)$, the force-matching relation of the main text. 
+
+The six Gaussian envelope widths are $0.250$, $0.330$, $0.435$, $0.574$, $0.758$ and $1.000\sigma$. The pointwise network receives $h_{m\alpha}/n_{\rm ref}$, with $n_{\rm ref}=0.02\sigma^{-3}$, and its output contributes $n_{\rm ref}\int\Phi_\theta\,\rmd\vr$ to the free energy. Other architecture parameters are given in the main text. The kernel range and activation were selected using only
+the validation profiles at $\varepsilon_r=2$.
+
+Training uses full batches and the AdamW schedule specified in the main text, with learning rate reduced to $10^{-5}$. Validation is evaluated every 20 steps. Early stopping uses a patience of 1000 steps after at least 200 steps, and the best validation parameters are retained.
+Table~\ref{tab:S:spectrum} compares training with and without the Fourier term, using the same architecture and data splits. The Fourier term improves the long-wavelength amplitude and number response and leaves the profile errors unchanged.
+
+\begin{table}[H]
+\centering
+\caption{Loss ablation with and without the Fourier term weighted by $(k\sigma)^{-2}$. The amplitude ratio is the predicted over MD amplitude of the $k_1$ mode summed over the six long-wavelength training runs at $c=0.04$. At this concentration, MD gives $\Gamma(k_1)=4.38\pm0.15$ and $3.14\pm0.56$ at $\varepsilon_r=7.5$ and 2, respectively. In the last two columns, values before and after the slash
+correspond to neutral ($\psi=0$) and mixed neutral/charged
+($V_N\neq0$, $\psi\neq0$) external potentials, respectively.}
+\label{tab:S:spectrum}
+\begin{tabular}{c l c c c c c}
+$\varepsilon_r$ & Fourier term & Ratio at $k_1$ & $\Gamma(k_1)$  & Profile (\%) & $k_1/2$ (\%) & $k_1/4$ (\%)\\
+\midrule
+7.5 & without & 0.95 & 4.56 & 1.45 & 18 / 8 & 13 / 8\\
+7.5 & with & 0.96 & 4.47 & 1.50 & 16 / 6 & 11 / 6\\
+2 & without & 0.87 & 3.85 & 3.09 & 11 / 10 & 15 / 17\\
+2 & with & 0.92 & 3.70 & 3.11 & 7 / 7 & 12 / 14\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{S2.3 Predictions and uncertainty}
+At fixed particle numbers, the predicted planar profiles satisfy
+\begin{equation}
+n_\alpha(z)=N_\alpha\frac{e^{-u_\alpha(z)}}{A\int_0^L e^{-u_\alpha(z')}\,\rmd z'},\qquad
+u_\alpha=V_\alpha+e_\alpha\phi[\vn]+\mu^{\rm ex}_\alpha[\vn],
+\label{eq:S:canon}
+\end{equation}
+where $A$ is the cross-sectional area. The chemical potentials enforcing particle numbers drop out. We solve for $u_\alpha$ using Anderson acceleration with history eight and mixing parameter 0.1 \cite{anderson1965iterative,walker2011anderson}. The charge residual is preconditioned by $k^2/(k^2+\kappa_D^2)$ \cite{kerker1981efficient}. Convergence requires the maximum density change divided by $\nb$ to be below $10^{-6}$. Profile errors are $\|n_\alpha^{\rm pred}-n_\alpha^{\rm MD}\|_2/\|n_\alpha^{\rm MD}\|_2$, averaged over runs.
+
+The bulk kernel $W_{\alpha\beta}(k)$ follows by automatic differentiation of $\mu^{\rm ex}_\alpha$ at uniform density along a one-bin perturbation of species $\beta$, followed by Fourier transformation. Equation~\ref{eq:S:OZ} gives $S(k)$. The neural functionals used for the main results have no negative eigenvalues of $S(k)^{-1}$ at the sampled concentrations and wavenumbers of a box eight times longer than the simulation box.
+
+MD structure factors are obtained from zero-field runs.
+For each frame, we compute the microscopic Fourier densities
+\[
+\tilde n_\alpha(\mathbf k,t)
+=
+\sum_{j\in\alpha}
+e^{-i\mathbf k\cdot\vr_j(t)},
+\qquad
+\mathbf k=\frac{2\pi}{L}\mathbf m,
+\quad \mathbf m\in\mathbb Z^3.
+\]
+For the homogeneous system at nonzero wavevectors,
+$\langle\tilde n_\alpha(\mathbf k,t)\rangle=0$.
+The number structure factor is therefore
+\[
+S_{NN}(k)
+=
+\frac{1}{V}
+\left\langle
+\left|
+\tilde n_+(\mathbf k,t)+\tilde n_-(\mathbf k,t)
+\right|^2
+\right\rangle_{t,\,|\mathbf k|=k},
+\]
+where $V=L^3$ and the average is over time and wavevector
+directions with the same magnitude.s

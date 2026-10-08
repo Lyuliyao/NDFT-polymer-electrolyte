@@ -1,0 +1,22 @@
+# Verify that `fix addforce` applies exactly -dV_alpha/dz from the generated
+# potential file.  pair_style zero, so the dumped force IS the external force.
+units           lj
+atom_style      full
+boundary        p p p
+region          box block 0 ${lz} 0 ${lz} 0 ${lz}
+create_box      3 box
+create_atoms    2 random 200 12345 box
+create_atoms    3 random 200 54321 box
+mass            * 1.0
+pair_style      zero 2.0
+pair_coeff      * *
+group           cations type 2
+group           anions  type 3
+include         ${pot}
+fix             extc cations addforce 0.0 0.0 v_fz_cat energy v_ez_cat
+fix             exta anions  addforce 0.0 0.0 v_fz_ani energy v_ez_ani
+fix             int all nve
+timestep        0.0
+dump            d all custom 1 extcheck.dump id type x y z fx fy fz
+dump_modify     d sort id format line "%d %d %.10g %.10g %.10g %.10g %.10g %.10g"
+run             1

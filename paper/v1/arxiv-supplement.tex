@@ -1,0 +1,28 @@
+% Supporting material, with independent counters and bibliography.
+\clearpage
+\begingroup
+\small
+\setcounter{equation}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+% Keep PDF destinations distinct from the main-text counters.
+\renewcommand{\theHequation}{S.\arabic{equation}}
+\renewcommand{\theHfigure}{S.\arabic{figure}}
+\renewcommand{\theHtable}{S.\arabic{table}}
+\section*{Supplementary Information}
+\begin{center}\large\bfseries\PaperTitle\end{center}
+\def\SISourcePath{si/}
+% Namespaces both citation labels and PDF links for the second bibliography.
+\makeatletter
+\def\@extra@b@citeb{.SI}
+\def\@extra@binfo{.SI}
+\makeatother
+\begin{bibunit}[unsrtnat]
+\input{si/si-content}
+\renewcommand{\refname}{Supplementary References}
+\putbib[references]
+\end{bibunit}
+\endgroup

@@ -1,0 +1,33 @@
+### Sun Oct  4 06:27:33 AM EDT 2026: /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.06/field_p05 -> /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps2_dz005/runs/prod_T1.0_c0.06/field_p05/profiles.npz (mmax 7, binw 0.05)
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.06/field_p05  potential=p05 kind=both pp(V_N)=1.52 pp(psi)=0.52 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 2.83e-05 of range  OK
+        bin-by-bin: 97.8% of 492 bins within 2 sigma, chi^2/bin = 0.74
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     6.15666e-06   2.43465e-04      1.05
+         2   -     2.53226e-05   1.35272e-04      1.08
+         3  yes    9.95074e-04   9.25170e-04      0.68
+         4  yes    3.22216e-03   3.14921e-03      0.30
+         5  yes    2.83726e-03   3.18292e-03      2.45
+         6   -     1.37861e-05   2.20115e-04      0.78
+         7   -     1.55944e-04   1.80345e-04      0.18
+        driven modes only: max |diff|/err = 2.45
+        n_mean = 0.04842, contrast n_max/n_min = 1.56
+
+  anion: applied external force vs. stored spec, per particle: max dev 3.04e-05 of range  OK
+        bin-by-bin: 98.8% of 492 bins within 2 sigma, chi^2/bin = 0.52
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     6.44037e-06   1.98829e-05      0.19
+         2   -     2.27828e-05   1.20482e-04      0.88
+         3  yes    8.74599e-04   1.06380e-03      1.61
+         4  yes    2.62968e-03   2.71197e-03      0.89
+         5  yes    2.88623e-03   2.94564e-03      0.60
+         6   -     8.85572e-05   1.28839e-04      0.72
+         7   -     1.42932e-04   2.09934e-04      0.44
+        driven modes only: max |diff|/err = 1.61
+        n_mean = 0.04842, contrast n_max/n_min = 1.45
+
+wrote /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps2_dz005/runs/prod_T1.0_c0.06/field_p05/profiles.npz
+==========================================================================
+### done Sun Oct  4 06:29:32 AM EDT 2026

@@ -1,0 +1,33 @@
+### Sun Oct  4 06:05:40 AM EDT 2026: /mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/pilot_T1.0_c0.04_one_both/field_p05 -> /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005/runs/pilot_T1.0_c0.04_one_both/field_p05/profiles.npz (mmax 7, binw 0.05)
+==========================================================================
+YBG check  run=/mnt/gs21/scratch/lyuliyao/salt_in_polymer/runs/pilot_T1.0_c0.04_one_both/field_p05  potential=p05 kind=charged pp(V_N)=0.00 pp(psi)=2.80 kT
+
+  cation: applied external force vs. stored spec, per particle: max dev 3.34e-05 of range  OK
+        bin-by-bin: 99.0% of 490 bins within 2 sigma, chi^2/bin = 0.59
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     7.05498e-05   2.07138e-04      0.73
+         2   -     5.23600e-05   1.59748e-04      0.74
+         3   -     1.67558e-04   7.75094e-05      0.64
+         4  yes    7.38327e-03   7.32551e-03      0.61
+         5  yes    1.31342e-02   1.33924e-02      1.16
+         6   -     6.99595e-04   9.86883e-04      0.80
+         7   -     2.11532e-04   4.23359e-04      0.74
+        driven modes only: max |diff|/err = 1.16
+        n_mean = 0.03263, contrast n_max/n_min = 10.24
+
+  anion: applied external force vs. stored spec, per particle: max dev 3.34e-05 of range  OK
+        bin-by-bin: 99.2% of 490 bins within 2 sigma, chi^2/bin = 0.53
+         m  driven   kT k_m |n_m|        |f_m|         |diff|/err
+         1   -     5.96034e-05   1.64491e-04      1.42
+         2   -     3.02740e-05   1.44469e-04      0.63
+         3   -     4.33630e-05   2.02841e-04      1.94
+         4  yes    2.73415e-03   2.76200e-03      0.70
+         5  yes    7.00131e-03   7.03790e-03      1.31
+         6   -     1.66081e-04   9.45224e-05      0.46
+         7   -     3.66922e-05   1.15653e-04      0.50
+        driven modes only: max |diff|/err = 1.31
+        n_mean = 0.03263, contrast n_max/n_min = 2.88
+
+wrote /mnt/research/MultiscaleML_group/Liyao/salt_in_polymer_eps75_dz005/runs/pilot_T1.0_c0.04_one_both/field_p05/profiles.npz
+==========================================================================
+### done Sun Oct  4 06:06:18 AM EDT 2026

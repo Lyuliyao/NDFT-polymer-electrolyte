@@ -1,0 +1,26 @@
+# Big-box start for the size test: an equilibrated zero-field configuration of
+# the production box, replicated n times along z, then decorrelated.
+# The copies are exact images, so fresh random velocities break the symmetry
+# and an NVT stretch lets the local structure of the copies decorrelate
+# (the modes k < 2 pi / L_small start at zero amplitude and relax on their
+# own, slower clock; the field runs' transient takes care of that).
+units           lj
+atom_style      full
+boundary        p p p
+variable        T       index 1.0
+variable        nrep    index 2
+variable        nequil  index 200000     # 1000 tau
+variable        seed    index 20260929
+variable        Lt      index 0.0        # >0: rescale the small box to this edge first (NPT start)
+read_data       ${data}
+if "${Lt} > 0.0" then "change_box all x final 0.0 ${Lt} y final 0.0 ${Lt} z final 0.0 ${Lt} remap units box"
+replicate       1 1 ${nrep}
+include         ${ff}
+velocity        all create ${T} ${seed} dist gaussian mom yes rot no
+velocity        all zero linear
+fix             int all nvt temp ${T} ${T} 1.0
+timestep        0.005
+thermo_style    custom step temp epair ebond elong press vol
+thermo          5000
+run             ${nequil}
+write_restart   ${out}

@@ -1,0 +1,35 @@
+# Zero-field replica with checkpoints (2026-10-07, for the preemptible scavenger partition).  resume = 0: fresh start
+# from the NPT restart with fresh Gaussian velocities (one seed per replica), the box set to the zero-field edge, a
+# 5000 tau NVT equilibration, then production from step 0; resume = 1: continue the production from the checkpoint
+# rep.<step> (the job script has cut ions.dump back to that step, so appending neither repeats nor skips a frame).
+units           lj
+atom_style      full
+boundary        p p p
+
+variable        T       index 1.0
+variable        Lt      index 0.0
+variable        nequil  index 1000000
+variable        nsteps  index 8000000
+variable        ndump   index 1000
+variable        seed    index 1
+variable        resume  index 0
+variable        nrst    index 500000
+
+read_restart    ${restart}
+include         ${ff}
+
+if "${resume} == 0" then "velocity all create ${T} ${seed} dist gaussian" "velocity all zero linear" &
+   "change_box all x final 0.0 ${Lt} y final 0.0 ${Lt} z final 0.0 ${Lt} remap units box"
+
+fix             int all nvt temp ${T} ${T} 1.0
+timestep        0.005
+thermo_style    custom step temp epair elong press
+thermo          10000
+if "${resume} == 0" then "run ${nequil}" "reset_timestep 0"
+
+dump            dions ions custom ${ndump} ions.dump id type xu yu zu
+dump_modify     dions sort id format line "%d %d %.4f %.4f %.4f"
+if "${resume} == 1" then "dump_modify dions append yes"
+restart         ${nrst} rep.*
+run             ${nsteps} upto
+write_restart   rep.final

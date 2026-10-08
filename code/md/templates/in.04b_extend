@@ -1,0 +1,36 @@
+units           lj
+atom_style      full
+boundary        p p p
+
+variable        T       index 1.0
+variable        target  index 12000000
+variable        ndump   index 200
+variable        nrst    index 1000000
+variable        seg     index 1
+
+read_restart    ${restart}
+include         ${ff}
+
+velocity        all zero linear
+
+fix             int all nvt temp ${T} ${T} 1.0
+timestep        0.005
+thermo_style    custom step temp epair ebond elong press vol
+thermo          5000
+
+compute         msdcat cations msd
+compute         msdani anions  msd
+fix             msdout all ave/time ${ndump} 1 ${ndump} &
+                c_msdcat[4] c_msdani[4] file msd.${seg}.dat &
+                title2 "# step msd_cation msd_anion"
+
+dump            dions ions custom ${ndump} ions.dump id type xu yu zu fx fy fz
+dump_modify     dions sort id format line "%d %d %.4f %.4f %.4f %.5g %.5g %.5g" append yes
+
+fix             thermolog all ave/time 200 5 1000 c_thermo_temp c_thermo_press &
+                file thermo.${seg}.dat title2 "# step temp press"
+
+restart         ${nrst} restart.zf.*
+
+run             ${target} upto
+write_restart   ${out}

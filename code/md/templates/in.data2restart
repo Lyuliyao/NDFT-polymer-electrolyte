@@ -1,0 +1,7 @@
+units           lj
+atom_style      full
+boundary        p p p
+read_data       ${data}
+include         ${ff}
+run             0
+write_restart   ${out}

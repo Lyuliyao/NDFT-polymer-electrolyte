@@ -1,0 +1,6 @@
+# size test: big-box m = 1, k = k_1/2, pp 1.0 kT, both
+# L_z=48.833128  modes m: V_N [1]  psi [1]
+variable fz_cat atom "0.0643332258706*sin(0.128666451741*z+0.3)+0.0643332258706*sin(0.128666451741*z+1.4)"
+variable fz_ani atom "0.0643332258706*sin(0.128666451741*z+0.3)-0.0643332258706*sin(0.128666451741*z+1.4)"
+variable ez_cat atom "0.5*cos(0.128666451741*z+0.3)+0.5*cos(0.128666451741*z+1.4)"
+variable ez_ani atom "0.5*cos(0.128666451741*z+0.3)-0.5*cos(0.128666451741*z+1.4)"

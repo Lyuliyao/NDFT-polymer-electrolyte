@@ -1,0 +1,19 @@
+==============================================================================
+zero-field report  /mnt/gs21/scratch/lyuliyao/salt_in_polymer/eps2/runs/prod_T1.0_c0.02/zero_field
+  20001 frames, 20000 tau, 240 ion pairs, L = 24.3386, V = 14417.4
+  COM drift 9.14e-06 sigma/tau   OK
+  D_cation = 3.2695e-03  (log-log slope over lags 1000-6000 tau: 0.958)
+  D_anion  = 5.4863e-03  (slope 0.983)
+  diffusive regime reached: yes
+  tau_int of the density modes (complex, real and imaginary parts):
+      m  lambda     cation      anion   (tau)
+      2   12.17        820        828
+      3    8.11        325        305
+      4    6.08        180        104
+      5    4.87        121         56
+      6    4.06         63         48
+  m=3: 1/(k^2 D_s) = 510 tau, measured tau_int = 325 tau (noisy), tau_eff = 2.0x tracer = 1020 tau
+  -> transient 2.2e+06 steps (10199 tau), production 1.02e+07 steps (50993 tau)
+  S_ZZ/(2n) at k_min = 0.258: ratio to k^2/kappa_D^2 = 1.028 OK
+  wrote D.json, tau_int.json, Sk.npz
+==============================================================================

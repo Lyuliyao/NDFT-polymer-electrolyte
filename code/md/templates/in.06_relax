@@ -1,0 +1,83 @@
+units           lj
+atom_style      full
+boundary        p p p
+
+variable        T       index 1.0
+variable        DIR     index z
+variable        dt      index 0.005
+variable        nsteps  index 60000
+variable        nave    index 200
+variable        nrst    index 20000
+variable        resume  index 0
+variable        seg     index 0
+variable        dz      index 0.004081632654
+
+read_restart    ${restart}
+include         ${ff}
+include         ${potfile}
+
+if "${resume} == 0" then "reset_timestep 0"
+velocity        all zero linear
+
+fix             int all nvt temp ${T} ${T} 1.0
+timestep        ${dt}
+
+if "${DIR} == x" then &
+  "fix extc cations addforce v_fx_cat 0.0 0.0 energy v_ex_cat" &
+  "fix exta anions  addforce v_fx_ani 0.0 0.0 energy v_ex_ani" &
+elif "${DIR} == y" &
+  "fix extc cations addforce 0.0 v_fy_cat 0.0 energy v_ey_cat" &
+  "fix exta anions  addforce 0.0 v_fy_ani 0.0 energy v_ey_ani" &
+elif "${DIR} == z" &
+  "fix extc cations addforce 0.0 0.0 v_fz_cat energy v_ez_cat" &
+  "fix exta anions  addforce 0.0 0.0 v_fz_ani energy v_ez_ani" &
+else "print 'DIR must be x, y or z'" "quit 1"
+fix_modify      extc energy yes
+fix_modify      exta energy yes
+
+variable        vf2 atom v${DIR}*v${DIR}
+variable        vh  atom v${DIR}+0.5*${dt}*f${DIR}/mass
+variable        vh2 atom v_vh*v_vh
+
+compute         ckcat cations chunk/atom bin/1d ${DIR} lower ${dz} units reduced
+compute         ckani anions  chunk/atom bin/1d ${DIR} lower ${dz} units reduced
+fix             acat cations ave/chunk 1 ${nave} ${nave} ckcat &
+                density/number v${DIR} f${DIR} v_f${DIR}_cat v_vf2 v_vh2 norm all file ave_cat.${seg}.dat
+fix             aani anions  ave/chunk 1 ${nave} ${nave} ckani &
+                density/number v${DIR} f${DIR} v_f${DIR}_ani v_vf2 v_vh2 norm all file ave_ani.${seg}.dat
+if "${resume} == 0" then &
+  "fix s0cat cations ave/chunk 1 1 ${nsteps} ckcat density/number v${DIR} f${DIR} v_f${DIR}_cat v_vf2 v_vh2 norm all file snap_cat.dat" &
+  "fix s0ani anions  ave/chunk 1 1 ${nsteps} ckani density/number v${DIR} f${DIR} v_f${DIR}_ani v_vf2 v_vh2 norm all file snap_ani.dat"
+
+dump            dcat cations custom ${nave} cat.dump id type xu yu zu fx fy fz v_f${DIR}_cat
+dump_modify     dcat sort id format line "%d %d %.4f %.4f %.4f %.5g %.5g %.5g %.5g"
+dump            dani anions custom ${nave} ani.dump id type xu yu zu fx fy fz v_f${DIR}_ani
+dump_modify     dani sort id format line "%d %d %.4f %.4f %.4f %.5g %.5g %.5g %.5g"
+if "${resume} == 1" then "dump_modify dcat append yes" "dump_modify dani append yes"
+
+compute         tion ions temp
+compute         tcat cations temp
+compute         tani anions temp
+compute_modify  tion extra/dof 0
+compute_modify  tcat extra/dof 0
+compute_modify  tani extra/dof 0
+compute         vf2cat cations reduce ave v_vf2
+compute         vf2ani anions  reduce ave v_vf2
+compute         vh2cat cations reduce ave v_vh2
+compute         vh2ani anions  reduce ave v_vh2
+variable        vcm_all equal vcm(all,${DIR})
+variable        vcm_cat equal vcm(cations,${DIR})
+variable        vcm_ani equal vcm(anions,${DIR})
+variable        vcm_mon equal vcm(monomers,${DIR})
+thermo_style    custom step temp c_tion c_tcat c_tani press pe f_extc f_exta
+thermo          ${nave}
+fix             thlog all ave/time ${nave} 1 ${nave} c_thermo_temp c_tion c_thermo_press &
+                c_thermo_pe f_extc f_exta v_vcm_all v_vcm_cat v_vcm_ani v_vcm_mon &
+                c_tcat c_tani c_vf2cat c_vf2ani c_vh2cat c_vh2ani &
+                file thermo.${seg}.dat &
+                title2 "# step temp temp_ion press pe e_extc e_exta vcm_all vcm_cat vcm_ani vcm_mon temp_cat temp_ani vf2_cat vf2_ani vh2_cat vh2_ani"
+
+restart         ${nrst} restart.*
+
+run             ${nsteps} upto
+write_restart   ${out}

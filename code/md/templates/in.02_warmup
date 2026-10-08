@@ -1,0 +1,28 @@
+units           lj
+atom_style      full
+boundary        p p p
+
+variable        T       index 1.0
+variable        seed    index 55501
+variable        ncap    index 20000
+variable        nnvt    index 200000
+
+read_restart    ${restart}
+include         ${ff}
+
+velocity        all create ${T} ${seed} mom yes rot yes dist gaussian
+fix             int all nve/limit 0.05
+fix             lan all langevin ${T} ${T} 1.0 ${seed} zero yes
+thermo_style    custom step temp epair ebond elong press vol
+thermo          1000
+timestep        0.002
+run             ${ncap}
+unfix           int
+unfix           lan
+
+fix             int all nvt temp ${T} ${T} 1.0
+timestep        0.005
+thermo          5000
+run             ${nnvt}
+
+write_restart   ${out}

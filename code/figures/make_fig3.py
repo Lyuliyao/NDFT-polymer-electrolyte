@@ -24,7 +24,6 @@ def gamma_k1(d, root):
 gam = {e: {"pair": gamma_k1(M[e]["pair"][0], ROOTS[e]), "fun": [gamma_k1(d, ROOTS[e]) for d in M[e]["fun"]]} for e in ROOTS}
 gmd = {e: json.load(open(system(e)["gamma_md"])) for e in ROOTS}
 
-
 chi = {e: {m: [] for m in ("pair", "fun")} for e in ROOTS}
 p27 = {m: [] for m in ("pair", "fun")}
 for e, rt in ROOTS.items():
@@ -40,12 +39,12 @@ for e, rt in ROOTS.items():
                 if not keep.all(): p27[m].append(float(v[~keep][0]))
             chi[e][m].append(per)
 
-
-W_, H = 89, 86
+W_, H = 89, 124
 fig = plt.figure(figsize=(W_ * MM, H * MM))
 def ax_mm(x, y, w, h): return fig.add_axes([x / W_, y / H, w / W_, h / H])
-axz, axn = ax_mm(10, 50, 33, 29), ax_mm(54, 50, 33, 29)
-axg = {"7.5": ax_mm(10, 8, 33, 29), "2": ax_mm(54, 8, 33, 29)}
+axz, axn = ax_mm(10, 88, 33, 29), ax_mm(54, 88, 33, 29)
+axg = {"7.5": ax_mm(10, 47, 33, 29), "2": ax_mm(54, 47, 33, 29)}
+axk = {"7.5": ax_mm(10, 8, 33, 29), "2": ax_mm(54, 8, 33, 29)}
 
 S75 = system("7.5"); sps75, _ = D.load_all(root=S75["root"])
 cfg, ps = load_model(S75["fun"][0])
@@ -81,8 +80,19 @@ h = [plt.Line2D([], [], color=C_MD, marker="o", ms=2.2, lw=0), plt.Line2D([], []
      plt.Line2D([], [], color=C_PAIR, ls="--", marker="s", ms=1.9, lw=0.8)]
 axg["7.5"].legend(h, ["MD", "neural functional", "pair closure"], loc="upper left", handlelength=1.6, borderaxespad=0.2, labelspacing=0.25)
 panel(axg["7.5"], "c", x=-0.28, y=1.04); panel(axg["2"], "d", x=-0.28, y=1.04)
+KK = json.load(open(os.path.join(ROOT, "results/figures/kernel_k1.json")))
+for (e, ax), lab in zip(axk.items(), "ef"):
+    d = KK[e]; nb = np.array([d["fun"][f"{c:g}"]["nbar"] for c in CONCS])
+    g = np.array([gmd[e][f"{c:g}"]["shell1"]["Gamma"] for c in CONCS]); ge = np.array([gmd[e][f"{c:g}"]["shell1"]["Gamma_err"] for c in CONCS])
+    ax.axhline(0, color="#b0afa9", lw=0.6, ls=":")
+    ax.plot(CONCS, [d["fun"][f"{c:g}"]["sum"] for c in CONCS], "-", marker="o", ms=2.0, color=C_FUN, lw=0.9)
+    ax.plot(CONCS, [d["pair"][f"{c:g}"]["sum"] for c in CONCS], "--", marker="s", ms=1.9, color=C_PAIR, lw=0.8)
+    ax.errorbar(CONCS, 2 * (g - 1) / nb, yerr=2 * ge / nb, fmt="o", ms=2.2, color=C_MD, capsize=1.2, lw=0.6, zorder=5)
+    ax.set_xscale("log"); ax.minorticks_off()
+    ax.set_xticks([c for c in (0.01, 0.02, 0.04, 0.08) if c >= min(CONCS) - 1e-9]); ax.set_xticklabels([f"{c:g}" for c in (0.01, 0.02, 0.04, 0.08) if c >= min(CONCS) - 1e-9])
+    ax.set_xlabel("$c$", labelpad=1); ax.set_ylabel(r"$\mathbf{q}^{\mathsf{T}}W(k_1)\,\mathbf{q}\ /\ k_BT\sigma^3$", labelpad=1)
+    panel(ax, lab, x=-0.28, y=1.04)
 save(fig, "fig3")
-
 
 fig = plt.figure(figsize=(W_ * MM, 44 * MM)); xs = np.arange(len(CONCS))
 for i, e in enumerate(("7.5", "2")):
@@ -111,4 +121,4 @@ rep = {"test_chi2": {e: {m: [{f"{c:g}": v for c, v in s.items()} for s in chi[e]
 json.dump(rep, open(os.path.join(ROOT, "results/figures/fig3_metrics.json"), "w"), indent=1)
 for e in ROOTS:
     gf_ = np.array([[s[f"{c:g}"] for c in CONCS] for s in gam[e]["fun"]])
-    print(e, "Gamma reported functional", np.round(gf_[0], 2), "pair", [round(gam[e]["pair"][f"{c:g}"], 2) for c in CONCS])
+    print(e, "Gamma fun seed0", np.round(gf_[0], 2), "pair", [round(gam[e]["pair"][f"{c:g}"], 2) for c in CONCS])

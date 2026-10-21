@@ -51,7 +51,7 @@ def save_model(d, cfg, params, metrics, hist=None, extra=None):
 
 def load_model(d):
     c = json.load(open(os.path.join(d, "config.json")))
-    for k in ("readout_hidden", "grad_channels", "pack_v0", "cace_scale", "loc_hidden", "kernel_net", "cnn_channels"):
+    for k in ("readout_hidden", "grad_channels", "pack_v0", "cace_scale", "loc_hidden", "kernel_net", "cnn_channels", "pair_wide"):
         if k in c:
             c[k] = tuple(c[k])
     cfg = ModelConfig(**c)
@@ -64,6 +64,8 @@ def structure_report(params, cfg, sps, concs=None, k_max=None):
     out = {}
     for c, sp in sorted(sps.items()):
         if concs is not None and c not in concs:
+            continue
+        if sp.box:
             continue
         sk = sp.sk
         if sk is None:
@@ -84,11 +86,24 @@ def structure_report(params, cfg, sps, concs=None, k_max=None):
     return out
 
 
-def structure_summary(struct):
-    return {f"{c:g}": dict(Gamma=st["Gamma"], SL_A=st["SL_A"], lambda_min_rel=st["lambda_min_rel"],
-                           k_lambda_min=st["k_lambda_min"], n_unstable=st["n_unstable"], k_unstable=st["k_unstable"],
-                           **{k: st[k] for k in st if k.startswith("rel_rms_")})
+def state_label(sps, c):
+
+    sp = sps.get(round(c, 4)) if sps else None
+    return f"e{sp.eps_r}/c{sp.conc:g}" if sp is not None and sp.eps_r else f"{c:g}"
+
+
+def structure_summary(struct, sps=None):
+    return {state_label(sps, c): dict(Gamma=st["Gamma"], SL_A=st["SL_A"], lambda_min_rel=st["lambda_min_rel"],
+                                      k_lambda_min=st["k_lambda_min"], n_unstable=st["n_unstable"], k_unstable=st["k_unstable"],
+                                      lB=float(sps[round(c, 4)].lB) if sps else None,
+                                      **{k: st[k] for k in st if k.startswith("rel_rms_")})
             for c, st in struct.items()}
+
+
+def by_group(rows, keyfn):
+
+    groups = sorted({keyfn(r) for r in rows})
+    return {g: summarize([r for r in rows if keyfn(r) == g]) for g in groups}
 
 
 def evaluate(params, cfg, sps, train_runs, heldout_runs, extra_runs=None, name="", outdir=None,
@@ -115,9 +130,12 @@ def evaluate(params, cfg, sps, train_runs, heldout_runs, extra_runs=None, name="
         if el:
             metrics["heldout_rel_l2"] = float(np.mean([s[f"{lab}_rel_l2"] for lab in ("cation", "anion") if f"{lab}_rel_l2" in s]))
         metrics["heldout_rows"] = [{k: v for k, v in r.items() if k != "n_pred"} for r in rows_ho]
+        if any(r.get("eps") for r in rows_ho):
+            metrics["heldout_by_eps"] = by_group(rows_ho, lambda r: r["eps"])
+            metrics["heldout_by_state"] = by_group(rows_ho, lambda r: f"e{r['eps']}/c{r['conc']:g}")
         for r in rows_ho:
             if "n_pred" in r:
-                extra[f"c{r['conc']:g}_{r['tag']}"] = r["n_pred"]
+                extra[r["key"].replace("/", "_")] = r["n_pred"]
     if extra_runs:
         log(f"  transfer runs ({name}):")
         bex = D.make_batches(extra_runs, sps)
@@ -125,16 +143,28 @@ def evaluate(params, cfg, sps, train_runs, heldout_runs, extra_runs=None, name="
         s = summarize(rows_ex)
         metrics["transfer"] = s
         metrics["transfer_rows"] = [{k: v for k, v in r.items() if k != "n_pred"} for r in rows_ex]
+        if any(r.get("eps") for r in rows_ex):
+            metrics["transfer_by_eps"] = by_group(rows_ex, lambda r: r["eps"])
+        metrics["transfer_by_state"] = by_group(rows_ex, lambda r: (f"e{r['eps']}/" if r.get("eps") else "") + f"c{r['conc']:g}")
         for r in rows_ex:
             if "n_pred" in r:
-                extra[f"transfer_c{r['conc']:g}_{r['tag']}"] = r["n_pred"]
+                extra["transfer_" + r["key"].replace("/", "_")] = r["n_pred"]
     struct = structure_report(params, cfg, sps)
-    metrics["structure"] = structure_summary(struct)
+    metrics["structure"] = structure_summary(struct, sps)
     log("  bulk structure: " + "  ".join(
-        f"c={c:g}: Gamma {st['Gamma']:.2f} SL {st['SL_A']-1:+.1e} dS_ZZ {st.get('rel_rms_ZZ', float('nan')):.3f} "
+        f"{state_label(sps, c)}: Gamma {st['Gamma']:.2f} SL {st['SL_A']-1:+.1e} dS_ZZ {st.get('rel_rms_ZZ', float('nan')):.3f} "
         f"dS_NN {st['rel_rms_NN']:.3f} lmin {st['lambda_min_rel']:.2f}@k={st['k_lambda_min']:.2f}" for c, st in struct.items()))
     metrics["eval_seconds"] = time.time() - t0
     if outdir:
+        try:
+            _plot_evaluation(params, cfg, sps, train_runs, heldout_runs, extra_runs, rows_ho, rows_ex, struct, name, outdir, el, ref_params)
+        except Exception as e:
+            log(f"  WARNING: plotting failed ({type(e).__name__}: {e}); metrics kept")
+    return metrics, extra
+
+
+def _plot_evaluation(params, cfg, sps, train_runs, heldout_runs, extra_runs, rows_ho, rows_ex, struct, name, outdir, el, ref_params):
+    if True:
         pd = os.path.join(outdir, "plots")
         os.makedirs(pd, exist_ok=True)
         runs_by_key = {r.key: r for r in train_runs + heldout_runs + (extra_runs or [])}
@@ -156,7 +186,6 @@ def evaluate(params, cfg, sps, train_runs, heldout_runs, extra_runs=None, name="
             refs["PB"] = structure_report(ref_params[1], ref_params[0], sps)
         plots.plot_structure(struct, sps, os.path.join(pd, "structure.png"), refs=refs, title=name)
         plots.plot_Wk(struct, os.path.join(pd, "Wk.png"), title=name)
-    return metrics, extra
 
 
 def run_experiment(name, cfg, sps, train_runs, heldout_runs, extra_runs=None, opts=None, el=True,
@@ -164,22 +193,25 @@ def run_experiment(name, cfg, sps, train_runs, heldout_runs, extra_runs=None, op
 
     opts = opts or {}
     if val_runs:
-        name = name + f"_val{len(val_runs) // max(len({r.conc for r in val_runs}), 1)}"
+        name = name + f"_val{len(val_runs) // max(len({(r.eps_r, r.conc) for r in val_runs}), 1)}"
     name = name + NAME_SUFFIX
     d = os.path.join(OUT, name)
+    if cfg.lb_mode and cfg.variant == "v1" and not cfg.kernel_net:
+        raise ValueError("the closed-form V1 fit has no l_B terms; use --kernel-net with --lb-mode")
     log(f"=== {name}: {cfg.variant} L={cfg.depth} C={cfg.C} rf~{cfg.receptive_field:.1f}  "
         f"train {len(train_runs)} runs {sorted({r.conc for r in train_runs})}, held-out {len(heldout_runs)}"
-        + (f", validation {len(val_runs)}" if val_runs else ""))
+        + (f", validation {len(val_runs)}" if val_runs else "")
+        + (f"; eps_r {sorted({r.eps_r for r in train_runs})}" + (f" (l_B mode {cfg.lb_mode})" if cfg.lb_mode else " (NO l_B conditioning)")
+           if any(r.eps_r for r in train_runs) else "")
+        + (f"; extra boxes " + ", ".join(f"{b}: {sum(r.box == b for r in train_runs)} runs" for b in sorted({r.box for r in train_runs if r.box}))
+           if any(r.box for r in train_runs) else ""))
     hist = None
     t0 = time.time()
     if cfg.variant == "v1" and not cfg.kernel_net:
-
         btr = D.make_batches(train_runs, sps, kboost=opts.get("kboost", 0.0), kboost_mode=opts.get("kboost_mode", "long12"))
         bl = [b for b, _ in btr.values()]
         ridge = opts.get("ridge", 0.0)
         if ridge == "auto":
-
-
             for ridge in [0.0] + list(np.geomspace(1e-4, 10.0, 26)):
                 params, chi2, cond = fit_v1(cfg, bl, ridge=ridge)
                 if all(bulk_structure(params, cfg, b.geom)["n_unstable"] == 0 for b in bl):
@@ -226,8 +258,12 @@ def run_experiment(name, cfg, sps, train_runs, heldout_runs, extra_runs=None, op
             fns["monitor_fn"] = lambda p: (lambda l: l[0] / l[1])(pcm_loss(p, cfg, tg))
         params, hist, best = train(cfg, params, btr, bho, geoms, log=log, **fns,
                                    **{k: opts[k] for k in ("steps", "lr", "weight_decay", "stab_weight",
-                                                            "eval_every", "patience", "select") if k in opts})
+                                                            "eval_every", "patience", "select", "basis_lr_scale", "ckpt_every") if k in opts},
+                                   ckpt_fn=lambda it, p, mon: (os.makedirs(os.path.join(d, "ckpt"), exist_ok=True),
+                                                               pickle.dump(to_np(p), open(os.path.join(d, "ckpt", f"step{it:05d}.pkl"), "wb")),
+                                                               open(os.path.join(d, "ckpt", "monitor.txt"), "a").write(f"{it} {mon:.6f}\n")))
     fit_s = time.time() - t0
+    save_model(d, cfg, params, {"name": name, "status": "fit done, evaluation pending", "fit_seconds": fit_s}, hist)
     pb = ModelConfig("pb", n_species=cfg.n_species); ref = (pb, init_params(pb))
     metrics, extra = evaluate(params, cfg, sps, train_runs, heldout_runs, extra_runs, name=name,
                               outdir=d, el=el, ref_params=ref)
@@ -252,7 +288,7 @@ def load_split(concs, args):
     sps, runs = D.load_all()
     ho = D.heldout_tags(runs, regenerate=args.regenerate_splits)
     tr, hold = D.split_runs(runs, ho)
-    sel = lambda rs: [r for r in rs if any(abs(r.conc - c) < 1e-6 for c in concs)]
+    sel = lambda rs: [r for r in rs if r.box or any(abs(r.conc - c) < 1e-6 for c in concs)]
     tr, hold = sel(tr), sel(hold)
     val = []
     if getattr(args, "nval", 0) > 0:
@@ -263,7 +299,7 @@ def load_split(concs, args):
 def train_opts(args):
     return dict(steps=args.steps, lr=args.lr, weight_decay=args.weight_decay,
                 stab_weight=args.stab_weight, eval_every=args.eval_every, patience=args.patience,
-                kboost=args.kboost, kboost_mode=args.kboost_mode, loss=args.loss, select=args.select)
+                kboost=args.kboost, kboost_mode=args.kboost_mode, loss=args.loss, select=args.select, basis_lr_scale=args.basis_lr_scale, ckpt_every=args.ckpt_every)
 
 
 def subset(runs, k, seed=D.SPLIT_SEED):
@@ -399,18 +435,35 @@ def cmd_joint(args):
         tr = augment_runs(tr, args.augment_shifts, args.augment_reflect, seed=args.seed)
         log(f"  augmented training set: {n0} runs -> {len(tr)} ({args.augment_shifts} shifts each"
             f"{', with mirror images' if args.augment_reflect else ''})")
+    ex, etag = None, ""
+    if D.eps_roots():
+        labels = [lab for _, lab, _ in D.eps_roots()]
+        etr = args.eps_train if args.eps_train is not None else [lab for lab in labels if lab not in (args.eps_test or [])]
+        bad = [e for e in list(etr) + list(args.eps_test or []) if e not in labels]
+        if bad:
+            raise ValueError(f"eps_r labels {bad} are not in SIP_EPS_ROOTS {labels}")
+        tr, ho, val = [[r for r in rs if r.eps_r in etr] for rs in (tr, ho, val)]
+        if args.eps_test:
+            ex = [r for r in runs if r.status == "PASS" and r.eps_r in args.eps_test
+                  and any(abs(r.conc - c) < 1e-6 for c in args.joint_conc)]
+        etag = "_E" + "-".join(e.replace(".", "") for e in etr) + ("_T" + "-".join(e.replace(".", "") for e in args.eps_test) if args.eps_test else "")
+        log(f"  eps_r roots: training {etr} ({len(tr)} runs), transfer test {args.eps_test or '-'} ({len(ex or [])} runs)")
     for v in args.variants:
         cfg = ModelConfig(v, M=args.M, depth=L, C=C, grad_invariants=args.grad_invariants, seed=args.seed,
                           hidden=args.hidden, readout_hidden=tuple(args.readout_hidden),
                           win_bins=args.win_bins, cace_a=args.cace_a, cace_qcut=args.cace_qcut,
                           loc_hidden=tuple(args.loc_hidden), s_max=args.s_max, kernel_net=tuple(args.kernel_net),
-                          activation=args.activation, n_ref=args.n_ref, cnn_dilation=args.cnn_dilation,
-                          cnn_channels=tuple(args.cnn_channels), cnn_rows=args.cnn_rows, n_species=D.n_species(runs))
+                          activation=args.activation, n_ref=args.n_ref, cnn_dilation=args.cnn_dilation, pair_wide=tuple(args.pair_wide),
+                          pair_wide_learn=args.pair_wide_learn, basis_learn=args.basis_learn, basis_min=args.basis_min, basis_max=args.basis_max, pair_wide_max=args.pair_wide_max, pair_wide_nchannel=args.pair_wide_nchannel,
+                          cnn_channels=tuple(args.cnn_channels), cnn_rows=args.cnn_rows, n_species=D.n_species(runs),
+                          lb_mode=args.lb_mode, lb_ref=args.lb_ref, lb_sat0=args.lb_sat0,
+                          lb_film_hidden=args.lb_film_hidden)
         wide = "" if tuple(args.readout_hidden) == (64, 64) and args.hidden == 64 else f"_R{'x'.join(str(h) for h in args.readout_hidden)}_H{args.hidden}"
         arch = {"c1win": f"_W{args.win_bins}", "cace": f"_a{args.cace_a}q{args.cace_qcut}",
                 "cnn": f"_d{args.cnn_dilation}"}.get(v, "")
-        run_experiment(f"joint_{v}{arch}_L{L}_C{C}{wide}_{ctag(args.joint_conc)}", cfg, sps, tr, ho, opts=train_opts(args),
-                       val_runs=val)
+        lbt = f"_lb{args.lb_mode}" if args.lb_mode else ""
+        run_experiment(f"joint_{v}{arch}_L{L}_C{C}{wide}_{ctag(args.joint_conc)}{etag}{lbt}", cfg, sps, tr, ho, extra_runs=ex,
+                       opts=train_opts(args), val_runs=val)
 
 
 def cmd_transfer(args):
@@ -445,16 +498,16 @@ def cmd_predict(args):
 
     cfg, params = load_model(args.model)
     sps, runs = D.load_all()
-
-
-    ex = [r for r in runs if r.status in args.status and any(abs(r.conc - c) < 1e-6 for c in args.conc)]
+    ex = [r for r in runs if r.status in args.status and any(abs(r.conc - c) < 1e-6 for c in args.conc)
+          and (not args.eps or r.eps_r in args.eps)]
     if not ex:
-        log(f"no {'/'.join(args.status)} runs with profiles at {args.conc}")
+        log(f"no {'/'.join(args.status)} runs with profiles at {args.conc}" + (f" eps_r {args.eps}" if args.eps else ""))
         return
     if any(r.status != "PASS" for r in ex):
-        log("  scored with status " + ", ".join(f"{r.tag}:{r.status}" for r in ex if r.status != "PASS"))
-    name = os.path.basename(args.model.rstrip("/")) + "_predict_" + ctag(args.conc)
-    d = os.path.join(args.model, "predict_" + ctag(args.conc))
+        log("  scored with status " + ", ".join(f"{r.key}:{r.status}" for r in ex if r.status != "PASS"))
+    ptag = ctag(args.conc) + ("_E" + "-".join(e.replace(".", "") for e in args.eps) if args.eps else "")
+    name = os.path.basename(args.model.rstrip("/")) + "_predict_" + ptag
+    d = os.path.join(args.model, "predict_" + ptag)
     pb = ModelConfig("pb", n_species=cfg.n_species); ref = (pb, init_params(pb))
     metrics, extra = evaluate(params, cfg, sps, [], [], extra_runs=ex, name=name, outdir=d, ref_params=ref)
     metrics["model"] = args.model
@@ -536,7 +589,16 @@ def main(argv=None):
                     help="training signal: force matching (ours), local chemical-potential balance (Cheng 2026), "
                          "or pair-correlation matching on the zero-field S_ab(k) (Dijkman 2025); learn.signals")
     ap.add_argument("--s-max", type=float, default=2.0, help="width of the widest Gaussian of the basis")
-    ap.add_argument("--n-ref", type=float, default=0.02, help="density scale of the network inputs")
+    ap.add_argument("--pair-wide", type=float, nargs="*", default=[], help="widths (sigma) of extra plain Gaussians added to the pair kernels u_ab only (zero-initialised)")
+    ap.add_argument("--n-ref", type=float, default=0.02, help="density scale of the network inputs (the LJ fluid uses 0.4)")
+    ap.add_argument("--basis-learn", action="store_true", help="learn the widths of the envelopes B_m (sigmoid-bounded in (basis_min, basis_max), initial = the s_min..s_max grid)")
+    ap.add_argument("--basis-min", type=float, default=0.1)
+    ap.add_argument("--ckpt-every", type=int, default=0, help="save the parameters every N steps to <model>/ckpt/stepNNNNN.pkl (0: off)")
+    ap.add_argument("--basis-lr-scale", type=float, default=1.0, help="learning-rate factor of the envelope widths (Adam update scaled)")
+    ap.add_argument("--basis-max", type=float, default=8.0)
+    ap.add_argument("--pair-wide-learn", action="store_true", help="learn the wide widths (sigmoid-bounded in (s_max, pair_wide_max), initial = --pair-wide)")
+    ap.add_argument("--pair-wide-max", type=float, default=8.0, help="upper bound of the learnable wide widths, sigma")
+    ap.add_argument("--pair-wide-nchannel", action="store_true", help="one wide kernel per width shared by ++, -- and +- (number channel only)")
     ap.add_argument("--activation", choices=["silu", "gelu", "tanh", "softplus"], default="silu",
                     help="activation of the readout Phi and of the kernel network g")
     ap.add_argument("--kernel-net", type=int, nargs="*", default=[],
@@ -561,6 +623,15 @@ def main(argv=None):
     ap.add_argument("--kboost-mode", default="long12", choices=["long12", "all", "k"],
                     help="k: k_m^-kboost on every mode of every run (k in 1/sigma); all: the same with (k_3/k_m)^kboost; "
                          "long12: m = 1, 2 of the long-wavelength runs only, total weight (k_3/k_m)^kboost")
+    ap.add_argument("--lb-mode", choices=["", "poly", "film", "input"], default="",
+                    help="l_B conditioning of F_ex: poly = F0 + lam F1 + s(lam) F2 (structured), film = FiLM modulation of the "
+                         "readout's hidden layers by ln lam, input = ln lam input channel, '' = none")
+    ap.add_argument("--lb-film-hidden", type=int, default=16, help="film: hidden units of the (gamma, beta) conditioning net, 0 = linear")
+    ap.add_argument("--lb-ref", type=float, default=7.957187947537492, help="reference l_B (sigma): lam = l_B / lb_ref")
+    ap.add_argument("--lb-sat0", type=float, default=1.0, help="initial saturation scale lam_s of the s(lam) term")
+    ap.add_argument("--eps-train", nargs="*", default=None, help="joint: eps_r labels (SIP_EPS_ROOTS) that train; default all but --eps-test")
+    ap.add_argument("--eps-test", nargs="*", default=[], help="joint: eps_r labels left out entirely and scored as transfer runs")
+    ap.add_argument("--eps", nargs="*", default=[], help="predict: restrict the scored runs to these eps_r labels")
     args = ap.parse_args(argv)
     global NAME_SUFFIX
     NAME_SUFFIX = args.name_suffix

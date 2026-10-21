@@ -6,9 +6,11 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 
 from release_paths import REPO, GROUP, E75ROOT, E2ROOT, MAIN, FIGURES
+import sipset as SS
 ROOT = str(REPO)
 FIGURES.mkdir(parents=True, exist_ok=True)
 (FIGURES / "si").mkdir(exist_ok=True)
+os.environ.pop("SIP_EPS_ROOTS", None)
 os.environ.setdefault("JAX_PLATFORMS", "cpu")
 MM = 1 / 25.4
 plt.rcParams.update({
@@ -21,17 +23,24 @@ plt.rcParams.update({
 })
 C_MD, C_FUN, C_PAIR, C_PB = "#0b0b0b", "#2a78d6", "#eb6834", "#8a8984"
 C_CAT, C_ANI, INK2, BAND = "#5185C0", "#C96144", "#52514e", "#d8d7d2"
-CONCS = [0.01, 0.02, 0.04, 0.05, 0.06, 0.08]
+CONCS = SS.CONCS
 def cramp(concs):
 
     t = np.linspace(0.35, 0.95, len(concs))
     return {c: cm.Blues(x) for c, x in zip(concs, t)}
+os.environ.setdefault("SIP_ROOT", E75ROOT)
+_T5 = SS.T; _V2N = SS.V2
+def by_val(L, fmt, seeds=(0, 1, 2)):
 
-
-_T5 = "c001_c002_c004_c006_c008"; _V2N = f"joint_v2_L1_C4_R128x128_H64_{_T5}_val3"
-BEST = os.path.join(E75ROOT, "runs/learn", f"{_V2N}_kn1softplus_kbK2_long_s0")
-V1L = f"joint_v1_L1_C4_R128x128_H64_{_T5}_val3_kn1softplus_kbK2_long_s2"
-V1L_E2 = f"joint_v1_L1_C4_R128x128_H64_{_T5}_val3_kn1softplus_kbK2_s0"
+    c = [fmt.format(s) for s in seeds if os.path.isfile(os.path.join(L, fmt.format(s), "metrics.json"))]
+    return min(c, key=lambda n: json.load(open(os.path.join(L, n, "metrics.json")))["val_chi2"]) if c else fmt.format(seeds[0])
+FINAL = SS.VIEW
+BEST = os.path.join(E75ROOT, "runs/learn", FINAL)
+BEST_KBK2 = os.path.join(E75ROOT, "runs/learn", by_val(os.path.join(E75ROOT, "runs/learn"), SS.PAT["ours"].replace("{s}", "{}")))
+BEST_GAUSS = "joint_v2_L1_C4_R128x128_H64_c001_c002_c004_c006_c008_val3_long"
+V1L = by_val(os.path.join(E75ROOT, "runs/learn"), SS.PAT["pair"].replace("{s}", "{}"))
+V1L_E2 = by_val(os.path.join(E2ROOT, "runs/learn"), SS.PAT["pair"].replace("{s}", "{}"))
+V2_64 = "joint_v2_L1_C4_c001_c002_c004_c006_c008_val3_long"
 
 def panel(ax, letter, x=-0.28, y=1.06):
     ax.text(x, y, letter.upper(), transform=ax.transAxes, fontsize=8, weight="bold", va="bottom", ha="left")
@@ -54,7 +63,7 @@ def load_preds(model, runs):
 
 def test_runs(runs, ho):
 
-    t = [r for r in runs if r.status == "PASS" and r.conc in CONCS and ((r.conc == 0.05 and r.tag in {f"p{i:02d}" for i in range(22)}) or (r.conc != 0.05 and r.tag in ho.get(r.conc, [])))]
+    t = [r for r in runs if r.status == "PASS" and r.conc in CONCS and (r.conc == 0.05 or r.tag in ho.get(r.conc, []))]
     return sorted(t, key=lambda r: (r.conc, r.tag))
 
 def metrics(model):
@@ -69,17 +78,17 @@ def system(eps="7.5"):
     if str(eps) == "2":
         L = os.path.join(E2ROOT, "runs/learn")
         return {"eps": "2", "lB": "29.8", "root": E2ROOT, "pair": os.path.join(L, V1L_E2),
-                "fun": [os.path.join(L, f"{_V2N}_kn1softplus_kbK2_s{SEED['2']}")],
-                "fun_all": [os.path.join(L, f"{_V2N}_kn1softplus_kbK2_s{s}") for s in (0, 1, 2)],
+                "fun": [os.path.join(L, FINAL)],
+                "fun_all": [os.path.join(L, FINAL)],
+                "fun_fixed": [os.path.join(L, by_val(L, SS.PAT["ours"].replace("{s}", "{}")))],
                 "gamma_md": gamma_file(L), "suffix": "_eps2"}
     L = os.path.join(E75ROOT, "runs/learn")
     return {"eps": "7.5", "lB": "7.96", "root": E75ROOT, "pair": os.environ.get("NDFT_EPS75_PAIR_MODEL", os.path.join(L, V1L)),
-            "fun": [os.path.join(L, f"{_V2N}_kn1softplus_kbK2_long_s{SEED['7.5']}")],
-            "fun_all": [os.path.join(L, f"{_V2N}_kn1softplus_kbK2_long_s{s}") for s in (0, 1, 2)],
+            "fun": [os.path.join(L, FINAL)],
+            "fun_all": [os.path.join(L, FINAL)],
+            "fun_fixed": [os.path.join(L, by_val(L, SS.PAT["ours"].replace("{s}", "{}")))],
             "gamma_md": gamma_file(L), "suffix": ""}
 def gamma_file(model_root):
-
-
     pooled = os.path.join(model_root, "interpretation/gamma_md_pooled.json")
     if os.path.exists(pooled):
         return pooled

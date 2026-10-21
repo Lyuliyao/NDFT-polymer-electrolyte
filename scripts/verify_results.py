@@ -27,6 +27,9 @@ def main():
         train=set(metrics.get('train_runs',[])); val=set(metrics.get('val_runs',[])); test=set(metrics.get('heldout_runs',[]))
         assert not(train&val or train&test or val&test),label
         checked+=1
+        if 'parameters_of' in recorded:
+            assert (model/'params.pkl').read_bytes()==(ROOT/recorded['parameters_of']/'params.pkl').read_bytes(),label
+            checked+=1
     for path in list((ROOT/'code').rglob('*.py'))+list((ROOT/'scripts').rglob('*.py')):
         ast.parse(path.read_text(),filename=str(path))
     print(f'{len(reference["models"])} selected fits; {checked} independent result/split checks passed. No training or MD performed.')

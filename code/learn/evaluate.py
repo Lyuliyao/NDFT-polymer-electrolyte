@@ -16,7 +16,6 @@ def _el_solver(cfg, m_hist=8):
         Nalpha = geom.n_pairs
         k = geom.k
         kD2 = 8.0 * jnp.pi * geom.lB * geom.nbar
-
         kerker = jnp.where(kD2 > 0, k * k / jnp.maximum(k * k + kD2, 1e-300), 1.0)
 
         def n_of_u(u):
@@ -164,7 +163,7 @@ def heldout_report(params, cfg, batches_by_conc, el=True, mixing=0.1, log=print)
         pulls = np.asarray(residual_pulls(params, cfg, b))
         for i, r in enumerate(rs):
             labs = SPECIES[:pulls.shape[1]]
-            row = dict(conc=c, tag=r.tag, family=r.family, kind=r.kind, status=r.status,
+            row = dict(conc=r.conc, key=r.key, eps=r.eps_r, tag=r.tag, family=r.family, kind=r.kind, status=r.status,
                        **{f"chi2_{lab}": float(np.mean(pulls[i, a] ** 2)) for a, lab in enumerate(labs)})
             row["chi2"] = 0.5 * (row["chi2_cation"] + row["chi2_anion"]) if len(labs) == 2 else row["chi2_cation"]
             if el:

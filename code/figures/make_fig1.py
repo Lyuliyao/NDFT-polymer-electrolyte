@@ -9,7 +9,7 @@ from matplotlib import font_manager
 from release_paths import REPO, MAIN, FIGURES
 ROOT = str(REPO)
 os.environ.setdefault("JAX_PLATFORMS", "cpu")
-from figstyle import BEST, E75ROOT, system
+from figstyle import BEST, E75ROOT, system, SS
 from fig1_layout import draw_layout
 from learn import data as D
 from learn.protocol import load_model
@@ -31,23 +31,21 @@ plt.rcParams.update({
 C_MD, C_CAT, C_ANI, C_MOD, C_PB = "#0b0b0b", "#5185C0", "#C96144", "#2a78d6", "#8a8984"
 INK2, BOX, BOXE = "#52514e", "#f6f5f2", "#b9b7ae"
 
-
 sps, runs = D.load_all(root=E75ROOT)
 cfg, ps = load_model(os.path.join(MAIN, "runs/learn", BEST))
 run = [r for r in runs if r.key == "c0.04/p07"][0]
 g = D.geometry_of(sps[0.04], run.n.shape[1]); z = (np.arange(run.n.shape[1]) + 0.5) * g.dz
-pred = np.load(os.path.join(MAIN, "runs/learn", BEST, "heldout.npz"))["c0.04_p07"]
+pred = np.load(os.path.join(ROOT, "runs/learn", BEST, "heldout.npz"))["c0.04_p07"]
 sk = sps[0.04].sk; n2 = 2 * float(sk["n_each"])
 st = bulk_structure(ps, cfg, g); kk = st["S"]["k"]; sel = (kk > 0) & (kk <= 2.1)
 gm = json.load(open(system("7.5")["gamma_md"]))
-cs_md = sorted(float(c) for c in gm if float(c) <= 0.08)
+cs_md = sorted(float(c) for c in gm if min(SS.CONCS) - 1e-9 <= float(c) <= 0.08)
 g_md = [gm[f"{c:g}"]["shell1"]["Gamma"] for c in cs_md]; e_md = [gm[f"{c:g}"]["shell1"]["Gamma_err"] for c in cs_md]
 g_mod = []
 for c in cs_md:
     gc = D.geometry_of(sps[c], int(round(sps[c].L / 0.1))); gf = fine_geometry(gc, 8); kf = np.asarray(gf.k)
     S = S_from_W(np.asarray(W_of_k(ps, cfg, gf)), kf, gc.nbar, gc.lB)["NN"] / (2 * gc.nbar)
     g_mod.append(1.0 / S[np.argmin(abs(kf - 2 * np.pi / gc.L))])
-
 
 plt.rcParams["mathtext.fontset"] = "dejavusans"
 W_MM, H_MM = 183, 96
@@ -75,7 +73,6 @@ CW, GAP = 54, 7.5
 XA = (4, 4 + CW); XB = (XA[1] + GAP, XA[1] + GAP + CW); XC = (XB[1] + GAP, XB[1] + GAP + CW)
 TOP = H_MM - 3
 draw_layout(ax0)
-
 
 axb = inset(XA[0] + 1, 63, 24, 24); axb.set_xlim(-0.5, 25); axb.set_ylim(-0.5, 25); axb.set_aspect("equal"); axb.axis("off")
 rng = np.random.default_rng(11)
@@ -137,7 +134,7 @@ axs.text(0.05, 0.96, "$c$ = 0.04", transform=axs.transAxes, va="top", fontsize=5
 axg = inset(x + 9 + (w - 10) * 0.5 + 4.5, 9, (w - 10) * 0.5 - 3, 36)
 axg.errorbar(cs_md, g_md, yerr=e_md, fmt="o", ms=1.8, color=C_MD, capsize=1.2, lw=0.6)
 axg.plot(cs_md, g_mod, "-", color=C_MOD, lw=0.9)
-axg.set_xscale("log"); axg.set_xticks([0.01, 0.02, 0.04, 0.08]); axg.set_xticklabels(["0.01", "0.02", "0.04", "0.08"]); axg.minorticks_off()
+axg.set_xscale("log"); axg.set_xticks([c for c in (0.01, 0.02, 0.04, 0.08) if c >= min(cs_md) - 1e-9]); axg.set_xticklabels([f"{c:g}" for c in (0.01, 0.02, 0.04, 0.08) if c >= min(cs_md) - 1e-9]); axg.minorticks_off()
 axg.set_xlabel("$c$", labelpad=0.5); axg.set_ylabel(r"$\Gamma$", labelpad=1); axg.set_yticks([1, 3, 5, 7, 9])
 
 (FIGURES / "fig1").mkdir(parents=True, exist_ok=True)

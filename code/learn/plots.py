@@ -12,22 +12,23 @@ def plot_profiles(rows, runs_by_key, out, ref_rows=None, title=""):
     rows = [r for r in rows if "n_pred" in r]
     if not rows:
         return
-    ref = {(r["conc"], r["tag"]): r for r in (ref_rows or []) if "n_pred" in r}
+    rkey = lambda row: row.get("key", f"c{row['conc']:g}/{row['tag']}")
+    ref = {rkey(r): r for r in (ref_rows or []) if "n_pred" in r}
     nc = 2
     nr = int(np.ceil(len(rows) / nc))
     fig, axes = plt.subplots(nr, nc, figsize=(11, 2.6 * nr), squeeze=False)
     for ax, row in zip(axes.ravel(), rows):
-        run = runs_by_key[f"c{row['conc']:g}/{row['tag']}"]
+        run = runs_by_key[rkey(row)]
         z = np.arange(run.n.shape[1]) * (1.0 / run.n.shape[1])
         for a, (lab, col) in enumerate((("cation", "C0"), ("anion", "C3"))[:run.n.shape[0]]):
             ax.fill_between(z, run.n[a] - run.sig_n[a], run.n[a] + run.sig_n[a], color=col, alpha=0.25, lw=0)
             ax.plot(z, run.n[a], color=col, lw=1, label=f"MD {lab}")
             ax.plot(z, row["n_pred"][a], color=col, lw=1.4, ls="--", label=f"model {lab}")
-            rr = ref.get((row["conc"], row["tag"]))
+            rr = ref.get(rkey(row))
             if rr is not None:
                 ax.plot(z, rr["n_pred"][a], color=col, lw=0.8, ls=":", label=f"PB {lab}")
         pm = row["profile"]
-        ax.set_title(f"c={row['conc']:g} {row['tag']} {run.family}/{run.kind}  "
+        ax.set_title((f"eps {row['eps']} " if row.get("eps") else "") + f"c={row['conc']:g} {row['tag']} {run.family}/{run.kind}  "
                      + "L2 " + "/".join(f"{pm[l]['rel_l2']:.3f}" for l in pm)
                      + f"{'' if row['el']['converged'] else '  EL NOT CONVERGED'}", fontsize=9)
         ax.set_yscale("log")
@@ -44,11 +45,12 @@ def plot_profiles(rows, runs_by_key, out, ref_rows=None, title=""):
 def plot_forces(rows, runs_by_key, force_pred, out, title=""):
 
     rows = rows[:4]
-    nsp = runs_by_key[f"c{rows[0]['conc']:g}/{rows[0]['tag']}"].n.shape[0] if rows else 2
+    rkey = lambda row: row.get("key", f"c{row['conc']:g}/{row['tag']}")
+    nsp = runs_by_key[rkey(rows[0])].n.shape[0] if rows else 2
     fig, axes = plt.subplots(len(rows), nsp, figsize=(11, 2.4 * len(rows)), squeeze=False)
     for i, row in enumerate(rows):
-        run = runs_by_key[f"c{row['conc']:g}/{row['tag']}"]
-        fp = force_pred[f"c{row['conc']:g}/{row['tag']}"]
+        run = runs_by_key[rkey(row)]
+        fp = force_pred[rkey(row)]
         z = np.arange(run.n.shape[1]) * (1.0 / run.n.shape[1])
         for a, lab in enumerate(("cation", "anion")[:nsp]):
             ax = axes[i, a]
@@ -70,8 +72,10 @@ def plot_structure(struct, sps, out, refs=None, title=""):
     comps = ("ZZ", "NN") if nsp == 2 else ("NN",)
     fig, axes = plt.subplots(len(comps), len(concs), figsize=(2.9 * len(concs), 2.7 * len(comps)), squeeze=False)
     for j, c in enumerate(concs):
-        st, sk = struct[c], sps[round(c, 4)].sk
+        st, sp = struct[c], sps[round(c, 4)]
+        sk = sp.sk
         n2 = nsp * float(sk["n_each"])
+        clab = (f"eps {sp.eps_r} " if sp.eps_r else "") + f"c = {sp.conc:g}"
         for i, comp in enumerate(comps):
             ax = axes[i, j]
             ax.plot(sk["k"], sk[f"S_{comp}"] / n2, "o", ms=3, color="k", label="MD")
@@ -85,7 +89,7 @@ def plot_structure(struct, sps, out, refs=None, title=""):
                 kD2 = float(sk["kappaD2"])
                 ax.plot(kk[sel], kk[sel] ** 2 / kD2, "0.6", lw=0.8, ls=":", label="k^2/kappa_D^2")
                 ax.set_ylim(0, min(2.0, 1.3 * (sk["S_ZZ"] / n2).max()))
-                ax.set_title(f"c = {c:g}   Gamma = {st['Gamma']:.2f}", fontsize=9)
+                ax.set_title(f"{clab}   Gamma = {st['Gamma']:.2f}", fontsize=9)
             else:
                 ax.set_ylim(0, 1.3 * (sk["S_NN"] / n2).max())
             ax.set_ylabel(f"S_{comp}/(2n)")

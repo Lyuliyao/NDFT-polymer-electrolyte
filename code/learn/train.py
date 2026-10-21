@@ -66,7 +66,6 @@ def v1_design(cfg, batch):
             X[0, :, 0, :] = -nn[0][:, None] * dc[:, 0, :].T
         ys.append(y.reshape(-1)); Xs.append(X.reshape(nsp * N, P * M))
         wts.append(np.asarray(batch.w[r]).reshape(-1))
-
         b = np.asarray(batch.kboost[r])
         if np.any(b > 0):
             z = np.arange(N) * float(batch.geom.L) / N; ms = np.arange(1, N // 2 + 1); k = 2 * np.pi * ms / float(batch.geom.L)
@@ -100,7 +99,7 @@ def fit_v1(cfg, batches, ridge=0.0):
 
 def train(cfg, params, train_batches, heldout_batches, geoms, steps=4000, lr=1e-3,
           weight_decay=1e-5, stab_weight=100.0, eval_every=20, patience=60,
-          log=print, min_steps=200, data_fn=None, monitor_fn=None, select="best"):
+          log=print, min_steps=200, data_fn=None, monitor_fn=None, select="best", basis_lr_scale=1.0, ckpt_every=0, ckpt_fn=None):
 
     train_batches = tuple(train_batches)
     heldout_batches = tuple(heldout_batches)
@@ -121,6 +120,8 @@ def train(cfg, params, train_batches, heldout_batches, geoms, steps=4000, lr=1e-
     def step(p, s):
         (obj, aux), grads = jax.value_and_grad(objective, has_aux=True)(p)
         upd, s = opt.update(grads, s, p)
+        if basis_lr_scale != 1.0 and isinstance(upd, dict) and "basis_s" in upd:
+            upd = {**upd, "basis_s": upd["basis_s"] * basis_lr_scale}
         return optax.apply_updates(p, upd), s, obj, aux
 
     if monitor_fn is not None:
@@ -135,6 +136,8 @@ def train(cfg, params, train_batches, heldout_batches, geoms, steps=4000, lr=1e-
     t0 = time.time()
     for it in range(steps):
         params, state, obj, (chi2_tr, pen) = step(params, state)
+        if ckpt_fn is not None and ckpt_every > 0 and (it + 1) % ckpt_every == 0:
+            ckpt_fn(it + 1, params, float(monitor(params)))
         if it % eval_every == 0 or it == steps - 1:
             ho = float(monitor(params))
             hist.append((it, float(chi2_tr), ho, float(pen)))

@@ -60,7 +60,6 @@ def draw_layout(ax):
          r'$\mu_\alpha^{\rm int}=\delta(F_{\rm Coul}+F_{\rm ex}^{\theta})/\delta n_\alpha$', 5.9)
     text(mid, 10.7,
          r'$f_\alpha^{\theta}=-n_\alpha\partial_z\mu_\alpha^{\rm int}\quad\longleftrightarrow\quad f_\alpha^{\rm MD}$', 6.2)
-
     arrow(59.2, 16, x-.7, 16, rust)
     arrow(x+w+.8, 33, 124.7, 33, blue)
 
@@ -107,7 +106,6 @@ def rebuild_from_vectors():
         overlay=ET.parse(tmp/'layout.svg').getroot()
         vb=base.get('viewBox').split()
         base.insert(0,ET.Element('{'+ns+'}rect',{'x':'0','y':'0','width':vb[2],'height':vb[3],'fill':'white'}))
-
         mapping={el.get('id'):'layout_'+el.get('id') for el in overlay.iter() if el.get('id')}
         for el in overlay.iter():
             if el.get('id'): el.set('id',mapping[el.get('id')])
@@ -120,7 +118,6 @@ def rebuild_from_vectors():
         ET.ElementTree(base).write(root/'fig1_schematic.svg',encoding='utf-8',xml_declaration=True)
         svg_path=root/'fig1_schematic.svg'
         svg_path.write_text('\n'.join(line.rstrip() for line in svg_path.read_text().splitlines())+'\n')
-
     subprocess.run(['pdftoppm','-singlefile','-r','300','-png',
                     str(root/'fig1_schematic.pdf'),str(root/'fig1_schematic')],check=True)
     print('Updated fig1_schematic.pdf, .svg and .png from preserved data vectors.')

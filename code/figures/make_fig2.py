@@ -22,7 +22,6 @@ for e in ("7.5", "2"):
             pm = profile_metrics(pp[r.key], r.n)
             met[m][r.key] = 0.5 * (pm["cation"]["rel_l2"] + pm["anion"]["rel_l2"])
     if e == "7.5":
-
         _, archived = D.load_all(root=S["root"], uncertainty="legacy")
         archived = {r.key: r for r in archived}
         cfg, ps = load_model(S["fun"][0]); chi = {"PB": {}, "fun": {}}
@@ -34,7 +33,6 @@ for e in ("7.5", "2"):
         CHI, TEST75 = chi, test
     TEST[e], GEO[e], PRED[e], MET[e] = test, geoms, P, met
 json.dump({e: MET[e] for e in MET} | {"chi2_7.5": CHI}, open(os.path.join(ROOT, "results/figures/fig2_metrics.json"), "w"), indent=1)
-
 
 H = 92
 fig = plt.figure(figsize=(183 * MM, H * MM))
@@ -58,14 +56,13 @@ for e in ("7.5", "2"):
         allc = np.concatenate([r.n[0], PRED[e]["pair"][key][0], PRED[e]["fun0"][key][0]]) / nb
         ax.set_ylim(0, allc.max() * 1.25)
         ax.text(0.98, 0.97, f"pair {100 * MET[e]['pair'][key]:.1f}%  neural {100 * MET[e]['fun0'][key]:.1f}%",
-                transform=ax.transAxes, ha="right", va="top", fontsize=5.3, color=INK2)
+                transform=ax.transAxes, ha="right", va="top", fontsize=6.0, color="black")
         if top: ax.set_title(titles[key], loc="left", pad=2); ax.set_xticklabels([])
         else: ax.set_xlabel(r"$z/\sigma$", labelpad=1)
         if j == 0: ax.set_ylabel(r"cation $n_+(z)/\bar n$", labelpad=1)
     fig.text(5 / 183, (y0 + RH / 2) / H, f"$\\varepsilon_r$ = {e}\n$l_B$ = {LB[e]} $\\sigma$", rotation=90, ha="center", va="center", fontsize=6.5)
 axes[("7.5", 0)].legend(loc="lower left", ncol=4, bbox_to_anchor=(0, 1.2), borderaxespad=0, handlelength=1.8, columnspacing=1.4)
 save(fig, "fig2")
-
 
 x = np.arange(len(TEST75)); bounds = [i for i in range(1, len(TEST75)) if TEST75[i].conc != TEST75[i - 1].conc]
 centers = [np.mean([i for i, r in enumerate(TEST75) if r.conc == c]) for c in CONCS]
@@ -81,7 +78,6 @@ for i, (c, cx) in enumerate(zip(CONCS, centers)):
 ax.set_xlabel("test runs, grouped by $c$", labelpad=15)
 ax.legend(loc="lower left", ncol=2, bbox_to_anchor=(0, 1.02), borderaxespad=0, handlelength=1.2)
 save(fig, "si/chi2_test")
-
 
 for e in ("7.5", "2"):
     keys = [r.key for r in TEST[e]]

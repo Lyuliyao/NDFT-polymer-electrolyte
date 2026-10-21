@@ -59,7 +59,6 @@ def main():
             errs.append(abs(fd - mu[a, i]) / (np.abs(mu).max() + 1e-30))
         ok &= check(f"dF/dn FD  {cfg.variant} L={cfg.depth} C={cfg.C} gi={cfg.grad_invariants}", max(errs), 1e-6)
 
-
         f0 = np.asarray(force_density(ps, cfg, n, geom))
         f7 = np.asarray(force_density(ps, cfg, jnp.roll(n, 7, axis=1), geom))
         ok &= check(f"translation equivariance {cfg.variant} L={cfg.depth}",
@@ -93,11 +92,9 @@ def main():
     rng = np.random.default_rng(0)
     c_true = rng.normal(size=(3, cfg.M)) * np.array([[3.0], [3.0], [-3.0]]) * np.geomspace(1, 0.2, cfg.M)[None, :]
     ps_true = {"pair": jnp.asarray(c_true) / cfg.pair_scale}
-
     W = np.asarray(W_of_k(ps_true, cfg, geom))
     lam = np.linalg.eigvalsh(W + np.eye(2)[None] / geom.nbar).min()
     print(f"    kernel stability: min eigenvalue of nbar^-1 + W(k) = {lam:.3f} (must be > 0)")
-
     sps = D.discover_state_points()
     sp = sps[0.04]
     pots = sorted(os.listdir(os.path.join(sp.path, "potentials")))
@@ -123,7 +120,6 @@ def main():
     w = np.full_like(fs, 1.0 / noise ** 2)
     b = Batch(n=jnp.asarray(ns), f=jnp.asarray(fs_noisy), w=jnp.asarray(w), V=jnp.asarray(np.array(Vs)), geom=geom,
               kboost=jnp.zeros((len(ns), N // 2 + 1)))
-
     y, X, _ = v1_design(cfg, b)
     f_lin = X @ c_true.reshape(-1)
     f_ad = (fs - np.array([np.asarray(force_density({"pair": jnp.zeros((3, cfg.M))}, cfg, jnp.asarray(nn), geom)) for nn in ns])).reshape(-1)

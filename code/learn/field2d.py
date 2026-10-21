@@ -5,7 +5,7 @@ import jax
 import jax.numpy as jnp
 from jax import lax
 
-from .models import ACTIVATIONS, mlp, basis_ft
+from .models import ACTIVATIONS, mlp, basis_ft, basis_w, lb_weights, wide_widths
 
 ESIGN = jnp.asarray([1.0, -1.0])
 
@@ -51,10 +51,15 @@ def basis_k(params, cfg, g):
 
     k = g.kk.reshape(-1)
     if cfg.kernel_net:
-        Kh = basis_ft(params["knet"], cfg, k)
+        Kh = basis_ft(params["knet"], cfg, k, basis_w(params, cfg))
     else:
         Kh = jnp.exp(-0.5 * (k[None, :] * jnp.asarray(cfg.widths())[:, None]) ** 2)
     return Kh.reshape(-1, *g.kk.shape)
+
+
+def wide_k(ws, g):
+
+    return jnp.exp(-0.5 * (g.kk[None, :, :] * jnp.asarray(ws)[:, None, None]) ** 2)
 
 
 def F_ex(params, cfg, n, g):
@@ -63,17 +68,36 @@ def F_ex(params, cfg, n, g):
         return 0.0 * jnp.sum(n)
     if cfg.variant not in ("v1", "v2", "v3") or cfg.depth != 1 or cfg.grad_invariants or cfg.log_inputs or cfg.has_pack:
         raise NotImplementedError(f"field2d: variant {cfg.variant} depth {cfg.depth}")
+    if cfg.lb_mode not in ("", "poly"):
+        raise NotImplementedError(f"field2d: lb_mode {cfg.lb_mode!r} (only '' and 'poly' are mirrored)")
+    if cfg.n_species != 2:
+        raise NotImplementedError("field2d: the ion pair only")
     N = g.N
     conv = irfft2(rfft2(n)[None] * basis_k(params, cfg, g)[:, None], N)
+    lbw = lb_weights(params, cfg, g) if cfg.lb_mode else None
     F = 0.0
     if cfg.has_pair:
-        c = cfg.pair_scale * params["pair"]
-        mu_p = jnp.einsum("m,mxy->xy", c[0], conv[:, 0]) + jnp.einsum("m,mxy->xy", c[2], conv[:, 1])
-        mu_m = jnp.einsum("m,mxy->xy", c[1], conv[:, 1]) + jnp.einsum("m,mxy->xy", c[2], conv[:, 0])
+        c = params["pair"]
+        if lbw is not None:
+            c = c + lbw[1] * params["pair_lb"][0] + lbw[2] * params["pair_lb"][1]
+        c = cfg.pair_scale * c
+        conv_p = conv
+        cw = params.get("pair_wide")
+        if cw is not None and cfg.pair_wide:
+            if lbw is not None and "pair_wide_lb" in params:
+                cw = cw + lbw[1] * params["pair_wide_lb"][0] + lbw[2] * params["pair_wide_lb"][1]
+            ws = wide_widths(params, cfg)
+            convw = irfft2(rfft2(n)[None] * wide_k(ws, g)[:, None], N)
+            if cw.shape[0] == 1 and c.shape[0] == 3:
+                cw = jnp.broadcast_to(cw, (3, cw.shape[1]))
+            conv_p = jnp.concatenate([conv, convw], axis=0); c = jnp.concatenate([c, cfg.pair_scale * cw], axis=1)
+        mu_p = jnp.einsum("m,mxy->xy", c[0], conv_p[:, 0]) + jnp.einsum("m,mxy->xy", c[2], conv_p[:, 1])
+        mu_m = jnp.einsum("m,mxy->xy", c[1], conv_p[:, 1]) + jnp.einsum("m,mxy->xy", c[2], conv_p[:, 0])
         F = F + 0.5 * g.dV * jnp.sum(n[0] * mu_p + n[1] * mu_m)
     if cfg.has_net:
         h0 = jnp.transpose(conv, (2, 3, 1, 0)).reshape(N, N, -1) / cfg.n_ref
-        phi = mlp(params["net"]["readout"], h0, ACTIVATIONS[cfg.activation])[..., 0]
+        out = mlp(params["net"]["readout"], h0, ACTIVATIONS[cfg.activation])
+        phi = out @ lbw if cfg.lb_mode == "poly" else out[..., 0]
         F = F + g.dV * cfg.n_ref * jnp.sum(phi)
     return F
 

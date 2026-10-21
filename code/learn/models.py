@@ -39,17 +39,23 @@ class ModelConfig:
     pack_eta_max: float = 0.95
     pack_v0: tuple = (-1.0, -1.0)
     log_inputs: bool = False
-
     win_bins: int = 30
     cace_a: int = 5
     cace_qcut: int = 3
     cace_scale: tuple = ()
     loc_hidden: tuple = (32, 16)
     kernel_net: tuple = ()
+    pair_wide: tuple = ()
+    pair_wide_learn: bool = False
+    pair_wide_max: float = 8.0
+    pair_wide_min: float = -1.0
+    pair_wide_nchannel: bool = False
     activation: str = "silu"
     kernel_dr: float = 0.01
+    basis_learn: bool = False
+    basis_min: float = 0.1
+    basis_max: float = 8.0
     kernel_rmax: float = 5.0
-
     cnn_channels: tuple = (16, 16, 32, 32, 64, 64)
     cnn_kernel: int = 3
     cnn_dilation: int = 2
@@ -57,6 +63,10 @@ class ModelConfig:
     cnn_rows: int = 8
     seed: int = 0
     n_species: int = 2
+    lb_mode: str = ""
+    lb_ref: float = 7.957187947537492
+    lb_sat0: float = 1.0
+    lb_film_hidden: int = 16
 
     def widths(self):
         return basis_widths(self.M, self.s_min, self.s_max)
@@ -73,7 +83,7 @@ class ModelConfig:
             return 0.1 * self.win_bins
         if self.variant == "cace":
             return 0.1 * self.cace_a * (self.cace_qcut + 0.5)
-        return 3.0 * (self.s_max + (self.depth - 1) * (self.deep_s_max if self.deep_s_max > 0 else self.s_max))
+        return 3.0 * (max(self.basis_max if self.basis_learn else self.s_max, self.pair_wide_max if (self.pair_wide and self.pair_wide_learn) else 0.0, *self.pair_wide) + (self.depth - 1) * (self.deep_s_max if self.deep_s_max > 0 else self.s_max))
 
     @property
     def native_grid(self):
@@ -112,10 +122,13 @@ def init_mlp(key, sizes, out_scale=1.0):
 ACTIVATIONS = {"silu": jax.nn.silu, "gelu": jax.nn.gelu, "tanh": jnp.tanh, "softplus": jax.nn.softplus}
 
 
-def mlp(ps, x, act=jax.nn.silu):
+def mlp(ps, x, act=jax.nn.silu, film=None):
+
     for i, p in enumerate(ps):
         x = x @ p["W"] + p["b"]
         if i < len(ps) - 1:
+            if film is not None:
+                x = x * film[i][0] + film[i][1]
             x = act(x)
     return x
 
@@ -151,7 +164,20 @@ def net_dims(cfg):
     if cfg.grad_invariants:
         K = cfg.n_species * len(cfg.grad_channels)
         d_ro += K * (K + 1) // 2
-    return gates, (d_ro, *cfg.readout_hidden, 1)
+    if cfg.lb_mode == "input":
+        d_ro += 1
+    return gates, (d_ro, *cfg.readout_hidden, 3 if cfg.lb_mode == "poly" else 1)
+
+
+def lb_lambda(cfg, geom):
+
+    return geom.lB / cfg.lb_ref
+
+
+def lb_weights(params, cfg, geom):
+
+    lam = jnp.asarray(lb_lambda(cfg, geom))
+    return jnp.stack([jnp.ones_like(lam), lam, 1.0 - jnp.exp(-lam / jnp.exp(params["lb_logsat"]))])
 
 
 def init_net(cfg, key):
@@ -162,14 +188,34 @@ def init_net(cfg, key):
         ps["gates"].append(init_mlp(sub, sizes))
     key, sub = jax.random.split(key)
     ps["readout"] = init_mlp(sub, ro, out_scale=1e-2)
+    if cfg.lb_mode == "film":
+        hid = (cfg.lb_film_hidden,) if cfg.lb_film_hidden > 0 else ()
+        ps["film"] = init_mlp(jax.random.fold_in(key, 11), (1, *hid, 2 * sum(cfg.readout_hidden)), out_scale=0.0)
     return ps
 
 
-def basis_ft(knet, cfg, k):
+def film_mods(ps, cfg, geom):
 
-    w = jnp.asarray(cfg.widths())
+    u = jnp.log(jnp.asarray(lb_lambda(cfg, geom))).reshape(1, 1)
+    out = mlp(ps["film"], u)[0]
+    mods, i = [], 0
+    for d in cfg.readout_hidden:
+        mods.append((1.0 + out[i:i + d], out[i + d:i + 2 * d])); i += 2 * d
+    return mods
+
+
+def basis_w(params, cfg):
+
+    if not cfg.basis_learn:
+        return jnp.asarray(cfg.widths())
+    return cfg.basis_min + (cfg.basis_max - cfg.basis_min) * jax.nn.sigmoid(params["basis_s"])
+
+
+def basis_ft(knet, cfg, k, w=None):
+
+    w = jnp.asarray(cfg.widths()) if w is None else w
     dr = cfg.kernel_dr
-    r = jnp.arange(0.5 * dr, cfg.kernel_rmax * cfg.s_max, dr)
+    r = jnp.arange(0.5 * dr, cfg.kernel_rmax * (cfg.basis_max if cfg.basis_learn else cfg.s_max), dr)
     B = (2 * jnp.pi * w[None, :] ** 2) ** -1.5 * jnp.exp(-0.5 * (r[:, None] / w[None, :]) ** 2)
     K = B * (1.0 + mlp(knet, (r / cfg.s_max)[:, None], ACTIVATIONS[cfg.activation]))
     return 4 * jnp.pi * dr * jnp.einsum("rm,r,rk->mk", K, r * r, jnp.sinc(jnp.asarray(k)[None, :] * r[:, None] / jnp.pi))
@@ -180,14 +226,12 @@ def conv_basis(n, Kh):
     return irfft(rfft(n)[None] * Kh[:, None, :], n.shape[-1])
 
 
-def net_F(ps, cfg, n, geom, Kh=None):
+def net_F(ps, cfg, n, geom, Kh=None, lbw=None):
     if Kh is None:
         h0 = lift(n, geom, cfg.widths()) / cfg.n_ref
     else:
         h0 = jnp.transpose(conv_basis(n, Kh), (2, 1, 0)).reshape(n.shape[-1], -1) / cfg.n_ref
     if cfg.log_inputs:
-
-
         h0 = jnp.log(h0 + 1e-3)
     x = h0
     act = ACTIVATIONS[cfg.activation]
@@ -197,17 +241,34 @@ def net_F(ps, cfg, n, geom, Kh=None):
     inp = h0 if cfg.depth == 1 else jnp.concatenate([x, h0], axis=-1)
     if cfg.grad_invariants:
         inp = jnp.concatenate([inp, grad_invariants(h0, geom, cfg)], axis=-1)
-    phi = mlp(ps["readout"], inp, act)[:, 0]
+    if cfg.lb_mode == "input":
+        inp = jnp.concatenate([inp, jnp.full((inp.shape[0], 1), jnp.log(lb_lambda(cfg, geom)))], axis=-1)
+    out = mlp(ps["readout"], inp, act, film=film_mods(ps, cfg, geom) if cfg.lb_mode == "film" else None)
+    phi = out @ lbw if cfg.lb_mode == "poly" else out[:, 0]
     return geom.A * geom.dz * cfg.n_ref * jnp.sum(phi)
 
 
-def pair_mu(c, cfg, n, geom, Kh=None):
+def wide_widths(params, cfg):
+
+    if not cfg.pair_wide_learn:
+        return jnp.asarray(cfg.pair_wide)
+    lo = cfg.pair_wide_min if cfg.pair_wide_min > 0 else cfg.s_max; hi = cfg.pair_wide_max
+    return lo + (hi - lo) * jax.nn.sigmoid(params["pair_wide_s"])
+
+
+def pair_mu(c, cfg, n, geom, Kh=None, cw=None, ws=None):
 
     if Kh is None:
         conv = jax.vmap(lambda s: gauss_conv(n, s, geom.k))(jnp.asarray(cfg.widths()))
     else:
         conv = conv_basis(n, Kh)
     c = cfg.pair_scale * c
+    if cw is not None and cfg.pair_wide:
+        ws = jnp.asarray(cfg.pair_wide) if ws is None else ws
+        convw = jax.vmap(lambda s: gauss_conv(n, s, geom.k))(ws)
+        if cw.shape[0] == 1 and c.shape[0] == 3:
+            cw = jnp.broadcast_to(cw, (3, cw.shape[1]))
+        conv = jnp.concatenate([conv, convw], axis=0); c = jnp.concatenate([c, cfg.pair_scale * cw], axis=1)
     if n.shape[0] == 1:
         return jnp.einsum("m,mn->n", c[0], conv[:, 0])[None]
     mu_p = jnp.einsum("m,mn->n", c[0], conv[:, 0]) + jnp.einsum("m,mn->n", c[2], conv[:, 1])
@@ -215,8 +276,8 @@ def pair_mu(c, cfg, n, geom, Kh=None):
     return jnp.stack([mu_p, mu_m])
 
 
-def pair_F(c, cfg, n, geom, Kh=None):
-    return 0.5 * geom.A * geom.dz * jnp.sum(n * pair_mu(c, cfg, n, geom, Kh))
+def pair_F(c, cfg, n, geom, Kh=None, cw=None, ws=None):
+    return 0.5 * geom.A * geom.dz * jnp.sum(n * pair_mu(c, cfg, n, geom, Kh, cw, ws))
 
 
 def avni_uk(k, lB, a):
@@ -275,7 +336,6 @@ def cace_tables(qcut, nsp=2):
     for P in permutations(range(3)):
         Pinv = np.argsort(P)
         for s in product((1, -1), repeat=3):
-
             ops.append(([idx[tuple(l[Pinv[j]] for j in range(3))] for l in MONOMIALS],
                         [int(np.prod([s[i] ** l[i] for i in range(3)])) for l in MONOMIALS]))
     U = nsp * nm
@@ -415,10 +475,26 @@ def init_params(cfg, key=None):
         ps["cace"] = init_mlp(k2, (cfg.n_species + cace_nfeat(cfg), *cfg.readout_hidden, cfg.n_species), out_scale=1e-2)
     if cfg.has_pair:
         ps["pair"] = jnp.zeros((3 if cfg.n_species == 2 else 1, cfg.M))
+        if cfg.pair_wide:
+            ps["pair_wide"] = jnp.zeros((1 if (cfg.pair_wide_nchannel or cfg.n_species == 1) else 3, len(cfg.pair_wide)))
+            if cfg.pair_wide_learn:
+                lo = cfg.pair_wide_min if cfg.pair_wide_min > 0 else cfg.s_max; hi = cfg.pair_wide_max
+                q = np.clip((np.asarray(cfg.pair_wide) - lo) / (hi - lo), 1e-3, 1 - 1e-3)
+                ps["pair_wide_s"] = jnp.asarray(np.log(q / (1 - q)))
     if cfg.has_net:
         ps["net"] = init_net(cfg, key)
     if cfg.kernel_net:
         ps["knet"] = init_mlp(jax.random.fold_in(key, 7), (1, *cfg.kernel_net, cfg.M), out_scale=1e-2)
+    if cfg.basis_learn:
+        assert cfg.kernel_net, "basis_learn needs the learned-kernel path (kernel_net)"
+        q = np.clip((np.asarray(cfg.widths()) - cfg.basis_min) / (cfg.basis_max - cfg.basis_min), 1e-3, 1 - 1e-3)
+        ps["basis_s"] = jnp.asarray(np.log(q / (1 - q)))
+    if cfg.lb_mode:
+        ps["lb_logsat"] = jnp.asarray(np.log(cfg.lb_sat0))
+        if cfg.has_pair:
+            ps["pair_lb"] = jnp.zeros((2, 3 if cfg.n_species == 2 else 1, cfg.M))
+            if cfg.pair_wide:
+                ps["pair_wide_lb"] = jnp.zeros((2, *ps["pair_wide"].shape))
     if cfg.has_pack:
         if cfg.n_species != 2:
             raise NotImplementedError("the packing term is defined for the ion pair")
@@ -438,11 +514,18 @@ def F_ex(params, cfg, n, geom):
         F = F + cnn_F(params["cnn"], cfg, n, geom)
     if cfg.variant == "avni":
         F = F + avni_F(cfg, n, geom)
-    Kh = basis_ft(params["knet"], cfg, geom.k) if cfg.kernel_net else None
+    Kh = basis_ft(params["knet"], cfg, geom.k, basis_w(params, cfg)) if cfg.kernel_net else None
+    lbw = lb_weights(params, cfg, geom) if cfg.lb_mode else None
     if cfg.has_pair:
-        F = F + pair_F(params["pair"], cfg, n, geom, Kh)
+        c = params["pair"]
+        if lbw is not None:
+            c = c + lbw[1] * params["pair_lb"][0] + lbw[2] * params["pair_lb"][1]
+        cw = params.get("pair_wide")
+        if cw is not None and lbw is not None and "pair_wide_lb" in params:
+            cw = cw + lbw[1] * params["pair_wide_lb"][0] + lbw[2] * params["pair_wide_lb"][1]
+        F = F + pair_F(c, cfg, n, geom, Kh, cw, wide_widths(params, cfg) if cfg.pair_wide else None)
     if cfg.has_net:
-        F = F + net_F(params["net"], cfg, n, geom, Kh)
+        F = F + net_F(params["net"], cfg, n, geom, Kh, lbw)
     if cfg.has_pack:
         F = F + pack_F(params["pack"], cfg, n, geom)
     return F
@@ -482,8 +565,6 @@ def W_of_k(params, cfg, geom, ks=None):
         return jnp.real(rfft(dmu) / rfft(t[beta])[None, :])
 
     if cfg.variant == "cnn":
-
-
         rows = jnp.arange(cfg.cnn_rows) * (N // cfg.cnn_rows)
         Wr = jax.vmap(lambda i: jax.vmap(lambda b: one(b, i))(jnp.arange(nsp)))(rows)
         W = jnp.transpose(jnp.mean(Wr, axis=0), (2, 1, 0))
@@ -499,9 +580,7 @@ def lambda_min_2x2(Mx):
     if Mx.shape[-1] == 1:
         return Mx[..., 0, 0]
     a, b, d = Mx[..., 0, 0], Mx[..., 0, 1], Mx[..., 1, 1]
-
-
-    return 0.5 * (a + d) - jnp.sqrt((0.5 * (a - d)) ** 2 + b * b + 1e-30)
+    return 0.5 * (a + d) - jnp.sqrt((0.5 * (a - d)) ** 2 + b * b)
 
 
 def sym_W(W):

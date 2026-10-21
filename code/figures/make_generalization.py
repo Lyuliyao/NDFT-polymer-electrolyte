@@ -77,7 +77,7 @@ for row, (system, eps) in enumerate((("eps75", "7.5"), ("eps2", "2"))):
         ax.legend(loc="lower right", bbox_to_anchor=(1.03, 1.005),
                   ncol=2, borderaxespad=0, columnspacing=0.8, handlelength=1.8)
     metrics["profiles"][eps] = {
-        "potential": "p62 (mode at k_1/2 + aperiodic in-range structure)", "species": "cation", "seed": {"7.5": 0, "2": 1}[eps], "model": "KBK2",
+        "potential": "p62 (mode at k_1/2 + aperiodic in-range structure)", "species": "cation", "seed": 0, "model": "permittivity-transferable functional (all five eps_r, seed 0)",
         "box_replication": 2, "box_length": length, "bins": len(z),
         "mean_md_density": nb, "uncertainty": "plus/minus 2 archived MD standard errors",
         "processing": "raw full-box profiles; no smoothing or folding",
@@ -108,7 +108,7 @@ for row, (system, eps) in enumerate((("eps75", "7.5"), ("eps2", "2"))):
             cb.set_label(r"$n_+/\bar n$", fontsize=6, labelpad=2)
     difference = (nf - nm) / sigma
     metrics["maps"][eps] = {
-        "potential": "p55 (aperiodic: oblique plane waves + irregular Gaussian wells and barriers)", "species": "cation", "seed": {"7.5": 0, "2": 1}[eps],
+        "potential": "p55 (aperiodic: oblique plane waves + irregular Gaussian wells and barriers)", "species": "cation", "seed": 0, "model": "permittivity-transferable functional (all five eps_r, seed 0)",
         "shape": list(nm.shape), "mean_md_density": nb, "density_color_limits": [0, density_max],
         "binwise_rms_difference_in_md_error_units": float(np.sqrt(np.mean(difference**2))),
     }

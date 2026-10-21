@@ -12,7 +12,7 @@ def link(source, target):
 
 def prepare():
     roots = {}
-    for system in ('eps75', 'eps2', 'lj1', 'bigbox', 'field2d'):
+    for system in ('eps75', 'eps5', 'eps4', 'eps3', 'eps2', 'epsx', 'lj1', 'bigbox', 'field2d'):
         root = RUNTIME / ('salt_in_polymer_' + system)
         roots[system] = root
         runs = root / 'runs'

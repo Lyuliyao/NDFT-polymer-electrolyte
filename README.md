@@ -61,4 +61,8 @@ python3.12 -m venv .venv
 
 Raw MD trajectories and restart files are stored separately. The compact nonplanar arrays needed to redraw Figure 3 are included; recomputing all maps or trajectory uncertainties requires the raw data.
 
-Use GitHub's **Cite this repository** button for the software citation. Add the manuscript's archival identifier when it becomes available.
+Use GitHub's **Cite this repository** button for the software citation. Release v1.0.0 is archived at Zenodo, DOI [10.5281/zenodo.23558961](https://doi.org/10.5281/zenodo.23558961) (all versions: [10.5281/zenodo.23558960](https://doi.org/10.5281/zenodo.23558960)).
+
+## License
+
+Code is released under the [MIT License](LICENSE). Data, trained models and figures are released under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

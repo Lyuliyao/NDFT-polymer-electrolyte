@@ -1,6 +1,6 @@
 # Data and model conventions
 
-The held-out identifiers at dielectric 2 are restored from the archived selected model's `heldout_runs`. Its training scope excludes `c0.08/p05` and `c0.08/p12`, which appear as PASS in the broader MD acceptance table but are absent from the reported fit. `excluded.json` records this distinction; the raw acceptance verdicts are preserved. This gives the paper's exact 82 training, 15 validation and 20 held-out runs.
+The held-out identifiers at dielectric 2 are restored from the archived selected model's `heldout_runs`. Its training scope excludes `c0.08/p05` and `c0.08/p12`, which appear as PASS in the broader MD acceptance table but are absent from the reported fit. `excluded.json` records this distinction; the raw acceptance verdicts are preserved. This gives the paper's exact 82 training, 15 validation and 20 held-out runs at dielectric 2 for the fixed-coupling forms (71 / 15 / 20 at dielectric 7.5). The permittivity-transferable functional of the main text is trained on 276 runs and tested on 86 held-out runs across the five dielectric constants (see [reproduction.md](reproduction.md)).
 
 ## Systems
 
@@ -28,7 +28,7 @@ Per-run acceptance diagnostics are retained with their measured values. A publis
 
 ## Canonical numerical tables
 
-`results/tables/paper-results.json` lists exact selected names, configurations, source paths and regenerated statistics. It defines the paper's test scope explicitly: 20 held-out fields plus 22 fields at concentration 0.05. The stored per-run evaluations are preserved as provenance; older raw evaluations can include additional linear-response probes or concentration 0.12. Those are outside the paper's test domain and are excluded from canonical summaries. No stability claim extends beyond the stated domain.
+`results/tables/paper-results.json` lists exact selected names, configurations, source paths and regenerated statistics. It defines the paper's test scope explicitly: at each of the two reported dielectric constants (7.5 and 2), 20 held-out fields plus 22 fields at concentration 0.05 (potentials `p00`–`p21`). The stored per-run evaluations are preserved as provenance; older raw evaluations can include additional linear-response probes or concentration 0.12. Those are outside the paper's test domain and are excluded from canonical summaries. No stability claim extends beyond the stated domain.
 
 `results/figures/generalization/data/` contains the archived profiles and nonplanar maps used for Figure 3, including MD uncertainties and selected predictions. `results/figures/paper/` contains the five final vector figures from the manuscript. `data/predictions/epsx/` contains the bulk response and energy-identity summaries of the permittivity series used for Figure 5. Other generated figure outputs are derived products.
 

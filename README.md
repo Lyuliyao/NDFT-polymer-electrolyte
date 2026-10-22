@@ -19,7 +19,7 @@ Learn the correlations beyond the analytic Coulomb mean field from molecular-dyn
 
 ## Results at a glance
 
-Mean relative profile errors across the paper's 20 held-out runs and 22 runs at the untrained concentration `c = 0.05`, for the functional trained at the five dielectric constants 7.5, 5, 4, 3 and 2:
+Mean relative profile errors over the paper's test runs at each of the two reported dielectric constants (20 held-out runs plus the 22 runs at the untrained concentration `c = 0.05`, i.e. 42 runs per dielectric constant), for the single functional trained across the five dielectric constants 7.5, 5, 4, 3 and 2 (276 training runs, 75 validation runs and 86 held-out runs in total; per-permittivity counts in [docs/reproduction.md](docs/reproduction.md)):
 
 | Dielectric constant | Neural functional | Learned pair closure |
 | :--- | ---: | ---: |

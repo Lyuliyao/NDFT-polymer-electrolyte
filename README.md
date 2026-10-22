@@ -2,7 +2,7 @@
 
 # Neural density functionals for polymer electrolytes
 
-**A structure-preserving neural density functional for the ions of a polymer electrolyte across Coulomb coupling strengths**<br>
+**A neural density functional for polymer electrolytes with exact structure and transferable Coulomb coupling**<br>
 Liyao Lyu
 
 [Reproduce the results](docs/reproduction.md) · [Data and models](docs/data.md) · [Simulation model](code/md/README.md)
